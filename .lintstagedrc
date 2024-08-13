@@ -1,5 +1,5 @@
 {
   "*": ["prettier --write --ignore-unknown"],
-  "*.{cjs,js,mjs,jsx,ts,tsx}": ["eslint --max-warnings 0"],
+  "*.{js,mjs,jsx,ts,tsx}": ["eslint --max-warnings 0"],
   "*.scss": "npx stylelint --fix"
 }
