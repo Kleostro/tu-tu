@@ -1,0 +1,47 @@
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: '**/*.md'
+
+chore:
+  - any:
+      - changed-files:
+          - any-glob-to-all-files: '*'
+      - head-branch:
+          - '^chore'
+
+feature:
+  - head-branch:
+      - '^feat'
+
+fix:
+  - head-branch:
+      - '^fix'
+      - '^hotfix'
+
+refactor:
+  - head-branch:
+      - '^refactor'
+
+test:
+  - any:
+      - head-branch:
+          - '^test'
+      - changed-files:
+          - any-glob-to-any-file: '**/*.spec.ts'
+
+revert:
+  - head-branch:
+      - '^revert'
+
+styles:
+  - changed-files:
+      - any-glob-to-any-file: '**/*.scss'
+
+sprint1:
+  - head-branch: 'tu-01'
+
+sprint2:
+  - head-branch: 'tu-02'
+
+sprint3:
+  - head-branch: 'tu-03'
