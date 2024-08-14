@@ -6,8 +6,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   imports: [],
   templateUrl: './trip-detailed.component.html',
   styleUrl: './trip-detailed.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TripDetailedComponent {
-
-}
+export class TripDetailedComponent {}
