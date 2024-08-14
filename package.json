@@ -38,7 +38,7 @@
     "jest": "^29.7.0",
     "jest-preset-angular": "^14.2.2",
     "modern-normalize": "^3.0.0",
-    "primeng": "^17.18.8",
+    "ng-zorro-antd": "^18.1.0",
     "rxjs": "^7.8.1",
     "ts-node": "^10.9.2",
     "tslib": "^2.3.0"
