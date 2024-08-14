@@ -41,5 +41,5 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Karma tests
+      - name: Run Jest tests
         run: npm test
