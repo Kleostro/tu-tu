@@ -18,7 +18,7 @@ export default class LocalStorageService {
     return null;
   }
 
-  public addValue(key: string, value: unknown): void {
+  public addValueByKey(key: string, value: unknown): void {
     this.storage[key] = JSON.stringify(value);
     this.save(this.storage);
   }
@@ -54,7 +54,7 @@ export default class LocalStorageService {
         this.storage = parsedData;
       }
     } else {
-      sessionStorage.setItem(STORE_KEYS.LS_NAME, '{}');
+      localStorage.setItem(STORE_KEYS.LS_NAME, '{}');
       this.storage = this.init();
     }
 
