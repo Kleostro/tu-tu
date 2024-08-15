@@ -41,7 +41,7 @@ export default class LocalStorageService {
   private init(): LocalStorageData {
     const storedData = localStorage.getItem(STORE_KEYS.LS_NAME);
 
-    const isSessionStorageData = (data: unknown): data is LocalStorageData => {
+    const isLocalStorageData = (data: unknown): data is LocalStorageData => {
       if (typeof data === 'object' && data !== null) {
         return true;
       }
@@ -50,7 +50,7 @@ export default class LocalStorageService {
 
     if (storedData) {
       const parsedData: unknown = JSON.parse(storedData);
-      if (isSessionStorageData(parsedData)) {
+      if (isLocalStorageData(parsedData)) {
         this.storage = parsedData;
       }
     } else {
