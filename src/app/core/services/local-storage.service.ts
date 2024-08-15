@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 
 import STORE_KEYS from '../constants/store';
-import Data from '../models/store.model';
+import LocalStorageData from '../models/store.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export default class LocalStorageService {
-  private storage: Data = this.init();
+  private storage: LocalStorageData = this.init();
 
   public getValueByKey(key: string): unknown {
     if (key in this.storage) {
@@ -33,15 +33,15 @@ export default class LocalStorageService {
     this.init();
   }
 
-  public save(data: Data): void {
+  public save(data: LocalStorageData): void {
     localStorage.setItem(STORE_KEYS.LS_NAME, JSON.stringify(data));
     this.storage = this.init();
   }
 
-  private init(): Data {
+  private init(): LocalStorageData {
     const storedData = localStorage.getItem(STORE_KEYS.LS_NAME);
 
-    const isSessionStorageData = (data: unknown): data is Data => {
+    const isSessionStorageData = (data: unknown): data is LocalStorageData => {
       if (typeof data === 'object' && data !== null) {
         return true;
       }

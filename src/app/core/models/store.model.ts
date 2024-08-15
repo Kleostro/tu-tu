@@ -1,5 +1,5 @@
-interface Data {
+interface LocalStorageData {
   [key: string]: string;
 }
 
-export default Data;
+export default LocalStorageData;
