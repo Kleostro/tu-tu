@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: Format
 
 on:
   pull_request:
@@ -26,20 +26,3 @@ jobs:
 
       - name: Format code with Prettier
         run: npm run ci:format
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Jest tests
-        run: npm test

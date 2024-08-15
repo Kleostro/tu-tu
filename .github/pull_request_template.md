@@ -40,8 +40,10 @@ Specify if any documentation updates are required and provide details on what ne
       [![Request Review on PR Open](https://github.com/kleostro/tu-tu/actions/workflows/request_review.yml/badge.svg)](https://github.com/kleostro/tu-tu/actions/workflows/request_review.yml)
 - [x] The labels have been added 🎨
       [![Pull Request Labeler](https://github.com/kleostro/tu-tu/actions/workflows/labeler.yml/badge.svg)](https://github.com/kleostro/tu-tu/actions/workflows/labeler.yml)
-- [x] My code doesn't generate any errors or warnings ⛓️
-      [![Continuous Integration](https://github.com/kleostro/tu-tu/actions/workflows/ci.yml/badge.svg)](https://github.com/kleostro/tu-tu/actions/workflows/ci.yml)
+- [x] My code doesn't generate any errors or warnings ⚠️
+      [![Code Formatter](https://github.com/kleostro/tu-tu/actions/workflows/format.yml/badge.svg)](https://github.com/kleostro/tu-tu/actions/workflows/format.yml)
+- [x] My code passes all tests 🧪
+      [![Test](https://github.com/kleostro/tu-tu/actions/workflows/test.yml/badge.svg)](https://github.com/kleostro/tu-tu/actions/workflows/test.yml)
 - [x] My code builds successfully ⚙️
       [![Netlify Status](https://api.netlify.com/api/v1/badges/9704b9db-b410-40b1-8d2b-2eeed828626e/deploy-status)](https://app.netlify.com/sites/mad-wizards-tu-tu/deploys)
 

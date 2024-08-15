@@ -29,4 +29,4 @@ run_tsc () {
 run_linter
 run_tsc
 
-printf "${BASIC_GREEN} ✔ All checks passed. Happy coding${ENDCOLOR}!\n"
+printf "${BASIC_GREEN} ✔ All checks have passed. Happy coding!${ENDCOLOR}\n"
