@@ -7,7 +7,7 @@ import LocalStorageData from '../models/store.model';
   providedIn: 'root',
 })
 export default class LocalStorageService {
-  private storage: LocalStorageData = this.init();
+  private storage: LocalStorageData = {};
 
   public getValueByKey(key: string): unknown {
     if (key in this.storage) {
@@ -38,7 +38,7 @@ export default class LocalStorageService {
     this.storage = this.init();
   }
 
-  private init(): LocalStorageData {
+  public init(): LocalStorageData {
     const storedData = localStorage.getItem(STORE_KEYS.LS_NAME);
 
     const isLocalStorageData = (data: unknown): data is LocalStorageData => {

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+
+import LocalStorageService from './core/services/local-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +9,12 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss',
   standalone: true,
   imports: [RouterOutlet],
+  providers: [LocalStorageService],
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+  private localStorageService = inject(LocalStorageService);
+
+  public ngOnInit(): void {
+    this.localStorageService.init();
+  }
+}
