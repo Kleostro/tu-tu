@@ -16,12 +16,3 @@ export const ADMIN_PATH = {
   SCHEDULE: 'Schedule',
   STATIONS: 'Stations',
 } as const;
-
-export const APP_ROUTE = {
-  ADMIN: `/${APP_PATH.ADMIN}`,
-  NOT_FOUND: `/${APP_PATH.NOT_FOUND}`,
-  SIGN_IN: `/${APP_PATH.SIGN_IN}`,
-  SIGN_UP: `/${APP_PATH.SIGN_UP}`,
-  PROFILE: `/${APP_PATH.PROFILE}`,
-  TRIP: `/${APP_PATH.TRIP}`,
-} as const;

@@ -1,5 +1,6 @@
-import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+
+import { RoutingService } from '../../services/routing/routing.service';
 
 @Component({
   selector: 'app-header',
@@ -10,5 +11,5 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  public location = inject(Location);
+  public routingService = inject(RoutingService);
 }
