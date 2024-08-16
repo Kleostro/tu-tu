@@ -1,0 +1,43 @@
+.register-container {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30rem;
+    height: auto; 
+    margin: auto;
+    padding: 2rem;
+    background-color: rgba(199, 199, 199, 0.14);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  
+    .register-title {
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+  
+    .register-form-item {
+      margin-bottom: 1rem;
+  
+      .register-field {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+    }
+  
+    .register-button-container {
+      display: flex;
+      gap: 1rem;
+    }
+    .register-success-message {
+        margin: auto;
+        position: absolute;
+    }
+  }
+  
