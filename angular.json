@@ -30,7 +30,11 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss", "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"],
+            "styles": [
+              "src/styles.scss",
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css"
+            ],
             "stylePreprocessorOptions": {
               "includePaths": ["public/styles"]
             },
