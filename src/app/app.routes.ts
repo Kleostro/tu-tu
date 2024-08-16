@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 
+import { RegisterComponent } from './auth/pages/register/register.component';
+
 const routes: Routes = [
   {
     path: 'admin',
@@ -29,6 +31,7 @@ const routes: Routes = [
     ],
     title: 'Admin',
   },
+  { path: 'register', component: RegisterComponent },
 ];
 
 export default routes;
