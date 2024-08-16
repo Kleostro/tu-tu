@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { User } from '../models/user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SignUpService {
   private httpClient = inject(HttpClient);
@@ -16,9 +16,9 @@ export class SignUpService {
 
 /* Example of using in component
     this.signUpService.signUp({ email: 'test@test.com', password: 'Test-password' }).subscribe({
-      next: () => navigateByUrl('/login'),
+      next: () => navigateByUrl('/login'), -> successfull registered
       error: (err: OverriddenHttpErrorResponse) => {
-        console.error(err.error.message);
+        console.error(err.error.message); -> errors
       },
     });
 */
