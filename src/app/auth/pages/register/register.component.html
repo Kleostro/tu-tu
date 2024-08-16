@@ -1,6 +1,6 @@
 <section class="register-container">
   <p-messages class="register-success-message"></p-messages>
-  <form class="register-form" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <form class="register-form" [formGroup]="registrationForm" (ngSubmit)="submitForm()">
     <h2 class="register-title">Sign Up</h2>
 
     <div class="register-form-item">
@@ -14,9 +14,7 @@
           placeholder="Enter your email"
           class="register-input p-inputtext"
         />
-        <small
-          *ngIf="validateForm.get('email')?.invalid && validateForm.get('email')?.touched"
-          class="p-error">
+        <small *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched" class="p-error">
           Please input a valid email address!
         </small>
       </div>
@@ -34,8 +32,9 @@
           class="register-input p-inputtext"
         />
         <small
-          *ngIf="validateForm.get('password')?.invalid && validateForm.get('password')?.touched"
-          class="p-error">
+          *ngIf="registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched"
+          class="p-error"
+        >
           Please input your password!
         </small>
       </div>
@@ -53,14 +52,16 @@
           class="register-input p-inputtext"
         />
         <small
-          *ngIf="validateForm.get('confirm')?.invalid && validateForm.get('confirm')?.touched" class="p-error">
+          *ngIf="registrationForm.get('confirm')?.invalid && registrationForm.get('confirm')?.touched"
+          class="p-error"
+        >
           Please confirm your password!
         </small>
       </div>
     </div>
 
     <div class="register-button-container">
-      <p-button type="submit" label="Register" [disabled]="!validateForm.valid" class="p-mt-2"></p-button>
+      <p-button type="submit" label="Register" [disabled]="!registrationForm.valid" class="p-mt-2"></p-button>
       <p-link pButton routerLink="/login" label="Sign In" class="p-button-text p-mt-2"></p-link>
     </div>
   </form>

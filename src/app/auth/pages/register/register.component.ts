@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -22,35 +22,27 @@ import { PasswordModule } from 'primeng/password';
     PasswordModule,
   ],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+  styleUrl: './register.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [MessageService],
 })
 export class RegisterComponent {
-  public validateForm!: FormGroup;
-
-  constructor(
-    private fb: FormBuilder,
-    private messageService: MessageService,
-  ) {
-    this.validateForm = this.fb.group({
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      email: ['', [Validators.email, Validators.required]],
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      password: ['', [Validators.required]],
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      confirm: ['', [Validators.required]],
-    });
-  }
+  private messageService = inject(MessageService);
+  private fb = inject(FormBuilder);
+  public registrationForm = this.fb.group({
+    email: ['', [Validators.email.bind(this), Validators.required.bind(this)]],
+    password: ['', [Validators.required.bind(this)]],
+    confirm: ['', [Validators.required.bind(this)]],
+  });
 
   public submitForm(): void {
-    if (this.validateForm.valid) {
+    if (this.registrationForm.valid) {
       // Perform registration logic here (e.g., send data to backend)
-      // console.log('submit', this.validateForm.value);
+      // console.log('submit', this.registrationForm.value);
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registration successful!' });
-      this.validateForm.reset();
+      this.registrationForm.reset();
     } else {
-      Object.values(this.validateForm.controls).forEach((control) => {
+      Object.values(this.registrationForm.controls).forEach((control) => {
         if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({
