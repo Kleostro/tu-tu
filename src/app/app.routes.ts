@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { ADMIN_PATH, APP_PATH } from './shared/constants/appRoutes';
+import { ADMIN_PATH, APP_PATH } from './shared/constants/routes';
 
 const routes: Routes = [
   {
