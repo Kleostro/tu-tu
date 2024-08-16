@@ -13,6 +13,6 @@ export class SignInService {
   private httpClient = inject(HttpClient);
 
   public signIn(userData: User): Observable<SignInResponse> {
-    return this.httpClient.post<SignInResponse>('/api/signin', userData);
+    return this.httpClient.post<SignInResponse>('signin', userData);
   }
 }

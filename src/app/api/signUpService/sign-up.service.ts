@@ -12,7 +12,7 @@ export class SignUpService {
   private httpClient = inject(HttpClient);
 
   public signUp(userData: User): Observable<object> {
-    return this.httpClient.post('/api/signup', userData);
+    return this.httpClient.post('signup', userData);
   }
 }
 
