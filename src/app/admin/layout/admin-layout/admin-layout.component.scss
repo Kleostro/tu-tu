@@ -1,0 +1,7 @@
+@import 'variables';
+
+:host {
+  display: grid;
+  grid-template-columns: calc($offset-xxxl * 2.6) 1fr;
+  height: 100vh;
+}
