@@ -1,1 +1,36 @@
-<p>register works!</p>
+<section class="register-container">
+  <form class="register-form" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <h2>Sign Up</h2>
+    <nz-form-item class="register-form-item">
+      <nz-form-label nzRequired>Email</nz-form-label>
+      <nz-form-control nzErrorTip="Please input your email!">
+        <nz-input-group>
+          <input type="email" nz-input formControlName="email" placeholder="Enter your email" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item class="register-form-item">
+      <nz-form-label nzRequired>Password</nz-form-label>
+      <nz-form-control nzErrorTip="Please input your password!">
+        <nz-input-group>
+          <input type="password" nz-input formControlName="password" placeholder="Enter your password" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item class="register-form-item">
+      <nz-form-label nzRequired>Repeat Password</nz-form-label>
+      <nz-form-control nzErrorTip="Please confirm your password!">
+        <nz-input-group>
+          <input type="password" nz-input formControlName="confirm" placeholder="Repeat Password" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item class="register-button-container">
+      <button nz-button nzType="primary" [disabled]="!validateForm.valid">Register</button>
+      <a nz-typography nzType="secondary" routerLink="/login" style="margin-left: 10px">Sign In</a>
+    </nz-form-item>
+  </form>
+</section>

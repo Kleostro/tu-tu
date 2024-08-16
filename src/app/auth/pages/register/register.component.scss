@@ -1,0 +1,57 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 25rem;
+  height: 32rem;
+  margin: auto;
+  padding: 2rem;
+
+  background-color: #c7c7c724;
+  box-shadow: 0 0 10px 0 rgb(0 0 0 / 30%);
+
+  .register-form-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3.5rem;
+
+    nz-form-label {
+      text-align: left;
+    }
+
+    nz-form-label,
+    nz-form-control {
+      width: 100%;
+    }
+  }
+
+  .register-button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 1rem;
+
+    text-align: center;
+  }
+}
+
+@media screen and (width <= 575px) {
+  .register-form {
+    height: auto;
+    padding: 1.5rem;
+
+    .register-form-item {
+      margin-bottom: 1rem;
+    }
+  }
+}

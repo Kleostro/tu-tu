@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 
-const routes: Routes = [];
+import { RegisterComponent } from './auth/pages/register/register.component';
+
+const routes: Routes = [{ path: 'register', component: RegisterComponent }];
 
 export default routes;
