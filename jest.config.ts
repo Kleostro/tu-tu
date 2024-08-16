@@ -16,6 +16,7 @@ const config: Config = {
   testEnvironment: 'jsdom',
   moduleNameMapper: {
     '^src/(.*)$': '<rootDir>/src/$1',
+    '^ng-zorro-antd/(.*)$': '<rootDir>/src/__mocks__/ng-zorro-antd-mock.ts',
   },
   testPathIgnorePatterns: ['<rootDir>/dist/', 'dist'],
 };
