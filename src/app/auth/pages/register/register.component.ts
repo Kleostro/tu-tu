@@ -1,11 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
+
 import { MessageService } from 'primeng/api';
-import { MessagesModule } from 'primeng/messages';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
+import { MessagesModule } from 'primeng/messages';
 import { PasswordModule } from 'primeng/password';
 
 @Component({
@@ -18,23 +19,26 @@ import { PasswordModule } from 'primeng/password';
     ButtonModule,
     MessagesModule,
     MessageModule,
-    PasswordModule
+    PasswordModule,
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class RegisterComponent {
   public validateForm!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
   ) {
     this.validateForm = this.fb.group({
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       email: ['', [Validators.email, Validators.required]],
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       password: ['', [Validators.required]],
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       confirm: ['', [Validators.required]],
     });
   }
