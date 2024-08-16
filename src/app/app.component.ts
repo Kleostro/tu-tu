@@ -1,6 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
+import { PrimeNGConfig } from 'primeng/api';
+
 import { HeaderComponent } from './core/components/header/header.component';
 import LocalStorageService from './core/services/local-storage.service';
 
@@ -14,8 +16,10 @@ import LocalStorageService from './core/services/local-storage.service';
 })
 export class AppComponent implements OnInit {
   private localStorageService = inject(LocalStorageService);
+  private primengConfig = inject(PrimeNGConfig);
 
   public ngOnInit(): void {
     this.localStorageService.init();
+    this.primengConfig.ripple = true;
   }
 }

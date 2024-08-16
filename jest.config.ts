@@ -6,7 +6,7 @@ import type { Config } from 'jest';
 
 const config: Config = {
   moduleDirectories: ['node_modules', '<rootDir>'],
-  transformIgnorePatterns: ['node_modules/(?!@angular|rxjs|@ngrx)', '<rootDir>/dist'],
+  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
   clearMocks: true,
   collectCoverage: true,
   coverageDirectory: 'coverage',
@@ -16,7 +16,6 @@ const config: Config = {
   testEnvironment: 'jsdom',
   moduleNameMapper: {
     '^src/(.*)$': '<rootDir>/src/$1',
-    '^ng-zorro-antd/(.*)$': '<rootDir>/src/__mocks__/ng-zorro-antd-mock.ts',
   },
   testPathIgnorePatterns: ['<rootDir>/dist/', 'dist'],
 };
