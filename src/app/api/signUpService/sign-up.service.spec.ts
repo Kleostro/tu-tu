@@ -1,9 +1,10 @@
-import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { SignUpService } from './sign-up.service';
-import { User } from '../models/user';
+import { TestBed } from '@angular/core/testing';
+
 import { OverriddenHttpErrorResponse } from '../models/errorResponse';
+import { User } from '../models/user';
+import { SignUpService } from './sign-up.service';
 
 describe('SignUpService', () => {
   let service: SignUpService;
@@ -11,10 +12,7 @@ describe('SignUpService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-      ],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     });
     service = TestBed.inject(SignUpService);
     httpTestingController = TestBed.inject(HttpTestingController);
@@ -32,7 +30,7 @@ describe('SignUpService', () => {
     const userData: User = { email: 'test@test.com', password: 'Abcdefghigk' };
     service.signUp(userData).subscribe((res) => {
       expect(res).toEqual({});
-      done()
+      done();
     });
 
     const req = httpTestingController.expectOne('/api/signup');
@@ -43,7 +41,7 @@ describe('SignUpService', () => {
 
   it('should correctly handle error if user already exist', (done) => {
     const userData: User = { email: 'iam@exist.com', password: 'Passwordtest' };
-  
+
     service.signUp(userData).subscribe({
       next: () => fail('expected error from server'),
       error: (err: OverriddenHttpErrorResponse) => {
@@ -52,16 +50,19 @@ describe('SignUpService', () => {
         expect(err.error.reason).toBe('invalidUniqueKey');
         expect(err.ok).toBe(false);
         done();
-      }
+      },
     });
-  
+
     const req = httpTestingController.expectOne('/api/signup');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(userData);
-    
-    req.flush({
-      message: 'User already exists',
-      reason: 'invalidUniqueKey'
-    }, { status: 400, statusText: 'Bad Request' });
+
+    req.flush(
+      {
+        message: 'User already exists',
+        reason: 'invalidUniqueKey',
+      },
+      { status: 400, statusText: 'Bad Request' },
+    );
   });
 });
