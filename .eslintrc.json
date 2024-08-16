@@ -85,7 +85,8 @@
             "prefix": "app",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "@typescript-eslint/unbound-method": "off"
       },
       "settings": {
         "import/resolver": {
