@@ -14,9 +14,9 @@
           placeholder="Enter your email"
           class="register-input p-inputtext"
         />
-        <small *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched" class="p-error">
-          Please input a valid email address!
-        </small>
+        @if (registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched) {
+          <small class="p-error">Please input a valid email address!</small>
+        }
       </div>
     </div>
 
@@ -31,12 +31,9 @@
           placeholder="Enter your password"
           class="register-input p-inputtext"
         />
-        <small
-          *ngIf="registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched"
-          class="p-error"
-        >
-          Please input your password!
-        </small>
+        @if (registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched) {
+          <small class="p-error">Please input your password!</small>
+        }
       </div>
     </div>
 
@@ -51,12 +48,9 @@
           placeholder="Repeat Password"
           class="register-input p-inputtext"
         />
-        <small
-          *ngIf="registrationForm.get('confirm')?.invalid && registrationForm.get('confirm')?.touched"
-          class="p-error"
-        >
-          Please confirm your password!
-        </small>
+        @if (registrationForm.get('confirm')?.invalid && registrationForm.get('confirm')?.touched) {
+          <small class="p-error">Please confirm your password!</small>
+        }
       </div>
     </div>
 
