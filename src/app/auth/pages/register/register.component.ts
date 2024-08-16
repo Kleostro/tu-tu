@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -29,11 +29,22 @@ import { PasswordModule } from 'primeng/password';
 export class RegisterComponent {
   private messageService = inject(MessageService);
   private fb = inject(FormBuilder);
-  public registrationForm = this.fb.group({
-    email: ['', [Validators.email.bind(this), Validators.required.bind(this)]],
-    password: ['', [Validators.required.bind(this)]],
-    confirm: ['', [Validators.required.bind(this)]],
-  });
+  public registrationForm = this.fb.group(
+    {
+      email: ['', [Validators.email.bind(this), Validators.required.bind(this)]],
+      password: ['', [Validators.required.bind(this), Validators.minLength(8).bind(this)]],
+      confirm: ['', [Validators.required.bind(this)]],
+    },
+    {
+      validators: this.passwordMatchValidator.bind(this),
+    },
+  );
+
+  private passwordMatchValidator(formGroup: FormGroup): { passwordMismatch: boolean } | null {
+    const password = formGroup.get('password');
+    const confirm = formGroup.get('confirm');
+    return password && confirm && password.value === confirm.value ? null : { passwordMismatch: true };
+  }
 
   public submitForm(): void {
     if (this.registrationForm.valid) {
