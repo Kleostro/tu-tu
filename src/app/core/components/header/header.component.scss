@@ -12,7 +12,8 @@
   align-items: center;
   justify-content: space-between;
 
-  width: $offset-xxxl * 16;
+  width: 100%;
+  padding: calc($offset-xxs / 2) $offset-s;
 
   text-align: center;
 }
