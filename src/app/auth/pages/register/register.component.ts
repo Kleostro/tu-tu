@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -8,6 +8,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { PasswordModule } from 'primeng/password';
+
+import { passwordMatchValidator } from '../../../shared/validators/validators';
 
 @Component({
   selector: 'app-register',
@@ -36,15 +38,9 @@ export class RegisterComponent {
       confirm: ['', [Validators.required.bind(this)]],
     },
     {
-      validators: this.passwordMatchValidator.bind(this),
+      validators: passwordMatchValidator.bind(this),
     },
   );
-
-  private passwordMatchValidator(formGroup: FormGroup): { passwordMismatch: boolean } | null {
-    const password = formGroup.get('password');
-    const confirm = formGroup.get('confirm');
-    return password && confirm && password.value === confirm.value ? null : { passwordMismatch: true };
-  }
 
   public submitForm(): void {
     if (this.registrationForm.valid) {
