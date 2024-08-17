@@ -15,7 +15,12 @@
           class="register-input p-inputtext"
         />
         @if (registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched) {
-          <small class="p-error">Please input a valid email address!</small>
+          @if (registrationForm.get('email')?.errors?.['required']) {
+            <small class="p-error">Please input your email!</small>
+          }
+          @if (registrationForm.get('email')?.errors?.['email']) {
+            <small class="p-error">Please input a valid email address!</small>
+          }
         }
       </div>
     </div>
@@ -31,7 +36,12 @@
           class="register-input p-inputtext"
         />
         @if (registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched) {
-          <small class="p-error">Password must be at least 8 characters long</small>
+          @if (registrationForm.get('password')?.errors?.['required']) {
+            <small class="p-error">Please input your password!</small>
+          }
+          @if (registrationForm.get('password')?.errors?.['minlength']) {
+            <small class="p-error">Password must be at least 8 characters long</small>
+          }
         }
       </div>
     </div>

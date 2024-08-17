@@ -51,7 +51,8 @@ export class RegisterComponent {
     } else {
       Object.values(this.registrationForm.controls).forEach((control) => {
         if (control.invalid) {
-          control.markAsDirty();
+          // control.markAsDirty();
+          control.markAsTouched();
           control.updateValueAndValidity({
             onlySelf: true,
           });
