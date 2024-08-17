@@ -9,6 +9,8 @@ import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { PasswordModule } from 'primeng/password';
 
+import { passwordMatchValidator } from '../../../shared/validators/validators';
+
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -29,11 +31,16 @@ import { PasswordModule } from 'primeng/password';
 export class RegisterComponent {
   private messageService = inject(MessageService);
   private fb = inject(FormBuilder);
-  public registrationForm = this.fb.group({
-    email: ['', [Validators.email.bind(this), Validators.required.bind(this)]],
-    password: ['', [Validators.required.bind(this)]],
-    confirm: ['', [Validators.required.bind(this)]],
-  });
+  public registrationForm = this.fb.group(
+    {
+      email: ['', [Validators.email.bind(this), Validators.required.bind(this)]],
+      password: ['', [Validators.required.bind(this), Validators.minLength(8).bind(this)]],
+      confirm: ['', [Validators.required.bind(this)]],
+    },
+    {
+      validators: passwordMatchValidator.bind(this),
+    },
+  );
 
   public submitForm(): void {
     if (this.registrationForm.valid) {
