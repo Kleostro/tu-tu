@@ -12,8 +12,8 @@ import { PasswordModule } from 'primeng/password';
 
 import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { User } from '@/app/api/models/user';
-import { SignUpService } from '@/app/api/signUpService/sign-up.service';
 
+import { SignUpService } from '../../../api/signUpService/sign-up.service';
 import { passwordMatchValidator } from '../../../shared/validators/validators';
 
 export interface RegisterForm {
