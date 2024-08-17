@@ -1,7 +1,5 @@
 import { Injectable, signal } from '@angular/core';
 
-import { ADMIN_CREDENTIALS } from '@/app/admin/constants/adminCredentials';
-
 import STORE_KEYS from '../../constants/store';
 import LocalStorageData from '../../models/store.model';
 
@@ -12,7 +10,8 @@ export class LocalStorageService {
   private storage: LocalStorageData = {};
 
   public isLoggedIn$$ = signal(this.isTokenInLocalStorage());
-  public isAdmin$$ = signal(this.isAdminInLocalStorage());
+  // TBD: uncomment when we have users logged in
+  // public isAdmin$$ = signal(this.isAdminInLocalStorage());
 
   public getValueByKey(key: string): unknown {
     if (key in this.storage) {
@@ -27,9 +26,10 @@ export class LocalStorageService {
     return STORE_KEYS.TOKEN in this.storage;
   }
 
-  public isAdminInLocalStorage(): boolean {
-    return 'email' in this.storage && ADMIN_CREDENTIALS.email === this.storage['email'];
-  }
+  // TBD: uncomment when we have users logged in
+  // public isAdminInLocalStorage(): boolean {
+  //   return 'email' in this.storage && ADMIN_CREDENTIALS.email === this.storage['email'];
+  // }
 
   public addValueByKey(key: string, value: unknown): void {
     this.storage[key] = JSON.stringify(value);
