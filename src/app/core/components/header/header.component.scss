@@ -1,0 +1,31 @@
+@import 'variables';
+
+.header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: $offset-xxxl * 16;
+
+  text-align: center;
+}
+
+.logo {
+  display: flex;
+  flex-direction: row;
+  gap: $offset-s;
+  align-items: center;
+  justify-content: center;
+}
+
+.link-back {
+  display: flex;
+  width: $offset-xxl;
+}
