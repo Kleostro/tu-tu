@@ -33,7 +33,7 @@ describe('SignUpService', () => {
       done();
     });
 
-    const req = httpTestingController.expectOne('/api/signup');
+    const req = httpTestingController.expectOne('signup');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(userData);
     req.flush({});
@@ -53,7 +53,7 @@ describe('SignUpService', () => {
       },
     });
 
-    const req = httpTestingController.expectOne('/api/signup');
+    const req = httpTestingController.expectOne('signup');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(userData);
 
