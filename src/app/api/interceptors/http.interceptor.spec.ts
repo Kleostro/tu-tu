@@ -5,7 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
 import { httpInterceptor } from './http.interceptor';
 
-describe('httpInterceptorInterceptor', () => {
+describe('httpInterceptor', () => {
   const interceptor: HttpInterceptorFn = (req, next) => TestBed.runInInjectionContext(() => httpInterceptor(req, next));
   let httpTestingController: HttpTestingController;
   let httpClient: HttpClient;
