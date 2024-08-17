@@ -9,6 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { PasswordModule } from 'primeng/password';
+import { firstValueFrom } from 'rxjs';
 
 import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { User } from '@/app/api/models/user';
@@ -44,8 +45,8 @@ export class RegisterComponent {
   private messageService = inject(MessageService);
   private signUpService = inject(SignUpService);
   private router = inject(Router);
-
   private fb = inject(FormBuilder);
+
   public registrationForm = this.fb.group(
     {
       email: this.fb.control<string>('', [Validators.required.bind(this), Validators.email.bind(this)]),
@@ -59,16 +60,15 @@ export class RegisterComponent {
 
   public submitForm(): void {
     if (this.registrationForm.valid) {
-      this.signUpService.signUp(this.userData).subscribe({
-        next: () => {
+      firstValueFrom(this.signUpService.signUp(this.userData))
+        .then(() => {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registration successful!' });
           this.router.navigate(['/sign-in']);
           this.registrationForm.reset();
-        },
-        error: (err: OverriddenHttpErrorResponse) => {
+        })
+        .catch((err: OverriddenHttpErrorResponse) => {
           this.registrationForm.setErrors({ [err.error.reason]: true });
-        },
-      });
+        });
     } else {
       Object.values(this.registrationForm.controls).forEach((control) => {
         if (control.invalid) {
