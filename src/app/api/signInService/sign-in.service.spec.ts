@@ -34,7 +34,7 @@ describe('SignInService', () => {
       done();
     });
 
-    const req = httpTestingController.expectOne('/api/signin');
+    const req = httpTestingController.expectOne('signin');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(userData);
     req.flush(mockResponse);
@@ -54,7 +54,7 @@ describe('SignInService', () => {
       },
     });
 
-    const req = httpTestingController.expectOne('/api/signin');
+    const req = httpTestingController.expectOne('signin');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(userData);
 

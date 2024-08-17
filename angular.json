@@ -33,6 +33,7 @@
             "styles": [
               "primeng/resources/themes/bootstrap4-light-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/maplibre-gl/dist/maplibre-gl.css",
               "src/styles.scss"
             ],
             "stylePreprocessorOptions": {
