@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 
-import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { ADMIN_LINK, NAVIGATION_LINKS, USER_LINK } from './constants/navigation-links';
 
 @Component({
@@ -16,7 +15,8 @@ import { ADMIN_LINK, NAVIGATION_LINKS, USER_LINK } from './constants/navigation-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent {
-  public localStorageService = inject(LocalStorageService);
+  // TBD: uncomment when we have users logged in
+  // public localStorageService = inject(LocalStorageService);
 
   public navigationLinks = NAVIGATION_LINKS;
   public userLink = USER_LINK;
