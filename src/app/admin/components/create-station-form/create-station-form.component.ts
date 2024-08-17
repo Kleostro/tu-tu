@@ -9,6 +9,7 @@ import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
 import { map, Observable, of, Subscription, switchMap } from 'rxjs';
 
+import { NewStation } from '@/app/api/models/stations';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 import MESSAGE_STATUS from '@/app/shared/constants/message-status';
 
@@ -32,21 +33,12 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
 
   public isStationCreated = signal(false);
 
-  private createStation(city: string, latitude: number, longitude: number): Observable<{ id: number }> {
-    return this.stationsService.createNewStation({
-      city,
-      latitude,
-      longitude,
-      relations: [],
-    });
+  private createStation(params: NewStation): Observable<{ id: number }> {
+    return this.stationsService.createNewStation(params);
   }
 
-  private createMarker(city: string, latitude: number, longitude: number): void {
-    this.mapService.createNewMarker({
-      city,
-      lat: latitude,
-      lng: longitude,
-    });
+  private createMarker(params: { city: string; lat: number; lng: number }): void {
+    this.mapService.createNewMarker(params);
   }
 
   public createStationForm = this.fb.nonNullable.group({
@@ -69,7 +61,7 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
             switchMap((exists) =>
               exists
                 ? of(null)
-                : this.createStation(city, latitude, longitude).pipe(
+                : this.createStation({ city, latitude, longitude, relations: [] }).pipe(
                     map((id) => {
                       this.isStationCreated.set(false);
                       this.createStationForm.reset();
@@ -81,7 +73,7 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
                     }),
                   ),
             ),
-            map((exists) => (exists ? of(null) : this.createMarker(city, latitude, longitude))),
+            map((exists) => (exists ? of(null) : this.createMarker({ city, lat: latitude, lng: longitude }))),
           )
           .subscribe({
             error: (error: Error) => {
