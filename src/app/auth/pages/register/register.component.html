@@ -22,6 +22,12 @@
             <small class="p-error">Please input a valid email address!</small>
           }
         }
+        @if (registrationForm.hasError('invalidUniqueKey')) {
+          <small class="p-error">Account with this email already exists</small>
+        }
+        @if (registrationForm.hasError('invalidEmail')) {
+          <small class="p-error">Email is wrong. Please input a valid email address!</small>
+        }
       </div>
     </div>
     <div class="register-form-item">
@@ -42,6 +48,9 @@
           @if (registrationForm.get('password')?.errors?.['minlength']) {
             <small class="p-error">Password must be at least 8 characters long</small>
           }
+        }
+        @if (registrationForm.hasError('invalidPassword')) {
+          <small class="p-error">Password is wrong. Password must be at least 8 characters long</small>
         }
       </div>
     </div>
@@ -65,6 +74,9 @@
 
     @if (registrationForm.hasError('passwordMismatch') && registrationForm.get('confirm')?.touched) {
       <small class="p-error">Passwords do not match</small>
+    }
+    @if (registrationForm.hasError('invalidFields')) {
+      <small class="p-error">Fields are empty. Please input email and password.</small>
     }
     <div class="register-button-container">
       <p-button type="submit" label="Register" [disabled]="!registrationForm.valid" class="p-mt-2"></p-button>
