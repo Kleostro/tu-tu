@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
-import STORE_KEYS from '../constants/store';
-import LocalStorageData from '../models/store.model';
+import STORE_KEYS from '../../constants/store';
+import LocalStorageData from '../../models/store.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export default class LocalStorageService {
+export class LocalStorageService {
   private storage: LocalStorageData = {};
 
   public getValueByKey(key: string): unknown {

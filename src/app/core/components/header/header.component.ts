@@ -1,18 +1,15 @@
-import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { RoutingService } from '../../services/routing/routing.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [NzPageHeaderModule, NzIconModule, NzButtonModule],
+  imports: [],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  public location = inject(Location);
+  public routingService = inject(RoutingService);
 }

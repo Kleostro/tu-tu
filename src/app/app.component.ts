@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { PrimeNGConfig } from 'primeng/api';
 
 import { HeaderComponent } from './core/components/header/header.component';
-import LocalStorageService from './core/services/local-storage.service';
+import { LocalStorageService } from './core/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,6 @@ import LocalStorageService from './core/services/local-storage.service';
   styleUrl: './app.component.scss',
   standalone: true,
   imports: [RouterOutlet, HeaderComponent],
-  providers: [LocalStorageService],
 })
 export class AppComponent implements OnInit {
   private localStorageService = inject(LocalStorageService);
