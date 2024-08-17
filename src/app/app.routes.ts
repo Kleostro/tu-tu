@@ -20,12 +20,16 @@ const routes: Routes = [
   },
 
   {
+    // TBD: remove when we have users logged in
+    // canActivate: [authGuard],
     path: APP_PATH.PROFILE.toLowerCase(),
     loadComponent: () => import('./profile/pages/profile/profile.component').then((c) => c.ProfileComponent),
     title: `Tu-Tu | ${APP_PATH.PROFILE}`,
   },
 
   {
+    // TBD: remove when we have users logged in
+    // canActivate: [authGuard],
     path: APP_PATH.ORDERS.toLowerCase(),
     loadComponent: () => import('./orders/pages/orders/orders.component').then((c) => c.OrdersComponent),
     title: `Tu-Tu | ${APP_PATH.ORDERS}`,
@@ -39,6 +43,8 @@ const routes: Routes = [
   },
 
   {
+    // TBD: Remove when we have Admin created
+    // canActivate: [adminGuard],
     path: APP_PATH.ADMIN.toLowerCase(),
     loadComponent: () =>
       import('./admin/layout/admin-layout/admin-layout.component').then((c) => c.AdminLayoutComponent),
@@ -67,9 +73,13 @@ const routes: Routes = [
     title: `Tu-Tu | ${APP_PATH.ADMIN}`,
   },
   {
+    path: APP_PATH.NOT_FOUND,
     loadComponent: () => import('./core/pages/not-found/not-found.component').then((c) => c.NotFoundComponent),
-    path: APP_PATH.NO_MATCH,
     title: `Tu-Tu | ${APP_PATH.NOT_FOUND}`,
+  },
+  {
+    path: APP_PATH.NO_MATCH,
+    redirectTo: APP_PATH.NOT_FOUND,
   },
 ];
 
