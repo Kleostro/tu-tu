@@ -46,6 +46,7 @@
         "@typescript-eslint/consistent-type-assertions": ["error", { "assertionStyle": "never" }],
         "@typescript-eslint/no-explicit-any": "error",
         "class-methods-use-this": "off",
+        "dot-notation": "off",
         "@typescript-eslint/explicit-function-return-type": "error",
         "lines-between-class-members": [
           "error",
