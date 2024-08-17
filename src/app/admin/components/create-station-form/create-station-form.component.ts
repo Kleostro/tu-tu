@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -18,7 +17,7 @@ import { MapService } from '../../services/map/map.service';
 @Component({
   selector: 'app-create-station-form',
   standalone: true,
-  imports: [FloatLabelModule, InputNumberModule, ReactiveFormsModule, RippleModule, ButtonModule, NgIf, ToastModule],
+  imports: [FloatLabelModule, InputNumberModule, ReactiveFormsModule, RippleModule, ButtonModule, ToastModule],
   providers: [MessageService],
   templateUrl: './create-station-form.component.html',
   styleUrl: './create-station-form.component.scss',

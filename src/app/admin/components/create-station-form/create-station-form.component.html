@@ -13,9 +13,13 @@
         autocomplete="off"
       />
       @if (createStationForm.controls.city; as city) {
-        <ng-container *ngIf="city.invalid && city.dirty">
-          <small *ngIf="city.hasError('required')" class="p-error">Please enter a city!</small>
-        </ng-container>
+        @if (city.invalid && city.dirty) {
+          <ng-container>
+            @if (city.hasError('required')) {
+              <small class="p-error">Please enter a city!</small>
+            }
+          </ng-container>
+        }
       }
     </label>
 
@@ -30,9 +34,13 @@
         class="p-inputtext control"
       />
       @if (createStationForm.controls.latitude; as latitude) {
-        <ng-container *ngIf="latitude.invalid && latitude.dirty">
-          <small *ngIf="latitude.hasError('required')" class="p-error">Please enter a latitude!</small>
-        </ng-container>
+        @if (latitude.invalid && latitude.dirty) {
+          <ng-container>
+            @if (latitude.hasError('required')) {
+              <small class="p-error">Please enter a latitude!</small>
+            }
+          </ng-container>
+        }
       }
     </label>
 
@@ -47,9 +55,13 @@
         class="p-inputtext control"
       />
       @if (createStationForm.controls.longitude; as longitude) {
-        <ng-container *ngIf="longitude.invalid && longitude.dirty">
-          <small *ngIf="longitude.hasError('required')" class="p-error">Please enter a longitude!</small>
-        </ng-container>
+        @if (longitude.invalid && longitude.dirty) {
+          <ng-container>
+            @if (longitude.hasError('required')) {
+              <small class="p-error">Please enter a longitude!</small>
+            }
+          </ng-container>
+        }
       }
     </label>
 
