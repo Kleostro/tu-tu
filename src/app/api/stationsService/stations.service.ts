@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import { NewStation, Station } from '../models/stations';
 
@@ -22,5 +22,13 @@ export class StationsService {
 
   public deleteStation(id: number): Observable<void> {
     return this.httpClient.delete<void>(`${this.STATION_ENDPOINT}/${id}`);
+  }
+
+  public isStationInCity(station: string): Observable<boolean> {
+    return this.getStations().pipe(
+      map((stations) =>
+        stations.some((stationFromList) => stationFromList.city.toLowerCase() === station.toLowerCase()),
+      ),
+    );
   }
 }
