@@ -67,11 +67,9 @@ describe('RegisterComponent', () => {
     passwordControl.setValue('password123');
     confirmControl.setValue('password1234');
     fixture.detectChanges();
-    // eslint-disable-next-line dot-notation
     expect(component.registrationForm.errors?.['passwordMismatch']).toBeTruthy();
     confirmControl.setValue('password123');
     fixture.detectChanges();
-    // eslint-disable-next-line dot-notation
     expect(component.registrationForm.errors?.['passwordMismatch']).toBeUndefined();
   });
 
