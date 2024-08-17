@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 
-import LocalStorageService from '../../core/services/local-storage.service';
+import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
 
 export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   const localStorageService = inject(LocalStorageService);

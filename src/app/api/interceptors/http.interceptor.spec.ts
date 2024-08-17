@@ -2,7 +2,7 @@ import { HttpClient, HttpInterceptorFn, provideHttpClient, withInterceptors } fr
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import LocalStorageService from '../../core/services/local-storage.service';
+import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
 import { httpInterceptor } from './http.interceptor';
 
 describe('httpInterceptorInterceptor', () => {
