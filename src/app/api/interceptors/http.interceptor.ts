@@ -1,11 +1,10 @@
 import { HttpHeaders, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 
-import LocalStorageService from '@/app/core/services/local-storage.service';
+import LocalStorageService from '../../core/services/local-storage.service';
 
 export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   const localStorageService = inject(LocalStorageService);
-  localStorageService.init();
   const token = localStorageService.getValueByKey('token');
   let headers = new HttpHeaders();
   if (typeof token === 'string') {
