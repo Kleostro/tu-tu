@@ -1,0 +1,24 @@
+<ul class="links">
+  <!--  // TBD: remove when we have users logged in -->
+  @for (link of navigationLinks; track link) {
+    <!-- @if (link.auth === localStorageService.isLoggedIn$$()) { -->
+    <li>
+      <p-button [routerLink]="link.path" [icon]="link.icon" text [title]="link.title" />
+    </li>
+    <!-- } -->
+  }
+  <!-- @if (userLink.auth === localStorageService.isLoggedIn$$()) { -->
+  <li>
+    <p-button [routerLink]="userLink.path" text [title]="userLink.title">
+      <span class="material-icons">{{ userLink.icon }}</span>
+    </p-button>
+  </li>
+  <!-- } -->
+  <!-- @if (adminLink.auth === localStorageService.isAdmin$$()) { -->
+  <li>
+    <p-button [routerLink]="adminLink.path" text [title]="adminLink.title">
+      <span class="material-icons">{{ adminLink.icon }}</span>
+    </p-button>
+  </li>
+  <!-- } -->
+</ul>
