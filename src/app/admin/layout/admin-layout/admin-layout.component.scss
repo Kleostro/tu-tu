@@ -5,3 +5,7 @@
   grid-template-columns: calc($offset-xxxl * 2.6) 1fr;
   height: 100vh;
 }
+
+.content {
+  padding: 0 $offset-s;
+}

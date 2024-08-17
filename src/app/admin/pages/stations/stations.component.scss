@@ -1,0 +1,7 @@
+@import 'variables';
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 25rem;
+  gap: $offset-s;
+}
