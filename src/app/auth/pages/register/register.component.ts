@@ -62,8 +62,8 @@ export class RegisterComponent {
       this.signUpService.signUp(this.userData).subscribe({
         next: () => {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registration successful!' });
-          this.registrationForm.reset();
           this.router.navigate(['/sign-in']);
+          this.registrationForm.reset();
         },
         error: (err: OverriddenHttpErrorResponse) => {
           this.registrationForm.setErrors({ [err.error.reason]: true });
