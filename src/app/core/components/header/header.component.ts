@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 
 import { LogoutComponent } from '../../../auth/components/logout/logout.component';
-import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { NavigationComponent } from '../navigation/navigation.component';
 
 @Component({
@@ -16,6 +15,4 @@ import { NavigationComponent } from '../navigation/navigation.component';
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent {
-  public localStorageService = inject(LocalStorageService);
-}
+export class HeaderComponent {}

@@ -4,8 +4,10 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 
+import { ADMIN_CREDENTIALS } from '@/app/admin/constants/adminCredentials';
 import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { User } from '@/app/api/models/user';
+import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
 
 import { SignUpService } from '../../../api/signUpService/sign-up.service';
 
@@ -15,12 +17,17 @@ import { SignUpService } from '../../../api/signUpService/sign-up.service';
 export class AuthService implements OnDestroy {
   private signUpService = inject(SignUpService);
   private router = inject(Router);
+  private messageService = inject(MessageService);
+  private localStorageService = inject(LocalStorageService);
+
   public isRegistrationSuccess$$ = signal(false);
   public errorMessage$$ = signal<string>('');
-  private messageService = inject(MessageService);
+  public isLoggedIn$$ = signal(this.localStorageService.getValueByKey('token') !== null);
+  public isAdmin$$ = signal(this.localStorageService.getValueByKey('email') === ADMIN_CREDENTIALS.email);
+
   private subscription: Subscription | null = null;
 
-  public registrateUser(user: User): void {
+  public registerUser(user: User): void {
     this.subscription = this.signUpService.signUp(user).subscribe({
       next: () => {
         this.isRegistrationSuccess$$.set(true);
@@ -34,6 +41,18 @@ export class AuthService implements OnDestroy {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Registration failed!' });
       },
     });
+  }
+
+  public setLoginSignals(userData: User): void {
+    this.isLoggedIn$$.set(true);
+    if (userData.email === ADMIN_CREDENTIALS.email && userData.password === ADMIN_CREDENTIALS.password) {
+      this.isAdmin$$.set(true);
+    }
+  }
+
+  public setLogoutSignals(): void {
+    this.isLoggedIn$$.set(false);
+    this.isAdmin$$.set(false);
   }
 
   public ngOnDestroy(): void {

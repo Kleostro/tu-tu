@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 
+import { adminGuard } from './auth/guards/admin.guard';
+import { authGuard, loginGuard } from './auth/guards/login.guard';
 import { ADMIN_PATH, APP_PATH } from './shared/constants/routes';
 
 const routes: Routes = [
@@ -9,27 +11,27 @@ const routes: Routes = [
     title: 'Tu-Tu | Home',
   },
   {
+    canActivate: [loginGuard],
     path: APP_PATH.SIGN_IN.toLowerCase(),
     loadComponent: () => import('./auth/pages/login/login.component').then((c) => c.LoginComponent),
     title: `Tu-Tu | ${APP_PATH.SIGN_IN}`,
   },
   {
+    canActivate: [loginGuard],
     path: APP_PATH.SIGN_UP.toLowerCase(),
     loadComponent: () => import('./auth/pages/register/register.component').then((c) => c.RegisterComponent),
     title: `Tu-Tu | ${APP_PATH.SIGN_UP}`,
   },
 
   {
-    // TBD: remove when we have users logged in
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
     path: APP_PATH.PROFILE.toLowerCase(),
     loadComponent: () => import('./profile/pages/profile/profile.component').then((c) => c.ProfileComponent),
     title: `Tu-Tu | ${APP_PATH.PROFILE}`,
   },
 
   {
-    // TBD: remove when we have users logged in
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
     path: APP_PATH.ORDERS.toLowerCase(),
     loadComponent: () => import('./orders/pages/orders/orders.component').then((c) => c.OrdersComponent),
     title: `Tu-Tu | ${APP_PATH.ORDERS}`,
@@ -43,8 +45,7 @@ const routes: Routes = [
   },
 
   {
-    // TBD: Remove when we have Admin created
-    // canActivate: [adminGuard],
+    canActivate: [adminGuard],
     path: APP_PATH.ADMIN.toLowerCase(),
     loadComponent: () =>
       import('./admin/layout/admin-layout/admin-layout.component').then((c) => c.AdminLayoutComponent),

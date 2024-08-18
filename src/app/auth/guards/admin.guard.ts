@@ -1,3 +1,9 @@
-// TBD: Remove when we have Admin created
-// export const adminGuard: CanActivateFn = () =>
-//   inject(LocalStorageService).isAdmin$$() || inject(Router).navigate([APP_PATH.DEFAULT]);
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+
+import { APP_PATH } from '@/app/shared/constants/routes';
+
+import { AuthService } from '../services/auth-service/auth.service';
+
+export const adminGuard: CanActivateFn = () =>
+  inject(AuthService).isAdmin$$() || inject(Router).navigate([APP_PATH.DEFAULT]);

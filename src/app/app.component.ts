@@ -7,6 +7,7 @@ import { MessagesModule } from 'primeng/messages';
 
 import { HeaderComponent } from './core/components/header/header.component';
 import { LocalStorageService } from './core/services/local-storage/local-storage.service';
+import { RoutingService } from './core/services/routing/routing.service';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,8 @@ import { LocalStorageService } from './core/services/local-storage/local-storage
 export class AppComponent implements OnInit {
   private localStorageService = inject(LocalStorageService);
   private primengConfig = inject(PrimeNGConfig);
+
+  public routingService = inject(RoutingService);
 
   public ngOnInit(): void {
     this.localStorageService.init();

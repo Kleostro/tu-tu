@@ -1,3 +1,6 @@
-<app-header></app-header>
+@if (!routingService.isAdminPage$$()) {
+  <app-header></app-header>
+}
+
 <p-messages class="toast-message"></p-messages>
 <router-outlet />

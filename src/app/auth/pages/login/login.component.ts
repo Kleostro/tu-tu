@@ -13,6 +13,7 @@ import { SignInResponse } from '@/app/api/models/signInResponse';
 import { User } from '@/app/api/models/user';
 import { SignInService } from '@/app/api/signInService/sign-in.service';
 import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
+import { APP_PATH } from '@/app/shared/constants/routes';
 
 import { AuthService } from '../../services/auth-service/auth.service';
 
@@ -29,6 +30,7 @@ export class LoginComponent {
   private localStorageService = inject(LocalStorageService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
+
   public authService = inject(AuthService);
 
   public loginForm = this.fb.group({
@@ -40,9 +42,9 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       firstValueFrom(this.signInService.signIn(this.userData))
         .then((data: SignInResponse) => {
-          this.localStorageService.addValueByKey('email', this.userData.email);
-          this.localStorageService.addValueByKey('token', data.token);
-          this.router.navigate(['/']);
+          this.authService.setLoginSignals(this.userData);
+          this.localStorageService.saveCurrentUser(this.userData.email, data.token);
+          this.router.navigate([APP_PATH.DEFAULT]);
         })
         .catch((err: OverriddenHttpErrorResponse) => {
           this.loginForm.setErrors({ [err.error.reason]: true });
@@ -61,8 +63,8 @@ export class LoginComponent {
 
   private get userData(): User {
     return {
-      email: this.loginForm.controls.email.value || '',
-      password: this.loginForm.controls.password.value || '',
+      email: this.loginForm.controls.email.value ?? '',
+      password: this.loginForm.controls.password.value ?? '',
     };
   }
 }

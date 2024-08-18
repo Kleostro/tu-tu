@@ -1,6 +1,8 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+
+import { of } from 'rxjs';
 
 import { LogoutService } from '@/app/api/logoutService/logout.service';
 
@@ -12,8 +14,17 @@ describe('AdminLayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AdminLayoutComponent, HttpClientModule],
-      providers: [{ provide: ActivatedRoute, useValue: {} }, LogoutService],
+      imports: [AdminLayoutComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParams: of({}),
+          },
+        },
+        LogoutService,
+        { provide: HttpClient, useValue: {} },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AdminLayoutComponent);
