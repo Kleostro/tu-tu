@@ -44,7 +44,7 @@
           @if (loginForm.get('password')?.errors?.['required']) {
             <small class="p-error">Please input your password!</small>
           }
-          @if (loginForm.get('password')?.errors?.['minlength']) {
+          @if (loginForm.get('password')?.hasError('minTrimmedLength')) {
             <small class="p-error">Password must be at least 8 characters long</small>
           }
         }
