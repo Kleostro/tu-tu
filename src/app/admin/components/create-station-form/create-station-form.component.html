@@ -65,6 +65,28 @@
       }
     </label>
 
+    <label class="p-float-label control-label">
+      <span class="p-float-label__label">Connected</span>
+      <ng-container formArrayName="connections">
+        <div class="connections-wrapper">
+          @for (
+            connection of createStationForm.controls.connections.controls;
+            track connection.controls.connection;
+            let i = $index
+          ) {
+            <div [formGroup]="connection" class="connection-wrapper">
+              <p-autoComplete
+                formControlName="connection"
+                [suggestions]="filteredCountries"
+                (completeMethod)="filterCountry($event)"
+                class="control"
+              />
+            </div>
+          }
+        </div>
+      </ng-container>
+    </label>
+
     <button
       pButton
       pRipple

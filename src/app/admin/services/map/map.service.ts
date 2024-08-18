@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Marker, Popup } from 'maplibre-gl';
 import { BehaviorSubject, Subject } from 'rxjs';
 
+import { Station } from '@/app/api/models/stations';
 import makeFirstLetterToUppercase from '@/app/shared/utils/makeFirstLetterToUppercase';
 
 import { MARKER_PARAMS } from '../../constants/initial-map-state';
@@ -27,6 +28,10 @@ export class MapService {
             .setMaxWidth(MARKER_PARAMS.max_width),
         ),
     );
+  }
+
+  public findStationByLngLat(stations: Station[], { lng, lat }: { lng: number; lat: number }): Station | null {
+    return stations.find((station) => station.longitude === lng && station.latitude === lat) ?? null;
   }
 
   public getLngLat(): BehaviorSubject<{ lng: number; lat: number }> {
