@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs';
 
 import { Station } from '@/app/api/models/stations';
 import { StationsService } from '@/app/api/stationsService/stations.service';
+import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
+import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
 import { MapService } from '../../services/map/map.service';
 
@@ -18,6 +20,8 @@ import { MapService } from '../../services/map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StationComponent implements OnDestroy {
+  private userMessageService = inject(UserMessageService);
+
   public stationsService = inject(StationsService);
   public mapService = inject(MapService);
   public isStationDeleted = signal(false);
@@ -33,6 +37,7 @@ export class StationComponent implements OnDestroy {
         this.stationsService.getStations().subscribe((stations) => {
           this.stationsService.allStations.next(stations);
           this.mapService.removeMarker({ lng: this.station.longitude, lat: this.station.latitude });
+          this.userMessageService.showSuccessMessage(USER_MESSAGE.STATION_DELETED_SUCCESSFULLY);
           this.isStationDeleted.set(false);
         });
       }),

@@ -1,13 +1,14 @@
 import { inject, Injectable, OnDestroy, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 
 import { ADMIN_CREDENTIALS } from '@/app/admin/constants/adminCredentials';
 import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { User } from '@/app/api/models/user';
 import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
+import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
+import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
 import { SignUpService } from '../../../api/signUpService/sign-up.service';
 
@@ -17,7 +18,7 @@ import { SignUpService } from '../../../api/signUpService/sign-up.service';
 export class AuthService implements OnDestroy {
   private signUpService = inject(SignUpService);
   private router = inject(Router);
-  private messageService = inject(MessageService);
+  private userMessageService = inject(UserMessageService);
   private localStorageService = inject(LocalStorageService);
 
   public isRegistrationSuccess$$ = signal(false);
@@ -33,12 +34,12 @@ export class AuthService implements OnDestroy {
         this.isRegistrationSuccess$$.set(true);
         this.errorMessage$$.set('');
         this.router.navigate(['/sign-in']);
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registration successful!' });
+        this.userMessageService.showSuccessMessage(USER_MESSAGE.REGISTRATION_SUCCESSFUL);
       },
       error: (err: OverriddenHttpErrorResponse) => {
         this.isRegistrationSuccess$$.set(false);
         this.errorMessage$$.set(err.error.reason);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Registration failed!' });
+        this.userMessageService.showErrorMessage(USER_MESSAGE.REGISTRATION_ERROR);
       },
     });
   }

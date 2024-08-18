@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Marker, Popup } from 'maplibre-gl';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-import makeFirstLetterToUppercase from '@/app/shared/utils/makeFirstLetterToUppercase';
+import makeFirstLetterUppercase from '@/app/shared/utils/makeFirstLetterUppercase';
 
 import { MARKER_PARAMS } from '../../constants/initial-map-state';
 import createNewPopupOffsets from '../../utils/createNewPopupOffsets';
@@ -22,7 +22,7 @@ export class MapService {
       .setPopup(
         new Popup({ className: 'map-popup' })
           .setLngLat({ lng, lat })
-          .setText(makeFirstLetterToUppercase(city))
+          .setText(makeFirstLetterUppercase(city))
           .setOffset(createNewPopupOffsets())
           .setMaxWidth(MARKER_PARAMS.max_width),
       );
