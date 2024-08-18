@@ -1,10 +1,10 @@
 import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { User } from '@/app/api/models/user';
-import { SignUpService } from '@/app/api/signUpService/sign-up.service';
 import { inject, Injectable, OnDestroy, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
+import { SignUpService } from '../../../api/signUpService/sign-up.service';
 
 @Injectable({
   providedIn: 'root'
