@@ -70,8 +70,8 @@
         }
       </div>
     </div>
-
-    @if (registrationForm.hasError('passwordMismatch') && registrationForm.get('confirm')?.touched) {
+    <!-- dirty -->
+    @if (registrationForm.hasError('passwordMismatch') && registrationForm.get('confirm')?.dirty) {
       <small class="p-error">Passwords do not match</small>
     }
     @if (registrationForm.hasError('invalidFields')) {
