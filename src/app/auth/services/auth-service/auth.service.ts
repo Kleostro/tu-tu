@@ -1,13 +1,16 @@
-import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
-import { User } from '@/app/api/models/user';
 import { inject, Injectable, OnDestroy, signal } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
+
+import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
+import { User } from '@/app/api/models/user';
+
 import { SignUpService } from '../../../api/signUpService/sign-up.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
   private signUpService = inject(SignUpService);
@@ -30,7 +33,7 @@ export class AuthService implements OnDestroy {
         this.errorMessage$$.set(err.error.reason);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Registration failed!' });
       },
-    })
+    });
   }
 
   public ngOnDestroy(): void {

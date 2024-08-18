@@ -13,6 +13,7 @@ import { SignInResponse } from '@/app/api/models/signInResponse';
 import { User } from '@/app/api/models/user';
 import { SignInService } from '@/app/api/signInService/sign-in.service';
 import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
+
 import { AuthService } from '../../services/auth-service/auth.service';
 
 @Component({
@@ -29,7 +30,7 @@ export class LoginComponent {
   private router = inject(Router);
   private fb = inject(FormBuilder);
   public authService = inject(AuthService);
-  
+
   public loginForm = this.fb.group({
     email: this.fb.control<string>('', [Validators.required.bind(this), Validators.email.bind(this)]),
     password: this.fb.control<string>('', [Validators.required.bind(this)]),

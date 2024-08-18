@@ -2,9 +2,9 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { PrimeNGConfig } from 'primeng/api';
-
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
+
 import { HeaderComponent } from './core/components/header/header.component';
 import { LocalStorageService } from './core/services/local-storage/local-storage.service';
 

@@ -10,6 +10,7 @@ import { MessagesModule } from 'primeng/messages';
 import { PasswordModule } from 'primeng/password';
 
 import { User } from '@/app/api/models/user';
+
 import { passwordMatchValidator } from '../../../shared/validators/validators';
 import { AuthService } from '../../services/auth-service/auth.service';
 
@@ -53,12 +54,12 @@ export class RegisterComponent {
 
   constructor() {
     effect(() => {
-        if (!this.authService.isRegistrationSuccess$$()) {
-          this.registrationForm.setErrors({ [this.authService.errorMessage$$()]: true });
-        } else {
-          this.registrationForm.reset();
-        }
-    })
+      if (!this.authService.isRegistrationSuccess$$()) {
+        this.registrationForm.setErrors({ [this.authService.errorMessage$$()]: true });
+      } else {
+        this.registrationForm.reset();
+      }
+    });
   }
 
   public submitForm(): void {
