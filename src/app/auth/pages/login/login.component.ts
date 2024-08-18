@@ -34,8 +34,12 @@ export class LoginComponent {
   public authService = inject(AuthService);
 
   public loginForm = this.fb.group({
-    email: this.fb.control<string>('', [Validators.required.bind(this), Validators.email.bind(this)]),
-    password: this.fb.control<string>('', [Validators.required.bind(this)]),
+    email: this.fb.control<string>('', [
+      Validators.required.bind(this),
+      Validators.email.bind(this),
+      Validators.pattern(/^[\w\d_]+@[\w\d_]+.\w{2,7}$/).bind(this),
+    ]),
+    password: this.fb.control<string>('', [Validators.required.bind(this), Validators.minLength(8).bind(this)]),
   });
 
   public submitForm(): void {
