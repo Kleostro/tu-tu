@@ -1,12 +1,4 @@
-interface Price {
-  [key: string]: number;
-}
-
-interface Segment {
-  time: string[];
-  price: Price;
-  occupiedSeats: number[];
-}
+import { Segment } from './search';
 
 export interface RideInfo {
   rideId: number;

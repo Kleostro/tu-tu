@@ -2,7 +2,7 @@ interface Price {
   [key: string]: number;
 }
 
-interface Segment {
+export interface Segment {
   time: string[];
   price: Price;
   occupiedSeats: number[];
