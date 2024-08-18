@@ -64,7 +64,7 @@ export class RegisterComponent {
 
   public submitForm(): void {
     if (this.registrationForm.valid) {
-      this.authService.registrateUser(this.userData);
+      this.authService.registerUser(this.userData);
     } else {
       Object.values(this.registrationForm.controls).forEach((control) => {
         if (control.invalid) {
@@ -79,8 +79,8 @@ export class RegisterComponent {
 
   private get userData(): User {
     return {
-      email: this.registrationForm.controls.email.value || '',
-      password: this.registrationForm.controls.password.value || '',
+      email: this.registrationForm.controls.email.value ?? '',
+      password: this.registrationForm.controls.password.value ?? '',
     };
   }
 }

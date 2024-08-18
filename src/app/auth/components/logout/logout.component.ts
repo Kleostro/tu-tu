@@ -8,6 +8,7 @@ import { LogoutService } from '@/app/api/logoutService/logout.service';
 
 import { NavigationComponent } from '../../../core/components/navigation/navigation.component';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
+import { AuthService } from '../../services/auth-service/auth.service';
 
 @Component({
   selector: 'app-logout',
@@ -19,13 +20,16 @@ import { LocalStorageService } from '../../../core/services/local-storage/local-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LogoutComponent {
-  public localStorageService = inject(LocalStorageService);
-  private logoutService: LogoutService = inject(LogoutService);
+  private localStorageService = inject(LocalStorageService);
+  private logoutService = inject(LogoutService);
   private router = inject(Router);
+
+  public authService = inject(AuthService);
 
   public logout(): void {
     firstValueFrom(this.logoutService.logout())
       .then(() => {
+        this.authService.setLogoutSignals();
         this.localStorageService.clear();
         this.router.navigate(['/sign-in']);
       })
