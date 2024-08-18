@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Carriage, Code } from '../models/carriage';
 
@@ -11,6 +11,7 @@ import { Carriage, Code } from '../models/carriage';
 export class CarriageService {
   private httpClient = inject(HttpClient);
   private CARRIAGE_ENDPOINT = 'carriage';
+  private allCarriages = new BehaviorSubject<Carriage[]>([]);
 
   public getCarriages(): Observable<Carriage[]> {
     return this.httpClient.get<Carriage[]>(this.CARRIAGE_ENDPOINT);
@@ -30,5 +31,13 @@ export class CarriageService {
   ): Observable<Code> {
     const body = { name, rows, leftSeats, rightSeats };
     return this.httpClient.put<Code>(`${this.CARRIAGE_ENDPOINT}/${code}`, body);
+  }
+
+  public getAllCarriages(): Observable<Carriage[]> {
+    return this.allCarriages;
+  }
+
+  public setAllCarriages(carriages: Carriage[]): void {
+    this.allCarriages.next(carriages);
   }
 }
