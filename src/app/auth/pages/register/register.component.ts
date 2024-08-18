@@ -1,21 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
-import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { PasswordModule } from 'primeng/password';
-import { firstValueFrom } from 'rxjs';
 
-import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { User } from '@/app/api/models/user';
 
-import { SignUpService } from '../../../api/signUpService/sign-up.service';
 import { passwordMatchValidator } from '../../../shared/validators/validators';
+import { AuthService } from '../../services/auth-service/auth.service';
 
 export interface RegisterForm {
   email: FormControl<string>;
@@ -39,12 +36,9 @@ export interface RegisterForm {
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [MessageService],
 })
 export class RegisterComponent {
-  private messageService = inject(MessageService);
-  private signUpService = inject(SignUpService);
-  private router = inject(Router);
+  public authService = inject(AuthService);
   private fb = inject(FormBuilder);
 
   public registrationForm = this.fb.group(
@@ -58,17 +52,19 @@ export class RegisterComponent {
     },
   );
 
+  constructor() {
+    effect(() => {
+      if (!this.authService.isRegistrationSuccess$$()) {
+        this.registrationForm.setErrors({ [this.authService.errorMessage$$()]: true });
+      } else {
+        this.registrationForm.reset();
+      }
+    });
+  }
+
   public submitForm(): void {
     if (this.registrationForm.valid) {
-      firstValueFrom(this.signUpService.signUp(this.userData))
-        .then(() => {
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registration successful!' });
-          this.router.navigate(['/sign-in']);
-          this.registrationForm.reset();
-        })
-        .catch((err: OverriddenHttpErrorResponse) => {
-          this.registrationForm.setErrors({ [err.error.reason]: true });
-        });
+      this.authService.registrateUser(this.userData);
     } else {
       Object.values(this.registrationForm.controls).forEach((control) => {
         if (control.invalid) {

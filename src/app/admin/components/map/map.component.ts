@@ -2,9 +2,10 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  effect,
   ElementRef,
   inject,
-  Input,
+  input,
   OnDestroy,
   OnInit,
   signal,
@@ -32,7 +33,7 @@ import { MapService } from '../../services/map/map.service';
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   private mapService = inject(MapService);
 
-  @Input() public allStations: Station[] | null = null;
+  public allStations = input.required<Station[]>();
 
   private subscription = new Subscription();
   private map!: Map;
@@ -42,6 +43,14 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
+
+  constructor() {
+    effect(() => {
+      this.allStations().forEach((station) => {
+        this.mapService.createNewMarker({ city: station.city, lng: station.longitude, lat: station.latitude });
+      });
+    });
+  }
 
   private initMap(): void {
     this.map = new Map({
@@ -103,17 +112,27 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public ngOnInit(): void {
     this.subscription.add(
-      this.mapService.getNewMarker().subscribe((marker) => {
-        marker.addTo(this.map);
-        marker.togglePopup();
-        this.markers.push(marker);
-        marker.getElement().addEventListener('click', (event) => {
-          event.stopPropagation();
-          this.initMarkerClickHandler(marker);
-        });
-        this.map.flyTo({
-          center: [marker.getLngLat().lng, marker.getLngLat().lat],
-          zoom: INITIAL_MAP_STATE.zoom,
+      this.mapService.newMarker.subscribe((marker) => {
+        if (marker) {
+          marker.addTo(this.map);
+          marker.togglePopup();
+          this.markers.push(marker);
+          marker.getElement().addEventListener('click', (event) => {
+            event.stopPropagation();
+            this.initMarkerClickHandler(marker);
+          });
+          this.map.flyTo({
+            center: [marker.getLngLat().lng, marker.getLngLat().lat],
+            zoom: INITIAL_MAP_STATE.zoom,
+          });
+        }
+      }),
+    );
+
+    this.subscription.add(
+      this.mapService.getRemovedMarker().subscribe(() => {
+        this.markers.forEach((marker) => {
+          marker.remove();
         });
       }),
     );
@@ -122,10 +141,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   public ngAfterViewInit(): void {
     this.initMap();
     this.initMapHandlers();
-
-    this.allStations?.forEach((station) => {
-      this.mapService.createNewMarker({ city: station.city, lng: station.longitude, lat: station.latitude });
-    });
   }
 
   public ngOnDestroy(): void {

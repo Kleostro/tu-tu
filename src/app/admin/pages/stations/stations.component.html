@@ -1,6 +1,7 @@
 <div class="wrapper">
-  @if (allStations(); as allStations) {
+  @if (allStations | async; as allStations) {
     <app-map [allStations]="allStations"></app-map>
     <app-create-station-form [allStations]="allStations"></app-create-station-form>
+    <app-stations-list [allStations]="allStations"></app-stations-list>
   }
 </div>
