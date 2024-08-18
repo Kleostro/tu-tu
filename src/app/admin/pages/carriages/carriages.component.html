@@ -1,1 +1,6 @@
-<p>carriages works!</p>
+<div class="top">
+  <p-button [rounded]="true" class="create-btn" severity="success" icon="pi pi-plus" />
+</div>
+@if (allCarriages | async; as allCarriages) {
+  <app-carriages-list [allCarriages]="allCarriages"></app-carriages-list>
+}

@@ -2,7 +2,7 @@
 @import 'mixins';
 
 :host {
-  width: calc($offset-xxxl * 2.6);
+  width: 12rem;
   background-color: $gray-200;
   border-right: $one solid $gray-100;
 
