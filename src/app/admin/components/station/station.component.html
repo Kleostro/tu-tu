@@ -1,0 +1,33 @@
+<div class="wrapper">
+  <div class="info">
+    <h2>{{ station.city }}</h2>
+    <p>Latitude: {{ station.latitude }}</p>
+    <p>Longitude: {{ station.longitude }}</p>
+    <p>Connections: {{ station.connectedTo.length }}</p>
+    <div class="connections">
+      @for (connection of station.connectedTo; track connection) {
+        @if (stationsService.findStationById(connection.id); as connection) {
+          @if (station.connectedTo.length > 1) {
+            <span>{{ connection.city }}, </span>
+          } @else {
+            <span>{{ connection.city }}</span>
+          }
+        }
+      }
+    </div>
+  </div>
+  <button
+    class="p-button-danger delete"
+    [disabled]="isStationDeleted()"
+    pButton
+    pRipple
+    (click)="deleteStation(station.id)"
+  >
+    @if (isStationDeleted()) {
+      <i class="pi pi-spin pi-cog" style="font-size: 1rem"></i>
+    } @else {
+      <i class="pi pi-trash" style="font-size: 1rem"></i>
+    }
+    Delete
+  </button>
+</div>
