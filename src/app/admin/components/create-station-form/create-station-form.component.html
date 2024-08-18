@@ -1,0 +1,102 @@
+<form [formGroup]="createStationForm" (ngSubmit)="submitForm()" class="form">
+  <h1>Create Station</h1>
+  <div class="controls">
+    <label for="city" class="p-float-label control-label">
+      <span class="p-float-label__label">City</span>
+      <input
+        id="city"
+        type="text"
+        pInputText
+        formControlName="city"
+        placeholder="Bristol"
+        class="p-inputtext control"
+        autocomplete="off"
+      />
+      @if (createStationForm.controls.city; as city) {
+        @if (city.invalid && city.dirty) {
+          <ng-container>
+            @if (city.hasError('required')) {
+              <small class="p-error">Please enter a city!</small>
+            }
+          </ng-container>
+        }
+      }
+    </label>
+
+    <label for="latitude" class="p-float-label control-label">
+      <span class="p-float-label__label">Latitude</span>
+      <input
+        id="latitude"
+        type="number"
+        pInputText
+        formControlName="latitude"
+        placeholder="Latitude"
+        class="p-inputtext control"
+      />
+      @if (createStationForm.controls.latitude; as latitude) {
+        @if (latitude.invalid && latitude.dirty) {
+          <ng-container>
+            @if (latitude.hasError('required')) {
+              <small class="p-error">Please enter a latitude!</small>
+            }
+          </ng-container>
+        }
+      }
+    </label>
+
+    <label for="longitude" class="p-float-label control-label">
+      <span class="p-float-label__label">Longitude</span>
+      <input
+        id="longitude"
+        type="number"
+        pInputText
+        formControlName="longitude"
+        placeholder="Longitude"
+        class="p-inputtext control"
+      />
+      @if (createStationForm.controls.longitude; as longitude) {
+        @if (longitude.invalid && longitude.dirty) {
+          <ng-container>
+            @if (longitude.hasError('required')) {
+              <small class="p-error">Please enter a longitude!</small>
+            }
+          </ng-container>
+        }
+      }
+    </label>
+
+    <label class="p-float-label control-label">
+      <span class="p-float-label__label">Connected</span>
+      <ng-container formArrayName="connections">
+        <div class="connections-wrapper">
+          @for (
+            connection of createStationForm.controls.connections.controls;
+            track connection.controls.connection;
+            let i = $index
+          ) {
+            <div [formGroup]="connection" class="connection-wrapper">
+              <p-autoComplete
+                formControlName="connection"
+                [suggestions]="filteredCountries"
+                (completeMethod)="filterCountry($event)"
+                class="control"
+              />
+            </div>
+          }
+        </div>
+      </ng-container>
+    </label>
+
+    <button
+      pButton
+      pRipple
+      type="submit"
+      class="p-button submit"
+      [loading]="isStationCreated()"
+      [disabled]="createStationForm.invalid"
+    >
+      Create
+    </button>
+  </div>
+  <p-toast position="bottom-left" />
+</form>

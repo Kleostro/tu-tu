@@ -2,15 +2,32 @@
 @import 'mixins';
 
 :host {
+  width: calc($offset-xxxl * 2.6);
   height: 100%;
   background-color: $gray-200;
   border-right: $one solid $gray-100;
+
+  ::ng-deep .p-element {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: $offset-ms;
+    height: $offset-ms;
+    padding: 0;
+
+    font-size: $font-size-xs;
+
+    &.link-back {
+      margin: $offset-xxs;
+      margin-right: 0;
+    }
+  }
 }
 
 .links {
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 
 .link {
@@ -36,22 +53,5 @@
     pointer-events: none;
     color: $black-100;
     background-color: $gray-100;
-  }
-}
-
-::ng-deep .p-element {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: $offset-ms;
-  height: $offset-ms;
-  padding: 0;
-
-  font-size: $font-size-xs;
-
-  &.link-back {
-    margin: $offset-xxs;
-    margin-right: 0;
   }
 }

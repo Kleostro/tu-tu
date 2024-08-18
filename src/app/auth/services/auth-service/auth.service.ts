@@ -20,12 +20,10 @@ export class AuthService implements OnDestroy {
   public registrateUser(user: User): void {
     this.subscription = this.signUpService.signUp(user).subscribe({
       next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registration successful!' });
         this.isRegistrationSuccess$$.set(true);
         this.errorMessage$$.set('');
-        setTimeout(() => {
-          this.router.navigate(['/sign-in']);
-        }, 1500);
+        this.router.navigate(['/sign-in']);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Registration successful!' });
       },
       error: (err: OverriddenHttpErrorResponse) => {
         this.isRegistrationSuccess$$.set(false);

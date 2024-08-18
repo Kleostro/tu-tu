@@ -1,0 +1,15 @@
+:host {
+  display: flex;
+}
+
+.map-wrap {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 10rem);
+}
+
+.map {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}

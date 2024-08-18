@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, Injector } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -9,14 +10,13 @@ import { MessagesModule } from 'primeng/messages';
 import { PasswordModule } from 'primeng/password';
 
 import { User } from '@/app/api/models/user';
-import { Router, RouterLink } from '@angular/router';
 import { passwordMatchValidator } from '../../../shared/validators/validators';
 import { AuthService } from '../../services/auth-service/auth.service';
 
-export interface RegisterFormData {
-  email: string;
-  password: string;
-  confirm: string;
+export interface RegisterForm {
+  email: FormControl<string>;
+  password: FormControl<string>;
+  confirm: FormControl<string>;
 }
 
 @Component({
@@ -37,10 +37,9 @@ export interface RegisterFormData {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
-  public router = inject(Router);
   public authService = inject(AuthService);
-  private injector = inject(Injector);
   private fb = inject(FormBuilder);
+
   public registrationForm = this.fb.group(
     {
       email: this.fb.control<string>('', [Validators.required.bind(this), Validators.email.bind(this)]),
@@ -52,16 +51,19 @@ export class RegisterComponent {
     },
   );
 
-  public submitForm(): void {
-    if (this.registrationForm.valid) {
-      this.authService.registrateUser(this.userData);
-      effect(() => {
+  constructor() {
+    effect(() => {
         if (!this.authService.isRegistrationSuccess$$()) {
           this.registrationForm.setErrors({ [this.authService.errorMessage$$()]: true });
         } else {
           this.registrationForm.reset();
         }
-      }, { injector: this.injector });
+    })
+  }
+
+  public submitForm(): void {
+    if (this.registrationForm.valid) {
+      this.authService.registrateUser(this.userData);
     } else {
       Object.values(this.registrationForm.controls).forEach((control) => {
         if (control.invalid) {

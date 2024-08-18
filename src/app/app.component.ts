@@ -3,6 +3,8 @@ import { RouterOutlet } from '@angular/router';
 
 import { PrimeNGConfig } from 'primeng/api';
 
+import { MessageModule } from 'primeng/message';
+import { MessagesModule } from 'primeng/messages';
 import { HeaderComponent } from './core/components/header/header.component';
 import { LocalStorageService } from './core/services/local-storage/local-storage.service';
 
@@ -11,7 +13,7 @@ import { LocalStorageService } from './core/services/local-storage/local-storage
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent],
+  imports: [RouterOutlet, HeaderComponent, MessageModule, MessagesModule],
 })
 export class AppComponent implements OnInit {
   private localStorageService = inject(LocalStorageService);

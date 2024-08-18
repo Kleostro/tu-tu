@@ -1,0 +1,54 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.control {
+  width: 100%;
+
+  &-label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+.submit {
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+::ng-deep .p-autocomplete {
+  display: flex;
+  width: 100%;
+}
+
+::ng-deep .p-autocomplete-panel {
+  width: 100%;
+}
+
+::ng-deep .p-autocomplete-input {
+  width: 100%;
+}
+
+.connection-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.connections-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.connection-remove-btn {
+  width: 6.5rem;
+}

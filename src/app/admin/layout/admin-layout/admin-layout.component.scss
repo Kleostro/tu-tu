@@ -1,7 +1,18 @@
 @import 'variables';
 
 :host {
-  display: grid;
-  grid-template-columns: calc($offset-xxxl * 2.6) 1fr;
+  display: flex;
   height: 100vh;
+}
+
+.content {
+  width: 100%;
+}
+
+.header {
+  background-color: $gray-200;
+}
+
+.outlet {
+  padding: 0 $offset-s;
 }
