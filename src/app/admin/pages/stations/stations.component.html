@@ -1,4 +1,6 @@
 <div class="wrapper">
-  <app-map></app-map>
-  <app-create-station-form></app-create-station-form>
+  @if (allStations(); as allStations) {
+    <app-map [allStations]="allStations"></app-map>
+    <app-create-station-form [allStations]="allStations"></app-create-station-form>
+  }
 </div>
