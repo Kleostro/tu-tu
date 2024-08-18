@@ -14,6 +14,7 @@ import { User } from '@/app/api/models/user';
 import { SignInService } from '@/app/api/signInService/sign-in.service';
 import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
 import { APP_PATH } from '@/app/shared/constants/routes';
+import { minTrimmedLengthValidator } from '@/app/shared/validators/validators';
 
 import { AuthService } from '../../services/auth-service/auth.service';
 
@@ -34,8 +35,12 @@ export class LoginComponent {
   public authService = inject(AuthService);
 
   public loginForm = this.fb.group({
-    email: this.fb.control<string>('', [Validators.required.bind(this), Validators.email.bind(this)]),
-    password: this.fb.control<string>('', [Validators.required.bind(this)]),
+    email: this.fb.control<string>('', [
+      Validators.required.bind(this),
+      Validators.email.bind(this),
+      Validators.pattern(/^[\w\d_]+@[\w\d_]+.\w{2,7}$/).bind(this),
+    ]),
+    password: this.fb.control<string>('', [Validators.required.bind(this), minTrimmedLengthValidator(8).bind(this)]),
   });
 
   public submitForm(): void {
