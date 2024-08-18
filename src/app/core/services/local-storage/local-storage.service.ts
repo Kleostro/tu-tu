@@ -1,7 +1,8 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import STORE_KEYS from '../../constants/store';
 import LocalStorageData from '../../models/store.model';
+import { isLocalStorageData } from './helpers/helper';
 
 @Injectable({
   providedIn: 'root',
@@ -9,27 +10,12 @@ import LocalStorageData from '../../models/store.model';
 export class LocalStorageService {
   private storage: LocalStorageData = {};
 
-  public isLoggedIn$$ = signal(this.isTokenInLocalStorage());
-  // TBD: uncomment when we have users logged in
-  // public isAdmin$$ = signal(this.isAdminInLocalStorage());
-
   public getValueByKey(key: string): unknown {
     if (key in this.storage) {
-      const data = this.storage[key];
-      const result: unknown = JSON.parse(data);
-      return result;
+      return JSON.parse(this.storage[key]);
     }
     return null;
   }
-
-  public isTokenInLocalStorage(): boolean {
-    return STORE_KEYS.TOKEN in this.storage;
-  }
-
-  // TBD: uncomment when we have users logged in
-  // public isAdminInLocalStorage(): boolean {
-  //   return 'email' in this.storage && ADMIN_CREDENTIALS.email === this.storage['email'];
-  // }
 
   public addValueByKey(key: string, value: unknown): void {
     this.storage[key] = JSON.stringify(value);
@@ -53,13 +39,6 @@ export class LocalStorageService {
 
   public init(): LocalStorageData {
     const storedData = localStorage.getItem(STORE_KEYS.LS_NAME);
-
-    const isLocalStorageData = (data: unknown): data is LocalStorageData => {
-      if (typeof data === 'object' && data !== null) {
-        return true;
-      }
-      return false;
-    };
 
     if (storedData) {
       const parsedData: unknown = JSON.parse(storedData);
