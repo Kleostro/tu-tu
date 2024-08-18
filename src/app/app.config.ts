@@ -3,6 +3,8 @@ import { ApplicationConfig, provideExperimentalZonelessChangeDetection } from '@
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling, withViewTransitions } from '@angular/router';
 
+import { MessageService } from 'primeng/api';
+
 import { httpInterceptor } from './api/interceptors/http.interceptor';
 import routes from './app.routes';
 
@@ -15,6 +17,7 @@ const appConfig: ApplicationConfig = {
       withViewTransitions(),
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled' }),
     ),
+    MessageService,
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([httpInterceptor])),
   ],
