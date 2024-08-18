@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 
-import { MessageService } from 'primeng/api';
+import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
 import LocalStorageData from '../../models/store.model';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
@@ -18,7 +18,15 @@ describe('NavigationComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: {} },
         { provide: HttpClient, useValue: {} },
-        { provide: MessageService, useValue: {} },
+        {
+          provide: UserMessageService,
+          useValue: {
+            showSuccessMessage: (): void => {},
+            showErrorMessage: (): void => {},
+            showInfoMessage: (): void => {},
+            showWarningMessage: (): void => {},
+          },
+        },
         {
           provide: LocalStorageService,
           useValue: {
