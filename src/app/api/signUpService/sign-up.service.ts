@@ -15,12 +15,3 @@ export class SignUpService {
     return this.httpClient.post('signup', userData);
   }
 }
-
-/* Example of using in component
-    this.signUpService.signUp({ email: 'test@test.com', password: 'Test-password' }).subscribe({
-      next: () => navigateByUrl('/login'), -> successfull registered
-      error: (err: OverriddenHttpErrorResponse) => {
-        console.error(err.error.message); -> errors
-      },
-    });
-*/

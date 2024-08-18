@@ -19,7 +19,6 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { MessageService } from 'primeng/api';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -30,7 +29,8 @@ import { Subscription } from 'rxjs';
 
 import { NewStation, Station } from '@/app/api/models/stations';
 import { StationsService } from '@/app/api/stationsService/stations.service';
-import MESSAGE_STATUS from '@/app/shared/constants/message-status';
+import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
+import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
 import { MapService } from '../../services/map/map.service';
 
@@ -47,7 +47,6 @@ import { MapService } from '../../services/map/map.service';
     AutoCompleteModule,
     FormsModule,
   ],
-  providers: [MessageService],
   templateUrl: './create-station-form.component.html',
   styleUrl: './create-station-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -56,7 +55,7 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private mapService = inject(MapService);
   private stationsService = inject(StationsService);
-  private messageService = inject(MessageService);
+  private userMessageService = inject(UserMessageService);
   private subscription = new Subscription();
   private cdr = inject(ChangeDetectorRef);
 
@@ -127,7 +126,7 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
       this.stationsService.isStationInCity(this.createStationForm.getRawValue().city).subscribe({
         next: (isStationInCity) => {
           if (isStationInCity) {
-            this.submitErrorHandler(new Error('Station already exists in this city!'));
+            this.submitErrorHandler(new Error(USER_MESSAGE.STATION_EXISTS));
             return;
           }
           this.stationsService.createNewStation(this.getValidFormData()).subscribe({
@@ -153,16 +152,12 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
     });
 
     this.resetForm();
-    this.messageService.add({
-      severity: MESSAGE_STATUS.SUCCESS,
-      summary: 'Success!',
-      detail: `Station created successfully!`,
-    });
+    this.userMessageService.showSuccessMessage(USER_MESSAGE.STATION_CREATED_SUCCESSFULLY);
   }
 
   private submitErrorHandler(error: Error): void {
     this.resetForm();
-    this.messageService.add({ severity: MESSAGE_STATUS.ERROR, summary: error.name, detail: error.message });
+    this.userMessageService.showErrorMessage(error.message);
   }
 
   private resetForm(): void {

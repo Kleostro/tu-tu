@@ -1,0 +1,77 @@
+@import 'variables';
+
+.car-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.car-top {
+  display: flex;
+  gap: $offset-xxs;
+  align-items: center;
+  margin-bottom: $offset-s;
+}
+
+.car-bottom {
+  overflow-x: scroll;
+  display: flex;
+
+  max-width: 90dvw;
+  padding: 1rem 2rem;
+
+  border: $three solid $gray-100;
+  border-radius: 2rem;
+}
+
+.seats {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  width: 100%;
+}
+
+.title {
+  font-weight: 700;
+  letter-spacing: $one;
+}
+
+.seats-count {
+  padding: $offset-xxs $offset-xxs;
+
+  font-weight: 500;
+  letter-spacing: $one;
+
+  border: $three solid $gray-200;
+  border-radius: 2rem;
+}
+
+.right-seats,
+.left-seats {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.right-seats-row,
+.left-seats-row {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.5rem;
+}
+
+.left-line,
+.right-line {
+  min-width: $three;
+  height: 100%;
+  background: $gray-200;
+}
+
+.left-line {
+  margin-right: 1rem;
+}
+
+.right-line {
+  margin-left: 0.5rem;
+}
