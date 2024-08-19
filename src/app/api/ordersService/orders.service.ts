@@ -25,6 +25,6 @@ export class OrdersService {
   }
 
   public getAllUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(`users`);
+    return this.httpClient.get<User[]>('users');
   }
 }
