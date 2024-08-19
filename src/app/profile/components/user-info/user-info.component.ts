@@ -43,8 +43,8 @@ export class UserInfoComponent {
   public isEditingEmail = signal(false);
 
   public userForm = this.fb.nonNullable.group({
-    name: this.fb.control(this.personalInfoService.currentUserName(), [Validators.required.bind(this)]),
-    email: this.fb.control(this.personalInfoService.currentUserEmail(), [
+    name: this.fb.control(this.personalInfoService.currentUserName$$(), [Validators.required.bind(this)]),
+    email: this.fb.control(this.personalInfoService.currentUserEmail$$(), [
       Validators.required.bind(this),
       Validators.email.bind(this),
       Validators.pattern(REGEX),
@@ -73,7 +73,7 @@ export class UserInfoComponent {
       const name = this.userForm.controls['name'].value;
       const email = this.userForm.controls['email'].valid
         ? this.userForm.controls['email'].value
-        : this.personalInfoService.currentUserEmail();
+        : this.personalInfoService.currentUserEmail$$();
       this.updateProfile(email, name);
     }
   }
@@ -86,7 +86,7 @@ export class UserInfoComponent {
       const email = this.userForm.controls['email'].value;
       const name = this.userForm.controls['name'].valid
         ? this.userForm.controls['name'].value
-        : this.personalInfoService.currentUserName();
+        : this.personalInfoService.currentUserName$$();
       this.updateProfile(email, name);
     }
   }

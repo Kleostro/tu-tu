@@ -18,12 +18,12 @@ export class PersonalInfoService {
   private userMessageService = inject(UserMessageService);
   private modalService = inject(ModalService);
 
-  public currentUserName = signal(this.localStorageService.getValueByKey(STORE_KEYS.NAME) ?? '');
-  public currentUserEmail = signal(this.localStorageService.getValueByKey(STORE_KEYS.EMAIL) ?? '');
+  public currentUserName$$ = signal(this.localStorageService.getValueByKey(STORE_KEYS.NAME) ?? '');
+  public currentUserEmail$$ = signal(this.localStorageService.getValueByKey(STORE_KEYS.EMAIL) ?? '');
 
   public setUserInfo(email: string, name = ''): void {
-    this.currentUserEmail.set(email);
-    this.currentUserName.set(name);
+    this.currentUserEmail$$.set(email);
+    this.currentUserName$$.set(name);
   }
 
   public updateProfile(email: string, name: string): void {

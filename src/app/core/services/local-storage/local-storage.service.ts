@@ -37,9 +37,12 @@ export class LocalStorageService {
     this.storage = this.init();
   }
 
-  public saveCurrentUser(email: string, token: string): void {
+  public saveCurrentUser(email: string, token: string | null, name?: string): void {
     this.addValueByKey(STORE_KEYS.EMAIL, email);
     this.addValueByKey(STORE_KEYS.TOKEN, token);
+    if (name) {
+      this.addValueByKey(STORE_KEYS.NAME, name);
+    }
   }
 
   public updateCurrentUser(email: string, name: string): void {
