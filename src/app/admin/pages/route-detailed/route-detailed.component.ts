@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-schedule',
+  selector: 'app-route-detailed',
   standalone: true,
   imports: [],
-  templateUrl: './schedule.component.html',
-  styleUrl: './schedule.component.scss',
+  templateUrl: './route-detailed.component.html',
+  styleUrl: './route-detailed.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScheduleComponent {}
+export class RouteDetailedComponent {}

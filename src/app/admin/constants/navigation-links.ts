@@ -14,11 +14,6 @@ const NAVIGATION_LINKS = [
     path: 'routes',
     icon: 'pi-arrow-right-arrow-left',
   },
-  {
-    name: 'Schedule',
-    path: 'schedule',
-    icon: 'pi-calendar',
-  },
 ];
 
 export default NAVIGATION_LINKS;
