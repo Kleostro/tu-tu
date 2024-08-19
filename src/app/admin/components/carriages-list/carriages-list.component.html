@@ -1,5 +1,14 @@
 <div class="wrapper">
   @for (carriage of allCarriages(); track carriage) {
-    <app-carriage [carriage]="carriage"></app-carriage>
+    <app-carriage
+      [carriage]="carriage"
+      [isInteractive]="!routingService.isAdminCarriagesPage$$()"
+      [isEditable]="true"
+      (openEditModal)="handleOpenEditModal($event)"
+    ></app-carriage>
   }
 </div>
+
+<ng-template #editContent>
+  <app-update-carriage-form [carriage]="editCarriage()"></app-update-carriage-form>
+</ng-template>

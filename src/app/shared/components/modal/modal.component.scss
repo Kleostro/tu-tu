@@ -1,0 +1,60 @@
+@import 'variables';
+
+.modal {
+  position: fixed;
+  z-index: 1;
+  inset: 0;
+
+  visibility: hidden;
+  opacity: 0;
+  background-color: rgb(0 0 0 / 50%);
+
+  transition:
+    opacity 0.3s,
+    visibility 0.3s;
+}
+
+.modal.show {
+  visibility: visible;
+  opacity: 1;
+  transition:
+    opacity 0.3s,
+    visibility 0.3s;
+}
+
+.modal-dialog {
+  position: relative;
+
+  overflow-y: scroll;
+
+  width: 80%;
+  max-height: 80dvh;
+  margin: 0.5rem auto;
+
+  background-color: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 $two $four rgb(0 0 0 / 10%);
+}
+
+.modal-content {
+  padding: 2rem;
+}
+
+.modal-header {
+  border-bottom: $two solid #e5e5e5;
+}
+
+.modal-title {
+  margin-top: 0;
+}
+
+.close {
+  cursor: pointer;
+
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+
+  font-size: 1rem;
+  font-weight: bold;
+}

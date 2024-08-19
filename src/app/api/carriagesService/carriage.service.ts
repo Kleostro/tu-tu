@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 import { Carriage, Code } from '../models/carriage';
 
@@ -11,26 +11,24 @@ import { Carriage, Code } from '../models/carriage';
 export class CarriageService {
   private httpClient = inject(HttpClient);
   private CARRIAGE_ENDPOINT = 'carriage';
-  private allCarriages = new BehaviorSubject<Carriage[]>([]);
+  public allCarriages = new BehaviorSubject<Carriage[]>([]);
 
   public getCarriages(): Observable<Carriage[]> {
     return this.httpClient.get<Carriage[]>(this.CARRIAGE_ENDPOINT);
   }
 
-  public createCarriage(name: string, rows: number, leftSeats: number, rightSeats: number): Observable<Code> {
-    const body = { name, rows, leftSeats, rightSeats };
-    return this.httpClient.post<Code>(this.CARRIAGE_ENDPOINT, body);
+  public createCarriage(carriage: Omit<Carriage, 'code'>): Observable<Code> {
+    return this.httpClient.post<Code>(this.CARRIAGE_ENDPOINT, carriage);
   }
 
-  public updateCarriage(
-    code: string,
-    name: string,
-    rows: number,
-    leftSeats: number,
-    rightSeats: number,
-  ): Observable<Code> {
-    const body = { name, rows, leftSeats, rightSeats };
-    return this.httpClient.put<Code>(`${this.CARRIAGE_ENDPOINT}/${code}`, body);
+  public hasCarriageNameInCarriages(name: string): Observable<boolean> {
+    return this.httpClient
+      .get<Carriage[]>(this.CARRIAGE_ENDPOINT)
+      .pipe(map((carriages) => carriages.some((carriage) => carriage.name.toLowerCase() === name.toLowerCase())));
+  }
+
+  public updateCarriage(carriage: Carriage): Observable<Code> {
+    return this.httpClient.put<Code>(`${this.CARRIAGE_ENDPOINT}/${carriage.code}`, carriage);
   }
 
   public getAllCarriages(): Observable<Carriage[]> {

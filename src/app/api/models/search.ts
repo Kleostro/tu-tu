@@ -1,4 +1,4 @@
-interface Price {
+export interface Price {
   [key: string]: number;
 }
 
@@ -15,7 +15,7 @@ interface Schedule {
   occupiedSeats: number[];
 }
 
-interface Route {
+export interface Route {
   id: number;
   path: number[];
   carriages: string[];

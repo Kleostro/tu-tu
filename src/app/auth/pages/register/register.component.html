@@ -1,81 +1,82 @@
 <section class="register-container">
   <form class="register-form" [formGroup]="registrationForm" (ngSubmit)="submitForm()">
     <h2 class="register-title">Sign Up</h2>
+    <div class="register-inputs-container">
+      <div class="register-form-item">
+        <label for="email" class="register-label">Email</label>
+        <div class="register-field">
+          <input
+            id="email"
+            type="email"
+            pInputText
+            formControlName="email"
+            placeholder="Enter your email"
+            class="register-input p-inputtext"
+          />
+          @if (registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched) {
+            @if (registrationForm.get('email')?.errors?.['required']) {
+              <small class="p-error">Please input your email!</small>
+            }
+            @if (registrationForm.get('email')?.errors?.['email']) {
+              <small class="p-error">Please input a valid email address!</small>
+            }
+          }
+          @if (registrationForm.hasError('invalidUniqueKey')) {
+            <small class="p-error">Account with this email already exists!</small>
+          }
+          @if (registrationForm.hasError('invalidEmail')) {
+            <small class="p-error">Email is wrong. Please input a valid email address!</small>
+          }
+        </div>
+      </div>
+      <div class="register-form-item">
+        <label for="password" class="register-label">Password</label>
+        <div class="register-field">
+          <input
+            id="password"
+            type="password"
+            pInputText
+            formControlName="password"
+            placeholder="Enter your password"
+            class="register-input p-inputtext"
+          />
+          @if (registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched) {
+            @if (registrationForm.get('password')?.errors?.['required']) {
+              <small class="p-error">Please input your password!</small>
+            }
+            @if (registrationForm.get('password')?.errors?.['minlength']) {
+              <small class="p-error">Password must be at least 8 characters long!</small>
+            }
+          }
+          @if (registrationForm.hasError('invalidPassword')) {
+            <small class="p-error">Password is wrong. Password must be at least 8 characters long</small>
+          }
+        </div>
+      </div>
 
-    <div class="register-form-item">
-      <label for="email" class="register-label">Email</label>
-      <div class="register-field">
-        <input
-          id="email"
-          type="email"
-          pInputText
-          formControlName="email"
-          placeholder="Enter your email"
-          class="register-input p-inputtext"
-        />
-        @if (registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched) {
-          @if (registrationForm.get('email')?.errors?.['required']) {
-            <small class="p-error">Please input your email!</small>
+      <div class="register-form-item">
+        <label for="confirm" class="register-label">Repeat Password</label>
+        <div class="register-field">
+          <input
+            id="confirm"
+            type="password"
+            pInputText
+            formControlName="confirm"
+            placeholder="Repeat Password"
+            class="register-input p-inputtext"
+          />
+          @if (registrationForm.get('confirm')?.invalid && registrationForm.get('confirm')?.touched) {
+            <small class="p-error">Please confirm your password!</small>
           }
-          @if (registrationForm.get('email')?.errors?.['email']) {
-            <small class="p-error">Please input a valid email address!</small>
-          }
-        }
-        @if (registrationForm.hasError('invalidUniqueKey')) {
-          <small class="p-error">Account with this email already exists</small>
-        }
-        @if (registrationForm.hasError('invalidEmail')) {
-          <small class="p-error">Email is wrong. Please input a valid email address!</small>
-        }
+        </div>
       </div>
+      @if (registrationForm.hasError('passwordMismatch') && registrationForm.get('confirm')?.dirty) {
+        <small class="p-error">Passwords do not match!</small>
+      }
+      @if (registrationForm.hasError('invalidFields')) {
+        <small class="p-error">Fields are empty. Please input email and password.</small>
+      }
     </div>
-    <div class="register-form-item">
-      <label for="password" class="register-label">Password</label>
-      <div class="register-field">
-        <input
-          id="password"
-          type="password"
-          pInputText
-          formControlName="password"
-          placeholder="Enter your password"
-          class="register-input p-inputtext"
-        />
-        @if (registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched) {
-          @if (registrationForm.get('password')?.errors?.['required']) {
-            <small class="p-error">Please input your password!</small>
-          }
-          @if (registrationForm.get('password')?.errors?.['minlength']) {
-            <small class="p-error">Password must be at least 8 characters long</small>
-          }
-        }
-        @if (registrationForm.hasError('invalidPassword')) {
-          <small class="p-error">Password is wrong. Password must be at least 8 characters long</small>
-        }
-      </div>
-    </div>
-
-    <div class="register-form-item">
-      <label for="confirm" class="register-label">Repeat Password</label>
-      <div class="register-field">
-        <input
-          id="confirm"
-          type="password"
-          pInputText
-          formControlName="confirm"
-          placeholder="Repeat Password"
-          class="register-input p-inputtext"
-        />
-        @if (registrationForm.get('confirm')?.invalid && registrationForm.get('confirm')?.touched) {
-          <small class="p-error">Please confirm your password!</small>
-        }
-      </div>
-    </div>
-    @if (registrationForm.hasError('passwordMismatch') && registrationForm.get('confirm')?.dirty) {
-      <small class="p-error">Passwords do not match</small>
-    }
-    @if (registrationForm.hasError('invalidFields')) {
-      <small class="p-error">Fields are empty. Please input email and password.</small>
-    }
     <div class="register-button-container">
       <p-button type="submit" label="Register" [disabled]="!registrationForm.valid" class="p-mt-2"></p-button>
       <p-link pButton routerLink="/sign-in" label="Sign In" class="p-button-text p-mt-2"></p-link>

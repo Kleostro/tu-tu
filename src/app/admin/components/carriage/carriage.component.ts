@@ -1,11 +1,12 @@
 import { UpperCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, EventEmitter, inject, input, Output } from '@angular/core';
 
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 
 import { Carriage } from '@/app/api/models/carriage';
 
+import { ModalService } from '../../../shared/services/modal/modal.service';
 import createSeatsSchema from '../../utils/createSeatsSchema';
 import { SeatComponent } from '../seat/seat.component';
 
@@ -19,5 +20,10 @@ import { SeatComponent } from '../seat/seat.component';
 })
 export class CarriageComponent {
   public carriage = input<Carriage | null>(null);
-  public seatsSchema = computed(() => createSeatsSchema(this.carriage()!));
+  public isEditable = input(false);
+  public isInteractive = input(true);
+  public seatsSchema = computed(() => createSeatsSchema(this.carriage()));
+  public modalService = inject(ModalService);
+
+  @Output() public openEditModal: EventEmitter<Carriage> = new EventEmitter<Carriage>();
 }

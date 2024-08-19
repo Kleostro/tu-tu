@@ -3,11 +3,14 @@ import { Carriage } from '@/app/api/models/carriage';
 import chunkArray from './chunkArray';
 
 const createSeatsSchema = (
-  carriage: Carriage,
+  carriage: Omit<Carriage, 'code'> | null,
 ): {
   leftSeats: number[][];
   rightSeats: number[][];
 } => {
+  if (!carriage) {
+    return { leftSeats: [], rightSeats: [] };
+  }
   const leftSeats: number[] = [];
   const rightSeats: number[] = [];
   let seatNumber = 1;
