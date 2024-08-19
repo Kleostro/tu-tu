@@ -1,3 +1,5 @@
+@import 'variables';
+
 .register-container {
   display: flex;
   justify-content: center;
@@ -10,21 +12,22 @@
   align-items: center;
   justify-content: center;
 
-  width: 30rem;
+  width: $offset-xxxl * 5;
   height: auto;
   margin: auto;
-  padding: 2rem;
+  padding: $offset-ms;
 
-  background-color: rgb(199 199 199 / 14%);
-  box-shadow: 0 0 10px 0 rgb(0 0 0 / 30%);
+  background-color: $gray-100;
+  box-shadow: $box-shadow-gray;
 
   .register-title {
-    margin-bottom: 1rem;
+    margin-bottom: $offset-xs;
     font-weight: 700;
   }
 
   .register-form-item {
-    margin-bottom: 1rem;
+    height: $offset-xl;
+    margin-bottom: $offset-xs;
 
     .register-field {
       position: relative;
@@ -35,11 +38,21 @@
 
   .register-button-container {
     display: flex;
-    gap: 1rem;
+    gap: $offset-xs;
+    margin-top: $offset-s;
   }
 
-  .register-success-message {
-    position: absolute;
-    margin: auto;
+  .p-error,
+  .register-input {
+    width: $offset-xl * 5;
+  }
+
+  .p-error {
+    min-height: $offset-s;
+    margin-top: $four;
+  }
+
+  .register-inputs-container {
+    height: $offset-xxxl * 3;
   }
 }
