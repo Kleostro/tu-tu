@@ -16,6 +16,7 @@
       <label for="leftSeats"> Left seats count:</label>
       <p-inputNumber inputId="leftSeats" formControlName="leftSeats" />
     </div>
+
     <button
       pButton
       pRipple
@@ -28,6 +29,6 @@
   </div>
 
   @if (newCarriage(); as newCarriage) {
-    <app-carriage [carriage]="newCarriage"></app-carriage>
+    <app-carriage [isInteractive]="false" [carriage]="newCarriage"></app-carriage>
   }
 </form>

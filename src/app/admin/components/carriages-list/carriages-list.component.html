@@ -2,6 +2,7 @@
   @for (carriage of allCarriages(); track carriage) {
     <app-carriage
       [carriage]="carriage"
+      [isInteractive]="!routingService.isAdminCarriagesPage$$()"
       [isEditable]="true"
       (openEditModal)="handleOpenEditModal($event)"
     ></app-carriage>

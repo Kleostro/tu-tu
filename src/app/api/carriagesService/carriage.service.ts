@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 import { Carriage, Code } from '../models/carriage';
 
@@ -19,6 +19,12 @@ export class CarriageService {
 
   public createCarriage(carriage: Omit<Carriage, 'code'>): Observable<Code> {
     return this.httpClient.post<Code>(this.CARRIAGE_ENDPOINT, carriage);
+  }
+
+  public hasCarriageNameInCarriages(name: string): Observable<boolean> {
+    return this.httpClient
+      .get<Carriage[]>(this.CARRIAGE_ENDPOINT)
+      .pipe(map((carriages) => carriages.some((carriage) => carriage.name.toLowerCase() === name.toLowerCase())));
   }
 
   public updateCarriage(carriage: Carriage): Observable<Code> {

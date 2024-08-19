@@ -23,9 +23,15 @@
               <div class="right-seats-row">
                 @for (rightSeat of rightRow; track rightSeat) {
                   @if (i === seatsSchema.rightSeats.length - 1) {
-                    <app-seat [numberSeat]="rightSeat" [classes]="['right', 'free-seat', 'first-seat']"></app-seat>
+                    <app-seat
+                      [numberSeat]="rightSeat"
+                      [classes]="['right', 'free-seat', 'first-seat', isInteractive() ? 'interactive' : '']"
+                    ></app-seat>
                   } @else {
-                    <app-seat [numberSeat]="rightSeat" [classes]="['right', 'free-seat']"></app-seat>
+                    <app-seat
+                      [numberSeat]="rightSeat"
+                      [classes]="['right', 'free-seat', isInteractive() ? 'interactive' : '']"
+                    ></app-seat>
                   }
                 }
               </div>
@@ -38,9 +44,15 @@
               <div class="left-seats-row">
                 @for (leftSeat of leftRow; track leftSeat) {
                   @if (i === 0) {
-                    <app-seat [numberSeat]="leftSeat" [classes]="['left', 'free-seat', 'first-seat']"></app-seat>
+                    <app-seat
+                      [numberSeat]="leftSeat"
+                      [classes]="['left', 'free-seat', 'first-seat', isInteractive() ? 'interactive' : '']"
+                    ></app-seat>
                   } @else {
-                    <app-seat [numberSeat]="leftSeat" [classes]="['left', 'free-seat']"></app-seat>
+                    <app-seat
+                      [numberSeat]="leftSeat"
+                      [classes]="['left', 'free-seat', isInteractive() ? 'interactive' : '']"
+                    ></app-seat>
                   }
                 }
               </div>

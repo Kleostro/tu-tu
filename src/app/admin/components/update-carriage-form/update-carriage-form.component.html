@@ -24,6 +24,6 @@
   </div>
 
   @if (currentCarriage(); as currentCarriage) {
-    <app-carriage [carriage]="currentCarriage"></app-carriage>
+    <app-carriage [isInteractive]="false" [carriage]="currentCarriage"></app-carriage>
   }
 </form>

@@ -16,6 +16,7 @@ export class RoutingService {
 
   public queryParams$$ = signal<Record<string, string>>({});
   public isAdminPage$$ = signal<boolean>(false);
+  public isAdminCarriagesPage$$ = signal<boolean>(false);
 
   constructor() {
     this.activatedRoute.queryParams.subscribe((params) => {
@@ -24,6 +25,7 @@ export class RoutingService {
 
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
       this.isAdminPage$$.set(this.router.url.startsWith(APP_ROUTE.ADMIN));
+      this.isAdminCarriagesPage$$.set(this.router.url.startsWith(`${APP_ROUTE.ADMIN}/carriages`));
     });
   }
 

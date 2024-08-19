@@ -1,5 +1,8 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+
+import { of } from 'rxjs';
 
 import { CarriagesComponent } from './carriages.component';
 
@@ -10,7 +13,7 @@ describe('CarriagesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CarriagesComponent],
-      providers: [provideHttpClient()],
+      providers: [provideHttpClient(), { provide: ActivatedRoute, useValue: { queryParams: of({}) } }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CarriagesComponent);

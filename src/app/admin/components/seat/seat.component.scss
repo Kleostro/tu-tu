@@ -2,7 +2,8 @@
 @import 'mixins';
 
 .seat {
-  cursor: pointer;
+  pointer-events: none;
+  cursor: auto;
   user-select: none;
 
   position: relative;
@@ -15,6 +16,7 @@
   height: 2.2rem;
   margin-bottom: 0.5rem;
 
+  filter: grayscale(0.8);
   border-radius: 0.5rem;
 
   transition:
@@ -30,14 +32,6 @@
 
     border: $two solid #ddd;
     border-radius: $offset-xxs;
-  }
-
-  @include hover {
-    filter: brightness(0.9);
-  }
-
-  &:active {
-    scale: 0.9;
   }
 }
 
@@ -154,4 +148,18 @@
 .selected-seat {
   color: $black-100;
   background-color: #f7e40b;
+}
+
+.interactive {
+  pointer-events: all;
+  cursor: pointer;
+  filter: grayscale(0);
+
+  @include hover {
+    filter: grayscale(0) brightness(0.9);
+  }
+
+  &:active {
+    scale: 0.9;
+  }
 }

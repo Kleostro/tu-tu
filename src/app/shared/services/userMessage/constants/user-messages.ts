@@ -9,4 +9,5 @@ export const USER_MESSAGE = {
   STATION_EXISTS: 'Station already exists in this city!',
   CARRIAGE_CREATED_SUCCESSFULLY: 'Carriage created successfully!',
   CARRIAGE_UPDATED_SUCCESSFULLY: 'Carriage updated successfully!',
+  CARRIAGE_ALREADY_EXISTS: 'Carriage already exists in this name!',
 };
