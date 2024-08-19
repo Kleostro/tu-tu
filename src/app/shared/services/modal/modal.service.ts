@@ -8,7 +8,7 @@ export class ModalService {
   public content = signal<TemplateRef<unknown> | null>(null);
   public modalTitle = signal('');
 
-  public openModal(content: TemplateRef<unknown>, title: string): void {
+  public openModal(content: TemplateRef<unknown>, title = ''): void {
     this.content.set(content);
     this.modalTitle.set(title);
     this.isModalShow.set(true);

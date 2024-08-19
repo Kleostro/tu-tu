@@ -16,15 +16,15 @@ import { ModalService } from '../../services/modal/modal.service';
 })
 export class ModalComponent {
   public modalService = inject(ModalService);
-  @ViewChild('modalContent') public modalContent!: ElementRef;
+  @ViewChild('modalDialog') public modalDialog!: ElementRef;
 
   public outsideClick(event: Event): void {
     if (
       event.target &&
       event.target instanceof HTMLElement &&
-      this.modalContent.nativeElement !== event.target &&
-      this.modalContent.nativeElement instanceof HTMLElement &&
-      !this.modalContent.nativeElement.contains(event.target)
+      this.modalDialog.nativeElement !== event.target &&
+      this.modalDialog.nativeElement instanceof HTMLElement &&
+      !this.modalDialog.nativeElement.contains(event.target)
     ) {
       this.modalService.closeModal();
     }

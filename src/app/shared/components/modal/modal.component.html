@@ -1,6 +1,6 @@
 <div class="modal" [class]="modalService.isModalShow() ? 'show' : ''" (click)="outsideClick($event)">
-  <div class="modal-dialog">
-    <div #modalContent class="modal-content">
+  <div #modalDialog class="modal-dialog">
+    <div class="modal-content">
       <div class="modal-header">
         <strong class="modal-title">{{ modalService.modalTitle() }}</strong>
         <button
