@@ -13,7 +13,9 @@ import { SignInResponse } from '@/app/api/models/signInResponse';
 import { User } from '@/app/api/models/user';
 import { SignInService } from '@/app/api/signInService/sign-in.service';
 import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
+import { PersonalInfoService } from '@/app/profile/services/personalInfo/personal-info.service';
 import { APP_PATH } from '@/app/shared/constants/routes';
+import { PASSWORD_MIN_LENGTH, REGEX } from '@/app/shared/validators/constants/constants';
 import { minTrimmedLengthValidator } from '@/app/shared/validators/validators';
 
 import { AuthService } from '../../services/auth-service/auth.service';
@@ -29,6 +31,7 @@ import { AuthService } from '../../services/auth-service/auth.service';
 export class LoginComponent {
   private signInService = inject(SignInService);
   private localStorageService = inject(LocalStorageService);
+  private personalInfoService = inject(PersonalInfoService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
 
@@ -38,17 +41,22 @@ export class LoginComponent {
     email: this.fb.control<string>('', [
       Validators.required.bind(this),
       Validators.email.bind(this),
-      Validators.pattern(/^[\w\d_]+@[\w\d_]+.\w{2,7}$/).bind(this),
+      Validators.pattern(REGEX).bind(this),
     ]),
-    password: this.fb.control<string>('', [Validators.required.bind(this), minTrimmedLengthValidator(8).bind(this)]),
+    password: this.fb.control<string>('', [
+      Validators.required.bind(this),
+      minTrimmedLengthValidator(PASSWORD_MIN_LENGTH).bind(this),
+    ]),
   });
 
   public submitForm(): void {
     if (this.loginForm.valid) {
       firstValueFrom(this.signInService.signIn(this.userData))
         .then((data: SignInResponse) => {
+          const { email } = this.userData;
           this.authService.setLoginSignals(this.userData);
-          this.localStorageService.saveCurrentUser(this.userData.email, data.token);
+          this.personalInfoService.setUserInfo(email);
+          this.localStorageService.saveCurrentUser(email, data.token);
           this.router.navigate([APP_PATH.DEFAULT]);
         })
         .catch((err: OverriddenHttpErrorResponse) => {

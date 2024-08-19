@@ -5,15 +5,15 @@ import { MessageService } from 'primeng/api';
 
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
-import { ProfileComponent } from './profile.component';
+import { UserInfoComponent } from './user-info.component';
 
-describe('ProfileComponent', () => {
-  let component: ProfileComponent;
-  let fixture: ComponentFixture<ProfileComponent>;
+describe('UserInfoComponent', () => {
+  let component: UserInfoComponent;
+  let fixture: ComponentFixture<UserInfoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProfileComponent],
+      imports: [UserInfoComponent],
       providers: [
         provideHttpClient(),
         { provide: MessageService, useValue: {} },
@@ -29,7 +29,7 @@ describe('ProfileComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ProfileComponent);
+    fixture = TestBed.createComponent(UserInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -42,6 +42,11 @@ export class LocalStorageService {
     this.addValueByKey(STORE_KEYS.TOKEN, token);
   }
 
+  public updateCurrentUser(email: string, name: string): void {
+    this.addValueByKey(STORE_KEYS.EMAIL, email);
+    this.addValueByKey(STORE_KEYS.NAME, name);
+  }
+
   public init(): LocalStorageData {
     const storedData = localStorage.getItem(STORE_KEYS.LS_NAME);
 
