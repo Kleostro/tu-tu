@@ -7,4 +7,6 @@ export const USER_MESSAGE = {
   STATION_CREATED_SUCCESSFULLY: 'Station created successfully!',
   STATION_DELETED_SUCCESSFULLY: 'Station deleted successfully!',
   STATION_EXISTS: 'Station already exists in this city!',
+  CARRIAGE_CREATED_SUCCESSFULLY: 'Carriage created successfully!',
+  CARRIAGE_UPDATED_SUCCESSFULLY: 'Carriage updated successfully!',
 };

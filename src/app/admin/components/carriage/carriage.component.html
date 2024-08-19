@@ -3,7 +3,15 @@
     <div class="car-top">
       <strong class="title">{{ carriage.name | uppercase }}</strong>
       <span class="seats-count">{{ (carriage.leftSeats + carriage.rightSeats) * carriage.rows }} seats</span>
-      <p-button [rounded]="true" class="edit-btn" severity="success" icon="pi pi-pencil" />
+      @if (isEditable()) {
+        <p-button
+          [rounded]="true"
+          class="edit-btn"
+          severity="success"
+          icon="pi pi-pencil"
+          (click)="openEditModal.emit(carriage)"
+        />
+      }
     </div>
 
     <div class="car-bottom">

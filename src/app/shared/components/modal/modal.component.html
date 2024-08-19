@@ -1,0 +1,20 @@
+<div class="modal" [class]="modalService.isModalShow() ? 'show' : ''" (click)="outsideClick($event)">
+  <div class="modal-dialog">
+    <div #modalContent class="modal-content">
+      <div class="modal-header">
+        <strong class="modal-title">{{ modalService.modalTitle() }}</strong>
+        <button
+          pButton
+          pRipple
+          class="p-button-secondary"
+          icon="pi pi-times"
+          class="close"
+          (click)="modalService.closeModal()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngTemplateOutlet="modalService.content()"></ng-container>
+      </div>
+    </div>
+  </div>
+</div>
