@@ -13,6 +13,7 @@ import { SignInResponse } from '@/app/api/models/signInResponse';
 import { User } from '@/app/api/models/user';
 import { SignInService } from '@/app/api/signInService/sign-in.service';
 import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
+import { PersonalInfoService } from '@/app/profile/services/personalInfo/personal-info.service';
 import { APP_PATH } from '@/app/shared/constants/routes';
 import { minTrimmedLengthValidator } from '@/app/shared/validators/validators';
 
@@ -29,6 +30,7 @@ import { AuthService } from '../../services/auth-service/auth.service';
 export class LoginComponent {
   private signInService = inject(SignInService);
   private localStorageService = inject(LocalStorageService);
+  private personalInfoService = inject(PersonalInfoService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
 
@@ -47,8 +49,10 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       firstValueFrom(this.signInService.signIn(this.userData))
         .then((data: SignInResponse) => {
+          const { email } = this.userData;
           this.authService.setLoginSignals(this.userData);
-          this.localStorageService.saveCurrentUser(this.userData.email, data.token);
+          this.personalInfoService.setUserInfo(email);
+          this.localStorageService.saveCurrentUser(email, data.token);
           this.router.navigate([APP_PATH.DEFAULT]);
         })
         .catch((err: OverriddenHttpErrorResponse) => {

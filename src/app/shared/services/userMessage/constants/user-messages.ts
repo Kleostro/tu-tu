@@ -7,4 +7,6 @@ export const USER_MESSAGE = {
   STATION_CREATED_SUCCESSFULLY: 'Station created successfully!',
   STATION_DELETED_SUCCESSFULLY: 'Station deleted successfully!',
   STATION_EXISTS: 'Station already exists in this city!',
+  PROFILE_UPDATED_SUCCESSFULLY: 'Profile updated successfully!',
+  PROFILE_UPDATED_ERROR: "We couldn't update your profile. Please try again.",
 };
