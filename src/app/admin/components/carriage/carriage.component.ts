@@ -21,6 +21,7 @@ import { SeatComponent } from '../seat/seat.component';
 export class CarriageComponent {
   public carriage = input<Carriage | null>(null);
   public isEditable = input(false);
+  public isInteractive = input(true);
   public seatsSchema = computed(() => createSeatsSchema(this.carriage()));
   public modalService = inject(ModalService);
 

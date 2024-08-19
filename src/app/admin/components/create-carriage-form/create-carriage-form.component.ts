@@ -78,7 +78,7 @@ export class CreateCarriageFormComponent implements OnInit, OnDestroy {
       this.isCreated.set(true);
       this.subsciption.add(
         this.carriageService.hasCarriageNameInCarriages(updatedCarriage.name).subscribe((hasCarriage) => {
-          if (hasCarriage) {
+          if (!hasCarriage) {
             this.carriageService.createCarriage(updatedCarriage).subscribe({
               next: () => this.submitSuccessHandler(),
             });
