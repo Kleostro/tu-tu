@@ -7,10 +7,18 @@
             <i class="pi pi-user"></i>
           </p-inputGroupAddon>
           <span>{{ userForm.get('name')?.value }}</span>
-          <button type="button" pRipple pButton icon="pi pi-pen-to-square" (click)="isEditingName.set(true)"></button>
+          <button
+            type="button"
+            title="Edit"
+            pRipple
+            pButton
+            icon="pi pi-pen-to-square"
+            (click)="isEditingName.set(true)"
+          ></button>
         </p-inputGroup>
       }
       @if (isEditingName()) {
+        @let nameValid = this.userForm.controls['name'].valid;
         <p-inputGroup>
           <p-inputGroupAddon>
             <i class="pi pi-user"></i>
@@ -22,10 +30,10 @@
             type="button"
             pButton
             pRipple
-            [icon]="userForm.valid ? 'pi pi-check' : 'pi pi-ban'"
-            [class]="userForm.valid ? 'p-button-success' : 'p-button-danger'"
-            [disabled]="!userForm.valid"
-            (click)="save()"
+            [icon]="nameValid ? 'pi pi-check' : 'pi pi-times'"
+            [class]="nameValid ? 'p-button-success' : 'p-button-danger'"
+            [title]="nameValid ? 'Save' : 'Cancel'"
+            (click)="nameValid ? updateName() : cancelEditingField('isEditingName')"
           ></button>
         </p-inputGroup>
         @if (!userForm.valid && userForm.get('name')?.errors?.['required']) {
@@ -41,10 +49,18 @@
             <i class="pi pi-at"></i>
           </p-inputGroupAddon>
           <span>{{ userForm.get('email')?.value }}</span>
-          <button type="button" pRipple pButton icon="pi pi-pen-to-square" (click)="isEditingEmail.set(true)"></button>
+          <button
+            type="button"
+            title="Edit"
+            pRipple
+            pButton
+            icon="pi pi-pen-to-square"
+            (click)="isEditingEmail.set(true)"
+          ></button>
         </p-inputGroup>
       }
       @if (isEditingEmail()) {
+        @let emailValid = this.userForm.controls['email'].valid;
         <p-inputGroup>
           <p-inputGroupAddon>
             <i class="pi pi-at"></i>
@@ -54,10 +70,10 @@
             type="button"
             pButton
             pRipple
-            [icon]="userForm.valid ? 'pi pi-check' : 'pi pi-ban'"
-            [class]="userForm.valid ? 'p-button-success' : 'p-button-danger'"
-            [disabled]="!userForm.valid"
-            (click)="save()"
+            [icon]="emailValid ? 'pi pi-check' : 'pi pi-times'"
+            [class]="emailValid ? 'p-button-success' : 'p-button-danger'"
+            [title]="emailValid ? 'Save' : 'Cancel'"
+            (click)="emailValid ? updateEmail() : cancelEditingField('isEditingEmail')"
           ></button>
         </p-inputGroup>
         @if (

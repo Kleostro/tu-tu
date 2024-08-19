@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
+import { MessageService } from 'primeng/api';
 import { of } from 'rxjs';
 
 import { Profile } from '@/app/api/models/profile';
 import { ProfileService } from '@/app/api/profileService/profile.service';
 import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
+import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
 import { PersonalInfoService } from './personal-info.service';
 
@@ -36,6 +38,16 @@ describe('PersonalInfoService', () => {
         PersonalInfoService,
         { provide: ProfileService, useValue: profileServiceMock },
         { provide: LocalStorageService, useValue: localStorageServiceMock },
+        { provide: MessageService, useValue: {} },
+        {
+          provide: UserMessageService,
+          useValue: {
+            showSuccessMessage: jest.fn(),
+            showErrorMessage: jest.fn(),
+            showInfoMessage: jest.fn(),
+            showWarningMessage: jest.fn(),
+          },
+        },
       ],
     });
 

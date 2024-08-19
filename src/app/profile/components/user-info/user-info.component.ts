@@ -9,8 +9,10 @@ import { InputTextModule } from 'primeng/inputtext';
 
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
+import { REGEX } from '@/app/shared/validators/constants/constants';
 
 import { PersonalInfoService } from '../../services/personalInfo/personal-info.service';
+import { formField, FormFieldType } from './constants/constants';
 
 @Component({
   selector: 'app-user-info',
@@ -31,7 +33,7 @@ import { PersonalInfoService } from '../../services/personalInfo/personal-info.s
 export class UserInfoComponent {
   private fb = inject(FormBuilder);
   private userMessageService = inject(UserMessageService);
-  private personalInfoService = inject(PersonalInfoService);
+  public personalInfoService = inject(PersonalInfoService);
 
   public isEditingName = signal(false);
   public isEditingEmail = signal(false);
@@ -41,28 +43,43 @@ export class UserInfoComponent {
     email: this.fb.control(this.personalInfoService.currentUserEmail(), [
       Validators.required.bind(this),
       Validators.email.bind(this),
+      Validators.pattern(REGEX),
     ]),
   });
 
-  public save(): void {
-    if (this.userForm.valid) {
-      this.isEditingName.set(false);
-      this.isEditingEmail.set(false);
-    }
-    if (this.userForm.valid && this.userForm.dirty && this.userForm.touched) {
-      try {
-        const email = this.userForm.controls['email'].value;
-        const { name } = this.userForm.getRawValue();
+  public cancelEditingField(field: FormFieldType): void {
+    this[field].set(false);
+  }
 
-        if (typeof email === 'string' && typeof name === 'string') {
-          this.personalInfoService.updateProfile(email, name);
-          this.userMessageService.showSuccessMessage(USER_MESSAGE.PROFILE_UPDATED_SUCCESSFULLY);
-        } else {
-          this.userMessageService.showErrorMessage(USER_MESSAGE.PROFILE_UPDATED_ERROR);
-        }
-      } catch (error) {
-        this.userMessageService.showErrorMessage(USER_MESSAGE.PROFILE_UPDATED_ERROR);
+  private updateProfile(email: unknown, name: unknown, isEditingField: FormFieldType): void {
+    try {
+      if (typeof email === 'string' && typeof name === 'string') {
+        this.personalInfoService.updateProfile(email, name);
       }
+    } catch (error) {
+      this.userMessageService.showErrorMessage(USER_MESSAGE.PROFILE_UPDATED_ERROR);
+    } finally {
+      this.cancelEditingField(isEditingField);
+    }
+  }
+
+  public updateName(): void {
+    if (this.userForm.controls['name'].valid && this.userForm.controls['name'].dirty) {
+      const name = this.userForm.controls['name'].value;
+      const email = this.userForm.controls['email'].valid
+        ? this.userForm.controls['email'].value
+        : this.personalInfoService.currentUserEmail();
+      this.updateProfile(email, name, formField.isEditingName);
+    }
+  }
+
+  public updateEmail(): void {
+    if (this.userForm.controls['email'].valid && this.userForm.controls['email'].dirty) {
+      const email = this.userForm.controls['email'].value;
+      const name = this.userForm.controls['name'].valid
+        ? this.userForm.controls['name'].value
+        : this.personalInfoService.currentUserName();
+      this.updateProfile(email, name, formField.isEditingEmail);
     }
   }
 }
