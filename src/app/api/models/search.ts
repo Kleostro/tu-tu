@@ -1,4 +1,4 @@
-interface Price {
+export interface Price {
   [key: string]: number;
 }
 
