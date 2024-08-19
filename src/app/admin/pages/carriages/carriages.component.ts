@@ -6,23 +6,27 @@ import { RippleModule } from 'primeng/ripple';
 import { Subscription } from 'rxjs';
 
 import { CarriageService } from '@/app/api/carriagesService/carriage.service';
+import { ModalService } from '@/app/shared/services/modal/modal.service';
 
 import { CarriagesListComponent } from '../../components/carriages-list/carriages-list.component';
+import { CreateCarriageFormComponent } from '../../components/create-carriage-form/create-carriage-form.component';
 
 @Component({
   selector: 'app-carriages',
   standalone: true,
-  imports: [CarriagesListComponent, ButtonModule, RippleModule, AsyncPipe],
+  imports: [CarriagesListComponent, ButtonModule, RippleModule, AsyncPipe, CreateCarriageFormComponent],
   templateUrl: './carriages.component.html',
   styleUrl: './carriages.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarriagesComponent implements OnInit, OnDestroy {
   private carriageService = inject(CarriageService);
-
   private cdr = inject(ChangeDetectorRef);
-  public allCarriages = this.carriageService.getCarriages();
+  public modalService = inject(ModalService);
+
   private subsciption = new Subscription();
+
+  public allCarriages = this.carriageService.allCarriages;
 
   public ngOnInit(): void {
     this.subsciption.add(
