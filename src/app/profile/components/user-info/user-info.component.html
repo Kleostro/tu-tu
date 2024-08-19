@@ -1,0 +1,71 @@
+<div class="user-info-form-wrapper">
+  <div [formGroup]="userForm" class="user-info-form">
+    <div>
+      @if (!isEditingName()) {
+        <p-inputGroup>
+          <p-inputGroupAddon>
+            <i class="pi pi-user"></i>
+          </p-inputGroupAddon>
+          <span>{{ userForm.get('name')?.value }}</span>
+          <button type="button" pRipple pButton icon="pi pi-pen-to-square" (click)="isEditingName.set(true)"></button>
+        </p-inputGroup>
+      }
+      @if (isEditingName()) {
+        <p-inputGroup>
+          <p-inputGroupAddon>
+            <i class="pi pi-user"></i>
+          </p-inputGroupAddon>
+
+          <input pInputText formControlName="name" />
+
+          <button
+            type="button"
+            pButton
+            pRipple
+            [icon]="userForm.valid ? 'pi pi-check' : 'pi pi-ban'"
+            [class]="userForm.valid ? 'p-button-success' : 'p-button-danger'"
+            [disabled]="!userForm.valid"
+            (click)="save()"
+          ></button>
+        </p-inputGroup>
+        @if (!userForm.valid && userForm.get('name')?.errors?.['required']) {
+          <small class="p-error">Please input a name</small>
+        }
+      }
+    </div>
+
+    <div>
+      @if (!isEditingEmail()) {
+        <p-inputGroup>
+          <p-inputGroupAddon>
+            <i class="pi pi-at"></i>
+          </p-inputGroupAddon>
+          <span>{{ userForm.get('email')?.value }}</span>
+          <button type="button" pRipple pButton icon="pi pi-pen-to-square" (click)="isEditingEmail.set(true)"></button>
+        </p-inputGroup>
+      }
+      @if (isEditingEmail()) {
+        <p-inputGroup>
+          <p-inputGroupAddon>
+            <i class="pi pi-at"></i>
+          </p-inputGroupAddon>
+          <input pInputText formControlName="email" />
+          <button
+            type="button"
+            pButton
+            pRipple
+            [icon]="userForm.valid ? 'pi pi-check' : 'pi pi-ban'"
+            [class]="userForm.valid ? 'p-button-success' : 'p-button-danger'"
+            [disabled]="!userForm.valid"
+            (click)="save()"
+          ></button>
+        </p-inputGroup>
+        @if (
+          (!userForm.valid && userForm.get('email')?.errors?.['required']) || userForm.get('email')?.errors?.['email']
+        ) {
+          <small class="p-error">Please input a valid email address</small>
+        }
+      }
+    </div>
+  </div>
+</div>
