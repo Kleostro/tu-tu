@@ -1,0 +1,33 @@
+<form class="form" [formGroup]="carriageForm" (ngSubmit)="submit()">
+  <div class="controls">
+    <div class="control">
+      <label for="name"> Carriage name:</label>
+      <input pInputText type="text" id="name" formControlName="name" />
+    </div>
+    <div class="control">
+      <label for="rows"> Rows count:</label>
+      <p-inputNumber inputId="rows" formControlName="rows" />
+    </div>
+    <div class="control">
+      <label for="rightSeats"> Right seats count:</label>
+      <p-inputNumber inputId="rightSeats" formControlName="rightSeats" />
+    </div>
+    <div class="control">
+      <label for="leftSeats"> Left seats count:</label>
+      <p-inputNumber inputId="leftSeats" formControlName="leftSeats" />
+    </div>
+    <button
+      pButton
+      pRipple
+      type="submit"
+      class="p-button-success submit"
+      label="Save"
+      [disabled]="carriageForm.invalid"
+      [loading]="isCreated()"
+    ></button>
+  </div>
+
+  @if (newCarriage(); as newCarriage) {
+    <app-carriage [carriage]="newCarriage"></app-carriage>
+  }
+</form>
