@@ -23,6 +23,5 @@ export const APP_ROUTE = {
 export const ADMIN_PATH = {
   CARRIAGES: 'Carriages',
   ROUTES: 'Routes',
-  SCHEDULE: 'Schedule',
   STATIONS: 'Stations',
 } as const;

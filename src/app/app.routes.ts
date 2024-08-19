@@ -61,9 +61,10 @@ const routes: Routes = [
         title: `Admin | ${ADMIN_PATH.ROUTES}`,
       },
       {
-        path: ADMIN_PATH.SCHEDULE.toLowerCase(),
-        loadComponent: () => import('./admin/pages/schedule/schedule.component').then((c) => c.ScheduleComponent),
-        title: `Admin | ${ADMIN_PATH.SCHEDULE}`,
+        path: `${ADMIN_PATH.ROUTES.toLowerCase()}/:id`,
+        loadComponent: () =>
+          import('./admin/pages/route-detailed/route-detailed.component').then((c) => c.RouteDetailedComponent),
+        title: `Admin | ${ADMIN_PATH.ROUTES.slice(0, -1)}`,
       },
       {
         path: ADMIN_PATH.STATIONS.toLowerCase(),
