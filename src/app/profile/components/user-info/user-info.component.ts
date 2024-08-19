@@ -51,35 +51,39 @@ export class UserInfoComponent {
     this[field].set(false);
   }
 
-  private updateProfile(email: unknown, name: unknown, isEditingField: FormFieldType): void {
+  private updateProfile(email: unknown, name: unknown): void {
     try {
       if (typeof email === 'string' && typeof name === 'string') {
         this.personalInfoService.updateProfile(email, name);
       }
     } catch (error) {
       this.userMessageService.showErrorMessage(USER_MESSAGE.PROFILE_UPDATED_ERROR);
-    } finally {
-      this.cancelEditingField(isEditingField);
     }
   }
 
   public updateName(): void {
+    if (this.userForm.controls['name'].valid) {
+      this.cancelEditingField(formField.isEditingName);
+    }
     if (this.userForm.controls['name'].valid && this.userForm.controls['name'].dirty) {
       const name = this.userForm.controls['name'].value;
       const email = this.userForm.controls['email'].valid
         ? this.userForm.controls['email'].value
         : this.personalInfoService.currentUserEmail();
-      this.updateProfile(email, name, formField.isEditingName);
+      this.updateProfile(email, name);
     }
   }
 
   public updateEmail(): void {
+    if (this.userForm.controls['email'].valid) {
+      this.cancelEditingField(formField.isEditingEmail);
+    }
     if (this.userForm.controls['email'].valid && this.userForm.controls['email'].dirty) {
       const email = this.userForm.controls['email'].value;
       const name = this.userForm.controls['name'].valid
         ? this.userForm.controls['name'].value
         : this.personalInfoService.currentUserName();
-      this.updateProfile(email, name, formField.isEditingEmail);
+      this.updateProfile(email, name);
     }
   }
 }
