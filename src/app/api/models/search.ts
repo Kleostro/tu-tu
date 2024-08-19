@@ -8,7 +8,7 @@ export interface Segment {
   occupiedSeats: number[];
 }
 
-interface Schedule {
+export interface Schedule {
   rideId: number;
   segments: Segment[];
   time: string[];

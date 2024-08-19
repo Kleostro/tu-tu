@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
+import { SEARCH_ENDPOINT } from '../constants/constants';
 import { SearchParams, SearchResponse } from '../models/search';
 
 @Injectable({
@@ -13,7 +14,7 @@ export class SearchService {
 
   public search(inputParams: SearchParams): Observable<SearchResponse> {
     const params = this.generateHttpParams(inputParams);
-    return this.httpClient.get<SearchResponse>('search', { params });
+    return this.httpClient.get<SearchResponse>(SEARCH_ENDPOINT, { params });
   }
 
   private generateHttpParams(params: SearchParams): HttpParams {

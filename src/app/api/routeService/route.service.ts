@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
+import { ROUTE_ENDPOINT } from '../constants/constants';
 import { RouteBody, RouteId, RouteResponse } from '../models/route';
 
 @Injectable({
@@ -10,21 +11,20 @@ import { RouteBody, RouteId, RouteResponse } from '../models/route';
 })
 export class RouteService {
   private httpClient = inject(HttpClient);
-  private ROUTE_ENDPOINT = 'route';
 
   public getAllRoutes(): Observable<RouteResponse[]> {
-    return this.httpClient.get<RouteResponse[]>(this.ROUTE_ENDPOINT);
+    return this.httpClient.get<RouteResponse[]>(ROUTE_ENDPOINT);
   }
 
   public createRoute(newRoute: RouteBody): Observable<RouteId> {
-    return this.httpClient.post<RouteId>(this.ROUTE_ENDPOINT, newRoute);
+    return this.httpClient.post<RouteId>(ROUTE_ENDPOINT, newRoute);
   }
 
   public updateRoute(id: number, route: RouteBody): Observable<RouteId> {
-    return this.httpClient.put<RouteId>(`${this.ROUTE_ENDPOINT}/${id}`, route);
+    return this.httpClient.put<RouteId>(`${ROUTE_ENDPOINT}/${id}`, route);
   }
 
   public deleteRoute(id: number): Observable<object> {
-    return this.httpClient.delete<object>(`${this.ROUTE_ENDPOINT}/${id}`);
+    return this.httpClient.delete<object>(`${ROUTE_ENDPOINT}/${id}`);
   }
 }
