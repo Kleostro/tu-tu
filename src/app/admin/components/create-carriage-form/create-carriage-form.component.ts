@@ -21,6 +21,7 @@ import { ModalService } from '@/app/shared/services/modal/modal.service';
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
+import INITIAL_CARRIAGE from '../../constants/initial-carriage';
 import { CarriageComponent } from '../carriage/carriage.component';
 
 @Component({
@@ -33,13 +34,15 @@ import { CarriageComponent } from '../carriage/carriage.component';
 })
 export class CreateCarriageFormComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
-  private cdr = inject(ChangeDetectorRef);
   private modalService = inject(ModalService);
   private userMessageService = inject(UserMessageService);
   private carriageService = inject(CarriageService);
-  public newCarriage = signal<Carriage>({ name: '', rows: 0, leftSeats: 0, rightSeats: 0, code: '' });
-  public isCreated = signal(false);
+  private cdr = inject(ChangeDetectorRef);
+
   private subsciption = new Subscription();
+
+  public newCarriage = signal<Carriage>(INITIAL_CARRIAGE);
+  public isCreated = signal(false);
   public carriageForm = this.fb.nonNullable.group({
     name: ['', [Validators.required.bind(this)]],
     rows: [0, [Validators.required.bind(this), Validators.min(1)]],
@@ -59,8 +62,6 @@ export class CreateCarriageFormComponent implements OnInit, OnDestroy {
       this.newCarriage.set({ ...currentCarriage });
       this.cdr.detectChanges();
     }
-
-    this.cdr.detectChanges();
   }
 
   public submit(): void {
@@ -75,9 +76,17 @@ export class CreateCarriageFormComponent implements OnInit, OnDestroy {
 
     if (this.carriageForm.valid) {
       this.isCreated.set(true);
-      this.carriageService.createCarriage(updatedCarriage).subscribe({
-        next: () => this.submitSuccessHandler(),
-      });
+      this.subsciption.add(
+        this.carriageService.hasCarriageNameInCarriages(updatedCarriage.name).subscribe((hasCarriage) => {
+          if (hasCarriage) {
+            this.carriageService.createCarriage(updatedCarriage).subscribe({
+              next: () => this.submitSuccessHandler(),
+            });
+          } else {
+            this.submitErrorHandler();
+          }
+        }),
+      );
     }
   }
 
@@ -88,6 +97,11 @@ export class CreateCarriageFormComponent implements OnInit, OnDestroy {
     this.isCreated.set(false);
     this.modalService.closeModal();
     this.userMessageService.showSuccessMessage(USER_MESSAGE.CARRIAGE_CREATED_SUCCESSFULLY);
+  }
+
+  private submitErrorHandler(): void {
+    this.isCreated.set(false);
+    this.userMessageService.showErrorMessage(USER_MESSAGE.CARRIAGE_ALREADY_EXISTS);
   }
 
   public ngOnInit(): void {

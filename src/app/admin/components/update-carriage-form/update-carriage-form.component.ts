@@ -34,14 +34,16 @@ import { CarriageComponent } from '../carriage/carriage.component';
 })
 export class UpdateCarriageFormComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
-  private cdr = inject(ChangeDetectorRef);
   private modalService = inject(ModalService);
   private userMessageService = inject(UserMessageService);
   private carriageService = inject(CarriageService);
+  private cdr = inject(ChangeDetectorRef);
+
   public carriage = input<Carriage | null>(null);
+
+  private subsciption = new Subscription();
   public currentCarriage = signal<Carriage | null>(null);
   public isUpdating = signal(false);
-  private subsciption = new Subscription();
   public carriageForm = this.fb.nonNullable.group({
     rows: [0, [Validators.required.bind(this), Validators.min(1)]],
     leftSeats: [0, [Validators.required.bind(this), Validators.min(1)]],
@@ -77,9 +79,11 @@ export class UpdateCarriageFormComponent implements OnInit, OnDestroy {
 
     if (this.carriageForm.valid) {
       this.isUpdating.set(true);
-      this.carriageService.updateCarriage(updatedCarriage).subscribe({
-        next: () => this.submitSuccessHandler(),
-      });
+      this.subsciption.add(
+        this.carriageService.updateCarriage(updatedCarriage).subscribe({
+          next: () => this.submitSuccessHandler(),
+        }),
+      );
     }
   }
 
