@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { Observable, shareReplay, tap } from 'rxjs';
 
 import { NewStation, Station } from '../models/stations';
 
@@ -11,10 +11,14 @@ import { NewStation, Station } from '../models/stations';
 export class StationsService {
   private httpClient = inject(HttpClient);
   private STATION_ENDPOINT = 'station';
-  public allStations = new BehaviorSubject<Station[]>([]);
+  public allStations = signal<Station[]>([]);
+  public allStationNames = computed(() => this.allStations().map((station) => station.city));
 
   public getStations(): Observable<Station[]> {
-    return this.httpClient.get<Station[]>(this.STATION_ENDPOINT);
+    return this.httpClient.get<Station[]>(this.STATION_ENDPOINT).pipe(
+      shareReplay(1),
+      tap((stations) => this.allStations.set(stations)),
+    );
   }
 
   public createNewStation(newStation: NewStation): Observable<{ id: number }> {
@@ -25,23 +29,21 @@ export class StationsService {
     return this.httpClient.delete<void>(`${this.STATION_ENDPOINT}/${id}`);
   }
 
-  public isStationInCity(station: string): Observable<boolean> {
-    return this.getStations().pipe(
-      map((stations) =>
-        stations.some((stationFromList) => stationFromList.city.toLowerCase() === station.toLowerCase()),
-      ),
-    );
+  public isStationInCity(station: string): boolean {
+    return this.allStations().some((stationFromList) => stationFromList.city.toLowerCase() === station.toLowerCase());
   }
 
   public findStationByLngLat({ lng, lat }: { lng: number; lat: number }): Station | null {
-    return this.allStations.getValue().find((station) => station.longitude === lng && station.latitude === lat) ?? null;
+    return this.allStations().find((station) => station.longitude === lng && station.latitude === lat) ?? null;
   }
 
   public findStationById(id: number): Station | null {
-    return this.allStations.getValue().find((station) => station.id === id) ?? null;
+    return this.allStations()?.find((station) => station.id === id) ?? null;
   }
 
-  public getAllStations(): Observable<Station[]> {
-    return this.allStations;
+  public collectedStationConnectionIds(connections: { connection: string }[]): number[] {
+    return connections
+      .map(({ connection }) => this.allStations().find((station) => station.city === connection)?.id)
+      .filter((id): id is number => id !== undefined);
   }
 }
