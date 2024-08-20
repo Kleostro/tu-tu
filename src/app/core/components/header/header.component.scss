@@ -1,9 +1,15 @@
 @import 'variables';
 
+:host {
+  display: flex;
+  width: 100%;
+}
+
 .header-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
 .header {
@@ -13,7 +19,7 @@
   justify-content: space-between;
 
   width: 100%;
-  padding: calc($offset-xxs / 2) $offset-s;
+  padding: calc($offset-xxs / 3.5) $offset-s;
 
   text-align: center;
 }

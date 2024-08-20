@@ -9,9 +9,12 @@
 }
 
 .header {
+  position: fixed;
+  z-index: 3;
   background-color: $gray-200;
 }
 
 .outlet {
   padding: 0 $offset-s;
+  padding-top: $offset-xxl;
 }
