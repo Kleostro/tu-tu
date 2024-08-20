@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 import { Marker, Popup } from 'maplibre-gl';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -14,7 +14,8 @@ import createNewPopupOffsets from '../../utils/createNewPopupOffsets';
 export class MapService {
   private lngLat = new BehaviorSubject({ lng: 0, lat: 0 });
   public newMarker = new BehaviorSubject<Marker | null>(null);
-  private removedMarkerLngLat = new Subject<{ lng: number; lat: number }>();
+  public markers = signal<Marker[]>([]);
+  public removedMarker = new Subject<Marker>();
 
   public createNewMarker({ city, lng, lat }: { city: string; lng: number; lat: number }): void {
     const newMarker = new Marker({ color: MARKER_PARAMS.color })
@@ -27,6 +28,14 @@ export class MapService {
           .setMaxWidth(MARKER_PARAMS.max_width),
       );
     this.newMarker.next(newMarker);
+    this.markers.update((markers) => [...markers, newMarker]);
+  }
+
+  public removeMarker(lngLat: { lng: number; lat: number }): void {
+    const marker = this.markers().find((m) => m.getLngLat().lat === lngLat.lat && m.getLngLat().lng === lngLat.lng);
+    if (marker) {
+      this.removedMarker.next(marker);
+    }
   }
 
   public getLngLat(): BehaviorSubject<{ lng: number; lat: number }> {
@@ -35,13 +44,5 @@ export class MapService {
 
   public setLngLat({ lng, lat }: { lng: number; lat: number }): void {
     this.lngLat.next({ lng, lat });
-  }
-
-  public getRemovedMarker(): Subject<{ lng: number; lat: number }> {
-    return this.removedMarkerLngLat;
-  }
-
-  public removeMarker(lngLat: { lng: number; lat: number }): void {
-    this.removedMarkerLngLat.next(lngLat);
   }
 }

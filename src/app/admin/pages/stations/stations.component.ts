@@ -1,5 +1,4 @@
-import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -12,24 +11,17 @@ import { StationsListComponent } from '../../components/stations-list/stations-l
 @Component({
   selector: 'app-stations',
   standalone: true,
-  imports: [MapComponent, CreateStationFormComponent, StationsListComponent, AsyncPipe],
+  imports: [MapComponent, CreateStationFormComponent, StationsListComponent],
   templateUrl: './stations.component.html',
   styleUrl: './stations.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StationsComponent implements OnInit, OnDestroy {
-  private stationsService = inject(StationsService);
-  private cdr = inject(ChangeDetectorRef);
-  public allStations = this.stationsService.getAllStations();
+  public stationsService = inject(StationsService);
   private subsciption = new Subscription();
 
   public ngOnInit(): void {
-    this.subsciption.add(
-      this.stationsService.getStations().subscribe((stations) => {
-        this.stationsService.allStations.next(stations);
-        this.cdr.detectChanges();
-      }),
-    );
+    this.subsciption.add(this.stationsService.getStations().subscribe());
   }
 
   public ngOnDestroy(): void {

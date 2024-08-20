@@ -19,9 +19,9 @@
         @if (seatsSchema(); as seatsSchema) {
           <div class="right-seats">
             <div class="left-line"></div>
-            @for (rightRow of seatsSchema.rightSeats; track rightRow; let i = $index) {
+            @for (rightRow of seatsSchema.rightSeats; let i = $index; track i) {
               <div class="right-seats-row">
-                @for (rightSeat of rightRow; track rightSeat) {
+                @for (rightSeat of rightRow; let index = $index; track index) {
                   @if (i === seatsSchema.rightSeats.length - 1) {
                     <app-seat
                       [numberSeat]="rightSeat"
@@ -40,7 +40,7 @@
           </div>
           <div class="left-seats">
             <div class="left-line"></div>
-            @for (leftRow of seatsSchema.leftSeats; track leftRow; let i = $index) {
+            @for (leftRow of seatsSchema.leftSeats; let i = $index; track i) {
               <div class="left-seats-row">
                 @for (leftSeat of leftRow; track leftSeat) {
                   @if (i === 0) {

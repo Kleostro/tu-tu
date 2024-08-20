@@ -1,14 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  computed,
-  inject,
-  input,
-  OnDestroy,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -24,10 +14,9 @@ import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { RippleModule } from 'primeng/ripple';
-import { ToastModule } from 'primeng/toast';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 
-import { NewStation, Station } from '@/app/api/models/stations';
+import { NewStation } from '@/app/api/models/stations';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
@@ -43,7 +32,6 @@ import { MapService } from '../../services/map/map.service';
     ReactiveFormsModule,
     RippleModule,
     ButtonModule,
-    ToastModule,
     AutoCompleteModule,
     FormsModule,
   ],
@@ -57,12 +45,8 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
   private stationsService = inject(StationsService);
   private userMessageService = inject(UserMessageService);
   private subscription = new Subscription();
-  private cdr = inject(ChangeDetectorRef);
-
-  public allStations = input.required<Station[]>();
 
   public isStationCreated = signal(false);
-  public allStationNames = computed(() => this.allStations().map((station) => station.city));
   public filteredCountries: string[] = [];
 
   public createStationForm = this.fb.nonNullable.group({
@@ -75,7 +59,7 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
   public filterCountry(event: { originalEvent: Event; query: string }): void {
     this.filteredCountries = [];
 
-    this.allStationNames()?.forEach((city) => {
+    this.stationsService.allStationNames().forEach((city) => {
       if (city.toLowerCase().includes(event.query.toLowerCase())) {
         this.filteredCountries.push(city);
       }
@@ -85,15 +69,10 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
   public addConnection(name = ''): FormGroup<{
     connection: FormControl<string>;
   }> {
-    const connectionControl = this.fb.nonNullable.group(
-      {
-        connection: [name],
-      },
-      { updateOn: 'blur' },
-    );
+    const connectionControl = this.fb.nonNullable.group({ connection: [name] }, { updateOn: 'blur' });
     this.subscription.add(
-      connectionControl.valueChanges.subscribe((value) => {
-        if (value.connection && this.allStationNames()?.includes(value.connection)) {
+      connectionControl.valueChanges.pipe(take(1)).subscribe((value) => {
+        if (value.connection && this.stationsService.allStationNames().includes(value.connection)) {
           this.createStationForm.controls.connections.push(this.addConnection());
         }
       }),
@@ -102,14 +81,9 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
   }
 
   public getValidFormData(): NewStation {
-    const { city, latitude, longitude, connections } = this.createStationForm.getRawValue();
     return {
-      city,
-      latitude,
-      longitude,
-      relations: connections
-        .map((connection) => this.allStations().find((station) => station.city === connection.connection)?.id)
-        .filter((id): id is number => id !== undefined),
+      ...this.createStationForm.getRawValue(),
+      relations: this.stationsService.collectedStationConnectionIds(this.createStationForm.getRawValue().connections),
     };
   }
 
@@ -122,42 +96,39 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
     }
 
     this.isStationCreated.set(true);
-    this.subscription.add(
-      this.stationsService.isStationInCity(this.createStationForm.getRawValue().city).subscribe({
-        next: (isStationInCity) => {
-          if (isStationInCity) {
-            this.submitErrorHandler(new Error(USER_MESSAGE.STATION_EXISTS));
-            return;
-          }
-          this.stationsService.createNewStation(this.getValidFormData()).subscribe({
-            next: this.submitSuccessHandler.bind(this),
-            error: this.submitErrorHandler.bind(this),
-          });
-        },
-      }),
-    );
+
+    if (this.stationsService.isStationInCity(this.createStationForm.getRawValue().city)) {
+      this.submitErrorHandler(USER_MESSAGE.STATION_EXISTS);
+    } else {
+      this.subscription.add(
+        this.stationsService
+          .createNewStation(this.getValidFormData())
+          .pipe(take(1))
+          .subscribe(({ id }) => {
+            if (id) {
+              this.submitSuccessHandler();
+            } else {
+              this.submitErrorHandler(USER_MESSAGE.STATION_CREATED_ERROR);
+            }
+          }),
+      );
+    }
   }
 
   private submitSuccessHandler(): void {
-    this.subscription.add(
-      this.stationsService.getStations().subscribe((stations) => {
-        this.stationsService.allStations.next(stations);
-      }),
-    );
-
+    this.subscription.add(this.stationsService.getStations().pipe(take(1)).subscribe());
     this.mapService.createNewMarker({
       city: this.createStationForm.getRawValue().city,
       lat: this.createStationForm.getRawValue().latitude,
       lng: this.createStationForm.getRawValue().longitude,
     });
-
     this.resetForm();
     this.userMessageService.showSuccessMessage(USER_MESSAGE.STATION_CREATED_SUCCESSFULLY);
   }
 
-  private submitErrorHandler(error: Error): void {
+  private submitErrorHandler(message: string): void {
     this.resetForm();
-    this.userMessageService.showErrorMessage(error.message);
+    this.userMessageService.showErrorMessage(message);
   }
 
   private resetForm(): void {
@@ -179,7 +150,6 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
         });
 
         this.initConnections(lngLat);
-        this.cdr.detectChanges();
       }),
     );
   }
@@ -187,12 +157,11 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
   private initConnections(lngLat: { lng: number; lat: number }): void {
     this.createStationForm.controls.connections.controls = [];
     this.stationsService.findStationByLngLat(lngLat)?.connectedTo.forEach(({ id }) => {
-      const stationById = this.allStations().find((station) => station.id === id);
-      if (stationById) {
-        this.createStationForm.controls.connections.controls.push(this.addConnection(stationById.city));
+      const city = this.stationsService.findStationById(id)?.city;
+      if (city) {
+        this.createStationForm.controls.connections.controls.push(this.addConnection(city));
       }
     });
-
     this.createStationForm.controls.connections.controls.push(this.addConnection());
   }
 

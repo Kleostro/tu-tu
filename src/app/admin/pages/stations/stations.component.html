@@ -1,7 +1,8 @@
 <div class="wrapper">
-  @if (allStations | async; as allStations) {
+  @let allStations = stationsService.allStations();
+  @if (allStations.length) {
     <app-map [allStations]="allStations"></app-map>
-    <app-create-station-form [allStations]="allStations"></app-create-station-form>
+    <app-create-station-form></app-create-station-form>
     <app-stations-list [allStations]="allStations"></app-stations-list>
   }
 </div>

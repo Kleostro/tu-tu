@@ -14,7 +14,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { RippleModule } from 'primeng/ripple';
-import { debounceTime, distinctUntilChanged, map, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, Subscription, take } from 'rxjs';
 
 import { CarriageService } from '@/app/api/carriagesService/carriage.service';
 import { Carriage } from '@/app/api/models/carriage';
@@ -88,9 +88,12 @@ export class UpdateCarriageFormComponent implements OnInit, OnDestroy {
   }
 
   private submitSuccessHandler(): void {
-    this.carriageService.getCarriages().subscribe((carriages) => {
-      this.carriageService.allCarriages.next(carriages);
-    });
+    this.carriageService
+      .getCarriages()
+      .pipe(take(1))
+      .subscribe((carriages) => {
+        this.carriageService.allCarriages.set(carriages);
+      });
     this.isUpdating.set(false);
     this.modalService.closeModal();
     this.userMessageService.showSuccessMessage(USER_MESSAGE.CARRIAGE_UPDATED_SUCCESSFULLY);

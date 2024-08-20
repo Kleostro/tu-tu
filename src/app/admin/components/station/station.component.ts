@@ -34,12 +34,10 @@ export class StationComponent implements OnDestroy {
     this.isStationDeleted.set(true);
     this.subsciption.add(
       this.stationsService.deleteStation(id).subscribe(() => {
-        this.stationsService.getStations().subscribe((stations) => {
-          this.stationsService.allStations.next(stations);
-          this.mapService.removeMarker({ lng: this.station.longitude, lat: this.station.latitude });
-          this.userMessageService.showSuccessMessage(USER_MESSAGE.STATION_DELETED_SUCCESSFULLY);
-          this.isStationDeleted.set(false);
-        });
+        this.mapService.removeMarker({ lng: this.station.longitude, lat: this.station.latitude });
+        this.userMessageService.showSuccessMessage(USER_MESSAGE.STATION_DELETED_SUCCESSFULLY);
+        this.isStationDeleted.set(false);
+        this.stationsService.getStations().subscribe();
       }),
     );
   }

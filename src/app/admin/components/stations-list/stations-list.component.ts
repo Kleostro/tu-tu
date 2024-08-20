@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { Station } from '@/app/api/models/stations';
 
@@ -13,5 +13,5 @@ import { StationComponent } from '../station/station.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StationsListComponent {
-  public allStations = input.required<Station[]>();
+  @Input() public allStations!: Station[];
 }
