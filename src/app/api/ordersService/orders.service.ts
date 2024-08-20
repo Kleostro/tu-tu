@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
+import ENDPOINTS from '../constants/constants';
 import { Order, OrderId, OrderRequest, User } from '../models/order';
 
 @Injectable({
@@ -10,21 +11,20 @@ import { Order, OrderId, OrderRequest, User } from '../models/order';
 })
 export class OrdersService {
   private httpClient = inject(HttpClient);
-  private ORDER_ENDPOINT = 'order';
 
   public getAllOrders(): Observable<Order[]> {
-    return this.httpClient.get<Order[]>(this.ORDER_ENDPOINT);
+    return this.httpClient.get<Order[]>(ENDPOINTS.ORDER);
   }
 
   public makeOrder(order: OrderRequest): Observable<OrderId> {
-    return this.httpClient.post<OrderId>(this.ORDER_ENDPOINT, order);
+    return this.httpClient.post<OrderId>(ENDPOINTS.ORDER, order);
   }
 
   public cancelOrder(orderId: number): Observable<object> {
-    return this.httpClient.delete<object>(`${this.ORDER_ENDPOINT}/${orderId}`);
+    return this.httpClient.delete<object>(`${ENDPOINTS.ORDER}/${orderId}`);
   }
 
   public getAllUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>('users');
+    return this.httpClient.get<User[]>(ENDPOINTS.USERS);
   }
 }

@@ -3,6 +3,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 
 import { Observable, shareReplay, tap } from 'rxjs';
 
+import ENDPOINTS from '../constants/constants';
 import { NewStation, Station } from '../models/stations';
 
 @Injectable({
@@ -10,23 +11,22 @@ import { NewStation, Station } from '../models/stations';
 })
 export class StationsService {
   private httpClient = inject(HttpClient);
-  private STATION_ENDPOINT = 'station';
   public allStations = signal<Station[]>([]);
   public allStationNames = computed(() => this.allStations().map((station) => station.city));
 
   public getStations(): Observable<Station[]> {
-    return this.httpClient.get<Station[]>(this.STATION_ENDPOINT).pipe(
+    return this.httpClient.get<Station[]>(ENDPOINTS.STATION).pipe(
       shareReplay(1),
       tap((stations) => this.allStations.set(stations)),
     );
   }
 
   public createNewStation(newStation: NewStation): Observable<{ id: number }> {
-    return this.httpClient.post<{ id: number }>(this.STATION_ENDPOINT, newStation);
+    return this.httpClient.post<{ id: number }>(ENDPOINTS.STATION, newStation);
   }
 
   public deleteStation(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.STATION_ENDPOINT}/${id}`);
+    return this.httpClient.delete<void>(`${ENDPOINTS.STATION}/${id}`);
   }
 
   public isStationInCity(station: string): boolean {
