@@ -18,9 +18,10 @@
   display: flex;
 
   max-width: 90dvw;
+  min-height: 14rem;
   padding: 1rem 2rem;
 
-  border: $three solid $gray-100;
+  border: $three solid $gray-200;
   border-radius: 2rem;
 }
 

@@ -92,6 +92,7 @@ export class UserInfoComponent {
   }
 
   public editPassword(): void {
+    this.modalService.contentWidth$$.set('50%');
     this.modalService.openModal(this.passwordChangeTemplate, FORM_TITLE);
   }
 }
