@@ -3,6 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
+import ENDPOINTS from '../constants/constants';
 import { Carriage, Code } from '../models/carriage';
 
 @Injectable({
@@ -10,15 +11,15 @@ import { Carriage, Code } from '../models/carriage';
 })
 export class CarriageService {
   private httpClient = inject(HttpClient);
-  private CARRIAGE_ENDPOINT = 'carriage';
+
   public allCarriages = signal<Carriage[]>([]);
 
   public getCarriages(): Observable<Carriage[]> {
-    return this.httpClient.get<Carriage[]>(this.CARRIAGE_ENDPOINT);
+    return this.httpClient.get<Carriage[]>(ENDPOINTS.CARRIAGE);
   }
 
   public createCarriage(carriage: Omit<Carriage, 'code'>): Observable<Code> {
-    return this.httpClient.post<Code>(this.CARRIAGE_ENDPOINT, carriage);
+    return this.httpClient.post<Code>(ENDPOINTS.CARRIAGE, carriage);
   }
 
   public hasCarriageNameInCarriages(name: string): boolean {
@@ -26,7 +27,7 @@ export class CarriageService {
   }
 
   public updateCarriage(carriage: Carriage): Observable<Code> {
-    return this.httpClient.put<Code>(`${this.CARRIAGE_ENDPOINT}/${carriage.code}`, carriage);
+    return this.httpClient.put<Code>(`${ENDPOINTS.CARRIAGE}/${carriage.code}`, carriage);
   }
 
   public setAllCarriages(carriages: Carriage[]): void {

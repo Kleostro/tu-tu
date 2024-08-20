@@ -2,6 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
+import ENDPOINTS from '../constants/constants';
 import { OverriddenHttpErrorResponse } from '../models/errorResponse';
 import { User } from '../models/user';
 import { SignUpService } from './sign-up.service';
@@ -33,7 +34,7 @@ describe('SignUpService', () => {
       done();
     });
 
-    const req = httpTestingController.expectOne('signup');
+    const req = httpTestingController.expectOne(ENDPOINTS.SIGN_UP);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(userData);
     req.flush({});
@@ -53,7 +54,7 @@ describe('SignUpService', () => {
       },
     });
 
-    const req = httpTestingController.expectOne('signup');
+    const req = httpTestingController.expectOne(ENDPOINTS.SIGN_UP);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(userData);
 
