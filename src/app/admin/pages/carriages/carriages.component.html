@@ -7,8 +7,9 @@
     (click)="modalService.openModal(createContent, 'Create new carriage')"
   />
 </div>
-@if (allCarriages | async; as allCarriages) {
-  <app-carriages-list [allCarriages]="allCarriages"></app-carriages-list>
+
+@if (carriageService.allCarriages().length) {
+  <app-carriages-list [allCarriages]="carriageService.allCarriages()"></app-carriages-list>
 }
 
 <ng-template #createContent>

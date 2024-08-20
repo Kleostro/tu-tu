@@ -20,13 +20,11 @@ import { CreateCarriageFormComponent } from '../../components/create-carriage-fo
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarriagesComponent implements OnInit, OnDestroy {
-  private carriageService = inject(CarriageService);
   private cdr = inject(ChangeDetectorRef);
+  public carriageService = inject(CarriageService);
   public modalService = inject(ModalService);
 
   private subsciption = new Subscription();
-
-  public allCarriages = this.carriageService.allCarriages;
 
   public ngOnInit(): void {
     this.subsciption.add(
