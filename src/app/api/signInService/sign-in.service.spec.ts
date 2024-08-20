@@ -2,10 +2,10 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
+import ENDPOINTS from '../constants/constants';
 import { OverriddenHttpErrorResponse } from '../models/errorResponse';
 import { User } from '../models/user';
 import { SignInService } from './sign-in.service';
-import ENDPOINTS from '../constants/constants';
 
 describe('SignInService', () => {
   let service: SignInService;
