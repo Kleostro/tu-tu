@@ -1,8 +1,8 @@
-<div class="modal" [class]="modalService.isModalShow() ? 'show' : ''" (click)="outsideClick($event)">
-  <div class="modal-dialog">
-    <div #modalContent class="modal-content">
+<div class="modal" [class]="modalService.isModalShow$$() ? 'show' : ''" (click)="outsideClick($event)">
+  <div #modalDialog class="modal-dialog">
+    <div class="modal-content">
       <div class="modal-header">
-        <strong class="modal-title">{{ modalService.modalTitle() }}</strong>
+        <strong class="modal-title">{{ modalService.modalTitle$$() }}</strong>
         <button
           pButton
           pRipple
@@ -13,7 +13,7 @@
         ></button>
       </div>
       <div class="modal-body">
-        <ng-container *ngTemplateOutlet="modalService.content()"></ng-container>
+        <ng-container *ngTemplateOutlet="modalService.content$$()"></ng-container>
       </div>
     </div>
   </div>

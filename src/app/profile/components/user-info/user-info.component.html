@@ -1,5 +1,12 @@
 <div class="user-info-form-wrapper">
   <div [formGroup]="userForm" class="user-info-form">
+    <p-button
+      icon="pi pi-key"
+      [rounded]="true"
+      class="password-button"
+      title="Change password"
+      (onClick)="editPassword()"
+    />
     <div>
       @if (!isEditingName()) {
         <p-inputGroup>
@@ -9,7 +16,7 @@
           <span>{{ userForm.get('name')?.value }}</span>
           <button
             type="button"
-            title="Edit"
+            title="Edit name"
             pRipple
             pButton
             icon="pi pi-pen-to-square"
@@ -32,7 +39,7 @@
             pRipple
             [icon]="nameValid ? 'pi pi-check' : 'pi pi-times'"
             [class]="nameValid ? 'p-button-success' : 'p-button-danger'"
-            [title]="nameValid ? 'Save' : 'Cancel'"
+            [title]="nameValid ? 'Save name' : 'Cancel editing'"
             (click)="nameValid ? updateName() : cancelEditingField('isEditingName')"
           ></button>
         </p-inputGroup>
@@ -51,7 +58,7 @@
           <span>{{ userForm.get('email')?.value }}</span>
           <button
             type="button"
-            title="Edit"
+            title="Edit email"
             pRipple
             pButton
             icon="pi pi-pen-to-square"
@@ -72,7 +79,7 @@
             pRipple
             [icon]="emailValid ? 'pi pi-check' : 'pi pi-times'"
             [class]="emailValid ? 'p-button-success' : 'p-button-danger'"
-            [title]="emailValid ? 'Save' : 'Cancel'"
+            [title]="emailValid ? 'Save email' : 'Cancel editing'"
             (click)="emailValid ? updateEmail() : cancelEditingField('isEditingEmail')"
           ></button>
         </p-inputGroup>
@@ -87,3 +94,7 @@
     </div>
   </div>
 </div>
+
+<ng-template #passwordChangeTemplate>
+  <app-password-change></app-password-change>
+</ng-template>

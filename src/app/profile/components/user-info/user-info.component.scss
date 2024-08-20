@@ -12,6 +12,8 @@
 }
 
 .user-info-form {
+  position: relative;
+
   display: flex;
   flex-direction: column;
   gap: $offset-m;
@@ -20,10 +22,16 @@
   width: $offset-xxxl * 5;
   height: fit-content;
   min-height: $offset-xxxl * 3.5;
-  padding: $offset-l;
+  padding: $offset-l $offset-l $offset-l * 2;
 
   background-color: $gray-300-tr;
   box-shadow: $shadow-200;
+}
+
+.password-button {
+  position: absolute;
+  right: $offset-l;
+  bottom: $offset-m;
 }
 
 .user-info-form-wrapper span,

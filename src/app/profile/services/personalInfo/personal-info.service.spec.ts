@@ -63,14 +63,14 @@ describe('PersonalInfoService', () => {
 
     (localStorageServiceMock.getValueByKey as jest.Mock).mockImplementation(() => '');
 
-    expect(service.currentUserName()).toBe('');
-    expect(service.currentUserEmail()).toBe('');
+    expect(service.currentUserName$$()).toBe('');
+    expect(service.currentUserEmail$$()).toBe('');
   });
 
   it('should set user info', () => {
     service.setUserInfo('new.email@example.com', 'New Name');
-    expect(service.currentUserEmail()).toBe('new.email@example.com');
-    expect(service.currentUserName()).toBe('New Name');
+    expect(service.currentUserEmail$$()).toBe('new.email@example.com');
+    expect(service.currentUserName$$()).toBe('New Name');
   });
 
   it('should update profile', (done) => {
@@ -82,8 +82,8 @@ describe('PersonalInfoService', () => {
     expect(profileServiceMock.updateProfile).toHaveBeenCalledWith('updated.email@example.com', 'Updated Name');
 
     setTimeout(() => {
-      expect(service.currentUserEmail()).toBe('updated.email@example.com');
-      expect(service.currentUserName()).toBe('Updated Name');
+      expect(service.currentUserEmail$$()).toBe('updated.email@example.com');
+      expect(service.currentUserName$$()).toBe('Updated Name');
       expect(localStorageServiceMock.updateCurrentUser).toHaveBeenCalledWith(
         'updated.email@example.com',
         'Updated Name',

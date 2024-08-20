@@ -18,6 +18,12 @@
   text-align: center;
 }
 
+.navigation {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+}
+
 .link-back {
   display: flex;
   width: $offset-xxl;

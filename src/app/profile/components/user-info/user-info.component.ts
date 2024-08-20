@@ -1,18 +1,19 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
-import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 
+import { ModalService } from '@/app/shared/services/modal/modal.service';
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 import { REGEX } from '@/app/shared/validators/constants/constants';
 
 import { PersonalInfoService } from '../../services/personalInfo/personal-info.service';
-import { formField, FormFieldType } from './constants/constants';
+import { PasswordChangeComponent } from '../password-change/password-change.component';
+import { FORM_TITLE, formField, FormFieldType } from './constants/constants';
 
 @Component({
   selector: 'app-user-info',
@@ -24,23 +25,26 @@ import { formField, FormFieldType } from './constants/constants';
     InputGroupAddonModule,
     InputTextModule,
     ButtonModule,
-    FloatLabelModule,
+    PasswordChangeComponent,
   ],
   templateUrl: './user-info.component.html',
   styleUrl: './user-info.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserInfoComponent {
+  @ViewChild('passwordChangeTemplate') private passwordChangeTemplate!: TemplateRef<unknown>;
+
   private fb = inject(FormBuilder);
   private userMessageService = inject(UserMessageService);
-  public personalInfoService = inject(PersonalInfoService);
+  private personalInfoService = inject(PersonalInfoService);
+  private modalService = inject(ModalService);
 
   public isEditingName = signal(false);
   public isEditingEmail = signal(false);
 
   public userForm = this.fb.nonNullable.group({
-    name: this.fb.control(this.personalInfoService.currentUserName(), [Validators.required.bind(this)]),
-    email: this.fb.control(this.personalInfoService.currentUserEmail(), [
+    name: this.fb.control(this.personalInfoService.currentUserName$$(), [Validators.required.bind(this)]),
+    email: this.fb.control(this.personalInfoService.currentUserEmail$$(), [
       Validators.required.bind(this),
       Validators.email.bind(this),
       Validators.pattern(REGEX),
@@ -69,7 +73,7 @@ export class UserInfoComponent {
       const name = this.userForm.controls['name'].value;
       const email = this.userForm.controls['email'].valid
         ? this.userForm.controls['email'].value
-        : this.personalInfoService.currentUserEmail();
+        : this.personalInfoService.currentUserEmail$$();
       this.updateProfile(email, name);
     }
   }
@@ -82,8 +86,12 @@ export class UserInfoComponent {
       const email = this.userForm.controls['email'].value;
       const name = this.userForm.controls['name'].valid
         ? this.userForm.controls['name'].value
-        : this.personalInfoService.currentUserName();
+        : this.personalInfoService.currentUserName$$();
       this.updateProfile(email, name);
     }
+  }
+
+  public editPassword(): void {
+    this.modalService.openModal(this.passwordChangeTemplate, FORM_TITLE);
   }
 }
