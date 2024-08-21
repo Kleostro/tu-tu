@@ -8,8 +8,8 @@
   width: 100%;
   padding: 1rem;
 
-  background: $gray-200;
-  border: $three solid $gray-100;
+  background: $gray-100;
+  border: $three solid $gray-400;
   border-radius: 0.5rem;
 }
 
@@ -26,6 +26,11 @@
   align-items: center;
   align-self: flex-start;
   justify-content: center;
+
+  width: 2rem;
+  height: 2rem;
+
+  border-radius: 0.4rem;
 }
 
 .connections {

@@ -14,21 +14,25 @@
 }
 
 .car-bottom {
-  overflow-x: scroll;
   display: flex;
 
   max-width: 90dvw;
-  padding: 1rem 2rem;
+  min-height: 14rem;
+  padding: 0 2rem 1rem;
 
-  border: $three solid $gray-100;
+  border: $three solid $gray-200;
   border-radius: 2rem;
 }
 
 .seats {
+  overflow: scroll;
   display: flex;
   flex-direction: column;
   gap: 3rem;
+
   width: 100%;
+  max-height: 20rem;
+  padding-top: 1rem;
 }
 
 .title {

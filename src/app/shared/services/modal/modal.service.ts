@@ -7,6 +7,8 @@ export class ModalService {
   public isModalShow$$ = signal(false);
   public content$$ = signal<TemplateRef<unknown> | null>(null);
   public modalTitle$$ = signal('');
+  public contentWidth$$ = signal('80%');
+  public offsetTop$$ = signal('1rem');
 
   public openModal(content: TemplateRef<unknown>, title = ''): void {
     this.content$$.set(content);
@@ -19,6 +21,8 @@ export class ModalService {
     this.content$$.set(null);
     this.modalTitle$$.set('');
     this.isModalShow$$.set(false);
+    this.contentWidth$$.set('80%');
+    this.offsetTop$$.set('1rem');
     document.body.style.overflowY = '';
   }
 }

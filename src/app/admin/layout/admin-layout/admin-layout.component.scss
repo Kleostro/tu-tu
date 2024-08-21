@@ -9,9 +9,13 @@
 }
 
 .header {
+  position: fixed;
+  z-index: 3;
+  max-width: calc(100% - 12rem);
   background-color: $gray-200;
 }
 
 .outlet {
   padding: 0 $offset-s;
+  padding-top: $offset-xxl;
 }

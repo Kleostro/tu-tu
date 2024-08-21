@@ -4,7 +4,6 @@
 :host {
   width: 12rem;
   background-color: $gray-200;
-  border-right: $one solid $gray-100;
 
   ::ng-deep .p-element {
     display: flex;
@@ -37,7 +36,7 @@
   align-items: center;
 
   width: 100%;
-  padding: $offset-xs $offset-xs;
+  padding: calc($offset-xs * 0.96) $offset-xs;
 
   font-size: $font-size-xs;
   color: $white-100;
