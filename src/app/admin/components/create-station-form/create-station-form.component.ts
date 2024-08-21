@@ -72,7 +72,7 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
     const connectionControl = this.fb.nonNullable.group({ connection: [name] }, { updateOn: 'blur' });
     this.subscription.add(
       connectionControl.valueChanges.pipe(take(1)).subscribe((value) => {
-        if (value.connection && this.stationsService.allStationNames().includes(value.connection)) {
+        if (value.connection) {
           this.createStationForm.controls.connections.push(this.addConnection());
         }
       }),

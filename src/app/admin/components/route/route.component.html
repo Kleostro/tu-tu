@@ -3,7 +3,13 @@
     <div class="top">
       <strong>Route {{ route.id }}</strong>
       <div class="btn-wrapper">
-        <p-button icon="pi pi-pencil" [rounded]="true" severity="success" />
+        <p-button
+          icon="pi pi-pencil"
+          [rounded]="true"
+          severity="success"
+          (click)="routeService.currentRoute.set(route)"
+          (click)="openRouteForm.emit()"
+        />
         <p-button icon="pi pi-car" [rounded]="true" severity="warning" />
         <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (onClick)="openDeleteConfirm.emit(route.id)" />
       </div>

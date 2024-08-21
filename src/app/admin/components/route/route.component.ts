@@ -21,4 +21,5 @@ export class RouteComponent {
   public route = input<RouteResponse | null>(null);
 
   @Output() public openDeleteConfirm: EventEmitter<number> = new EventEmitter<number>();
+  @Output() public openRouteForm: EventEmitter<void> = new EventEmitter<void>();
 }

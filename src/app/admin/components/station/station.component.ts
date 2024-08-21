@@ -21,7 +21,6 @@ import { MapService } from '../../services/map/map.service';
 })
 export class StationComponent implements OnDestroy {
   private userMessageService = inject(UserMessageService);
-
   public stationsService = inject(StationsService);
   public mapService = inject(MapService);
   public isStationDeleted = signal(false);

@@ -1,6 +1,10 @@
 @if (routes().length) {
   @for (route of routes(); track route.id) {
-    <app-route [route]="route" (openDeleteConfirm)="handleOpenDeleteConfirm($event)"></app-route>
+    <app-route
+      [route]="route"
+      (openDeleteConfirm)="handleOpenDeleteConfirm($event)"
+      (openRouteForm)="openRouteForm.emit()"
+    ></app-route>
   }
 }
 
