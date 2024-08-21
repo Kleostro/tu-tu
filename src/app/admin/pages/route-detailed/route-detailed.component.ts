@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
@@ -12,4 +12,6 @@ import { RippleModule } from 'primeng/ripple';
   styleUrl: './route-detailed.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RouteDetailedComponent {}
+export class RouteDetailedComponent {
+  @Input() public id = '';
+}
