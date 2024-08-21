@@ -1,5 +1,24 @@
 @if (routes().length) {
   @for (route of routes(); track route.id) {
-    <app-route [route]="route"></app-route>
+    <app-route [route]="route" (openDeleteConfirm)="handleOpenDeleteConfirm($event)"></app-route>
   }
 }
+
+<ng-template #deleteRouteConfirm>
+  <div class="deleteRouteWrapper">
+    <p>Are you sure you want to delete this route?</p>
+    <div class="btn-wrapper">
+      <p-button
+        [icon]="isRouteDeleted() ? 'pi pi-spin pi-cog' : 'pi pi-times'"
+        [disabled]="isRouteDeleted()"
+        (click)="modalService.closeModal()"
+      ></p-button>
+      <p-button
+        [icon]="isRouteDeleted() ? 'pi pi-spin pi-cog' : 'pi pi-trash'"
+        severity="danger"
+        [disabled]="isRouteDeleted()"
+        (click)="deleteRoute()"
+      ></p-button>
+    </div>
+  </div>
+</ng-template>
