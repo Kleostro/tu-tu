@@ -116,6 +116,7 @@ export class RouteFormComponent {
     });
 
     const lastStationControlValue = this.getPreviousControlValue();
+    this.removeStationControlsAfterCurrentControl();
     if (lastStationControlValue) {
       const currentStation = this.stationsService.findStationByCity(lastStationControlValue);
       if (currentStation) {
@@ -244,5 +245,10 @@ export class RouteFormComponent {
     while (stationsArray.length > 1) {
       stationsArray.removeAt(stationsArray.length - 1);
     }
+  }
+
+  private removeStationControlsAfterCurrentControl(): void {
+    const stationsArray = this.routeForm.controls.stations.controls.slice(0, this.currentStationControl() + 1);
+    this.routeForm.controls.stations.controls = stationsArray;
   }
 }
