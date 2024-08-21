@@ -1,0 +1,66 @@
+@if (carriage(); as carriage) {
+  <div class="car-wrapper">
+    <div class="car-top">
+      <strong class="title">{{ carriage.name | uppercase }}</strong>
+      <span class="seats-count">{{ (carriage.leftSeats + carriage.rightSeats) * carriage.rows }} seats</span>
+      @if (isEditable()) {
+        <p-button
+          [rounded]="true"
+          class="edit-btn"
+          severity="success"
+          icon="pi pi-pencil"
+          (click)="openEditModal.emit(carriage)"
+        />
+      }
+    </div>
+
+    <div class="car-bottom">
+      <div class="seats">
+        @if (seatsSchema(); as seatsSchema) {
+          <div class="right-seats">
+            <div class="left-line"></div>
+            @for (rightRow of seatsSchema.rightSeats; let i = $index; track i) {
+              <div class="right-seats-row">
+                @for (rightSeat of rightRow; let index = $index; track index) {
+                  @if (i === seatsSchema.rightSeats.length - 1) {
+                    <app-seat
+                      [numberSeat]="rightSeat"
+                      [classes]="['right', 'free-seat', 'first-seat', isInteractive() ? 'interactive' : '']"
+                    ></app-seat>
+                  } @else {
+                    <app-seat
+                      [numberSeat]="rightSeat"
+                      [classes]="['right', 'free-seat', isInteractive() ? 'interactive' : '']"
+                    ></app-seat>
+                  }
+                }
+              </div>
+            }
+            <div class="right-line"></div>
+          </div>
+          <div class="left-seats">
+            <div class="left-line"></div>
+            @for (leftRow of seatsSchema.leftSeats; let i = $index; track i) {
+              <div class="left-seats-row">
+                @for (leftSeat of leftRow; track leftSeat) {
+                  @if (i === 0) {
+                    <app-seat
+                      [numberSeat]="leftSeat"
+                      [classes]="['left', 'free-seat', 'first-seat', isInteractive() ? 'interactive' : '']"
+                    ></app-seat>
+                  } @else {
+                    <app-seat
+                      [numberSeat]="leftSeat"
+                      [classes]="['left', 'free-seat', isInteractive() ? 'interactive' : '']"
+                    ></app-seat>
+                  }
+                }
+              </div>
+            }
+            <div class="right-line"></div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

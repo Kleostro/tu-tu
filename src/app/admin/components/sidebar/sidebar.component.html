@@ -1,0 +1,10 @@
+<ul class="links">
+  @for (link of navigationLinks; track link) {
+    <li>
+      <a [routerLink]="link.path" class="p-button font-bold link" routerLinkActive="active">
+        <span class="pi" [class]="link.icon"></span>
+        <span>{{ link.name }}</span>
+      </a>
+    </li>
+  }
+</ul>

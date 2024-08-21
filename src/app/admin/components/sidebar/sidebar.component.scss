@@ -1,0 +1,57 @@
+@import 'variables';
+@import 'mixins';
+
+:host {
+  width: 12rem;
+  background-color: $gray-200;
+
+  ::ng-deep .p-element {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: $offset-ms;
+    height: $offset-ms;
+    padding: 0;
+
+    font-size: $font-size-xs;
+
+    &.link-back {
+      margin: $offset-xxs;
+      margin-right: 0;
+    }
+  }
+}
+
+.links {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.link {
+  display: flex;
+  gap: $offset-xxs;
+  align-items: center;
+
+  width: 100%;
+  padding: calc($offset-xs * 0.96) $offset-xs;
+
+  font-size: $font-size-xs;
+  color: $white-100;
+  text-align: left;
+
+  border: 0;
+  border-radius: 0;
+
+  &:focus {
+    box-shadow: none;
+  }
+
+  &.active {
+    pointer-events: none;
+    color: $black-100;
+    background-color: $gray-100;
+  }
+}

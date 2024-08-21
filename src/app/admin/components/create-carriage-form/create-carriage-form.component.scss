@@ -1,0 +1,17 @@
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.submit {
+  align-self: end;
+  padding: 0.5rem 1rem;
+}

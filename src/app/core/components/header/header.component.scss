@@ -1,0 +1,36 @@
+@import 'variables';
+
+:host {
+  display: flex;
+  width: 100%;
+}
+
+.header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  padding: calc($offset-xxs / 3.5) $offset-s;
+
+  text-align: center;
+}
+
+.navigation {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.link-back {
+  display: flex;
+  width: $offset-xxl;
+}

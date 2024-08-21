@@ -1,0 +1,8 @@
+<div class="wrapper">
+  @let allStations = stationsService.allStations();
+  @if (allStations.length) {
+    <app-map [allStations]="allStations"></app-map>
+    <app-create-station-form></app-create-station-form>
+    <app-stations-list [allStations]="allStations"></app-stations-list>
+  }
+</div>

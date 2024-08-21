@@ -1,0 +1,13 @@
+@import 'variables';
+
+.links {
+  display: flex;
+  flex-direction: row;
+  gap: $offset-s;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.material-icons {
+  font-size: $material-icon-size;
+}

@@ -26,7 +26,6 @@ const showMenu = () => {
         { name: 'Interface', value: 'interface' },
         { name: 'Directive', value: 'directive' },
         { name: 'Module', value: 'module' },
-        { name: 'Guard', value: 'guard' },
         { name: 'Enum', value: 'enum' },
         { name: 'Pipe', value: 'pipe' },
         { name: 'Service', value: 'service' },

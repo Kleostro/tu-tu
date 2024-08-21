@@ -1,5 +1,21 @@
 * {
   box-sizing: border-box;
+
+  &::-webkit-scrollbar {
+    width: 0.2rem;
+    height: 0.2rem;
+    border-radius: 0.2rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 0.2rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    background-color: #757575;
+    border-radius: 0.2rem;
+  }
 }
 
 *::before,
@@ -17,12 +33,19 @@ html {
 
 html,
 body {
-  scroll-behavior: smooth;
   height: 100%;
 }
 
 body {
   margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .hidden {

@@ -1,0 +1,27 @@
+<ul class="links">
+  @if (authService.isLoggedIn$$() === false) {
+    @for (link of authLinks; track link) {
+      <li>
+        <p-button [routerLink]="link.path" [icon]="link.icon" text [title]="link.title" />
+      </li>
+    }
+  } @else if (authService.isLoggedIn$$() === true) {
+    @for (link of userLinks; track link) {
+      <li>
+        <p-button [routerLink]="link.path" [icon]="link.icon" text [title]="link.title" />
+      </li>
+    }
+    <li>
+      <p-button [routerLink]="userLink.path" text [title]="userLink.title">
+        <span class="material-icons">{{ userLink.icon }}</span>
+      </p-button>
+    </li>
+    @if (authService.isAdmin$$()) {
+      <li>
+        <p-button [routerLink]="adminLink.path" text [title]="adminLink.title">
+          <span class="material-icons">{{ adminLink.icon }}</span>
+        </p-button>
+      </li>
+    }
+  }
+</ul>

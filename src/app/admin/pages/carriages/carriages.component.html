@@ -1,0 +1,17 @@
+<div class="top">
+  <p-button
+    [rounded]="true"
+    class="create-btn"
+    severity="success"
+    icon="pi pi-plus"
+    (click)="modalService.openModal(createContent, 'Create new carriage')"
+  />
+</div>
+
+@if (carriageService.allCarriages().length) {
+  <app-carriages-list [allCarriages]="carriageService.allCarriages()"></app-carriages-list>
+}
+
+<ng-template #createContent>
+  <app-create-carriage-form></app-create-carriage-form>
+</ng-template>

@@ -1,1 +1,8 @@
-<router-outlet></router-outlet>
+@if (!routingService.isAdminPage$$()) {
+  <app-header></app-header>
+}
+
+<p-toast position="bottom-left" />
+<app-modal></app-modal>
+
+<router-outlet />

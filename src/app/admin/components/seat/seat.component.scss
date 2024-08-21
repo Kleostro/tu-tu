@@ -1,0 +1,165 @@
+@import 'variables';
+@import 'mixins';
+
+.seat {
+  pointer-events: none;
+  cursor: auto;
+  user-select: none;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-bottom: 0.5rem;
+
+  filter: grayscale(0.8);
+  border-radius: 0.5rem;
+
+  transition:
+    filter 0.1s ease-in,
+    scale 0.1s ease-in;
+
+  &::before {
+    content: '';
+
+    position: absolute;
+
+    height: calc(100% + $offset-xxs);
+
+    border: $two solid #ddd;
+    border-radius: $offset-xxs;
+  }
+}
+
+.left {
+  &.seat {
+    &::before {
+      top: -0.2rem;
+      right: -0.2rem;
+
+      width: calc(50% + 0.2rem);
+
+      border-left: unset;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &.first-seat {
+      &::before {
+        top: -0.2rem;
+        left: -0.2rem;
+
+        width: calc(50% + 0.2rem);
+
+        border: $two solid #ddd;
+        border-right: unset;
+        border-radius: $offset-xxs;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    &.free-seat {
+      &::before {
+        border-color: $main-color;
+      }
+    }
+
+    &.busy-seat {
+      &::before {
+        border-color: $gray-200;
+      }
+    }
+
+    &.selected-seat {
+      &::before {
+        border-color: #f7e40b;
+      }
+    }
+  }
+}
+
+.right {
+  &.seat {
+    &::before {
+      top: -0.2rem;
+      left: -0.2rem;
+
+      width: calc(50% + 0.2rem);
+
+      border: $two solid #ddd;
+      border-right: unset;
+      border-radius: $offset-xxs;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &.first-seat {
+      &::before {
+        top: -0.2rem;
+        right: -0.2rem;
+        left: unset;
+
+        width: calc(50% + 0.2rem);
+
+        border: $two solid #ddd;
+        border-left: unset;
+        border-radius: $offset-xxs;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+
+    &.free-seat {
+      &::before {
+        border-color: $main-color;
+      }
+    }
+
+    &.busy-seat {
+      &::before {
+        border-color: $gray-200;
+      }
+    }
+
+    &.selected-seat {
+      &::before {
+        border-color: #f7e40b;
+      }
+    }
+  }
+}
+
+.free-seat {
+  color: $white-100;
+  background-color: $main-color;
+}
+
+.busy-seat {
+  pointer-events: none;
+  color: $black-100;
+  background-color: $gray-200;
+}
+
+.selected-seat {
+  color: $black-100;
+  background-color: #f7e40b;
+}
+
+.interactive {
+  pointer-events: all;
+  cursor: pointer;
+  filter: grayscale(0);
+
+  @include hover {
+    filter: grayscale(0) brightness(0.9);
+  }
+
+  &:active {
+    scale: 0.9;
+  }
+}

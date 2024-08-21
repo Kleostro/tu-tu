@@ -1,0 +1,71 @@
+@import 'variables';
+
+.user-info-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  max-width: 100%;
+  height: 90%;
+  margin: 0 auto;
+}
+
+.user-info-form {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: $offset-m;
+  justify-content: center;
+
+  width: $offset-xxxl * 5;
+  height: fit-content;
+  min-height: $offset-xxxl * 3.5;
+  padding: $offset-l $offset-l $offset-l * 2;
+
+  background-color: $gray-300-tr;
+  box-shadow: $shadow-200;
+}
+
+.password-button {
+  position: absolute;
+  right: $offset-l;
+  bottom: $offset-m;
+}
+
+.user-info-form-wrapper span,
+.user-info-form-wrapper input {
+  position: relative;
+
+  display: inline-block;
+
+  box-sizing: border-box;
+  width: 100%;
+  padding: $offset-xxs;
+
+  font-size: $font-size-s;
+  color: $gray-700;
+  word-break: break-all;
+
+  background-color: $white-100;
+  border: 1px solid $gray-200;
+}
+
+.user-info-form-wrapper input:active,
+.user-info-form-wrapper input:focus {
+  color: $black-100;
+}
+
+.user-info-form-wrapper button {
+  width: $offset-ml;
+}
+
+.user-info-form-wrapper span {
+  cursor: default;
+}
+
+.p-error {
+  position: absolute;
+  padding: $offset-xxs 0;
+}
