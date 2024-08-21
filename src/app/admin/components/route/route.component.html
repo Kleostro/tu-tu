@@ -13,9 +13,11 @@
         <a
           class="p-button"
           pButton
+          pRipple
           icon="pi pi-car"
           [rounded]="true"
           severity="warning"
+          [style.color]="'white'"
           [routerLink]="'/admin/routes/' + route.id"
         ></a>
         <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (onClick)="openDeleteConfirm.emit(route.id)" />
