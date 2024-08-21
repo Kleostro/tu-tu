@@ -15,4 +15,5 @@ export const USER_MESSAGE = {
   PROFILE_UPDATED_ERROR: "We couldn't update your profile. Please try again.",
   PASSWORD_CHANGED_SUCCESSFULLY: 'Password changed successfully!',
   PASSWORD_CHANGED_ERROR: "We couldn't change your password. Please try again.",
+  ROUTE_DELETED_SUCCESSFULLY: 'Route deleted successfully!',
 };

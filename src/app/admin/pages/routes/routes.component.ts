@@ -18,6 +18,7 @@ import { RoutesListComponent } from '../../components/routes-list/routes-list.co
 export class RoutesComponent implements OnInit, OnDestroy {
   public routeService = inject(RouteService);
   public stationsService = inject(StationsService);
+
   private subscription = new Subscription();
 
   public ngOnInit(): void {
