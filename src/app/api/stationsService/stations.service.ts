@@ -41,9 +41,17 @@ export class StationsService {
     return this.allStations()?.find((station) => station.id === id) ?? null;
   }
 
+  public findStationByCity(city: string): Station | null {
+    return this.allStations()?.find((station) => station.city.toLowerCase() === city.toLowerCase()) ?? null;
+  }
+
   public collectedStationConnectionIds(connections: { connection: string }[]): number[] {
     return connections
       .map(({ connection }) => this.allStations().find((station) => station.city === connection)?.id)
       .filter((id): id is number => id !== undefined);
+  }
+
+  public collectedStationIds(stations: Station[]): number[] {
+    return stations.map((station) => station?.id);
   }
 }
