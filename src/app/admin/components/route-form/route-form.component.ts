@@ -68,7 +68,7 @@ export class RouteFormComponent {
   }> {
     const stationControl = this.fb.nonNullable.group({ station: [name] }, { updateOn: 'blur' });
     this.subscription.add(
-      stationControl.valueChanges.pipe(take(1)).subscribe((value) => {
+      stationControl.valueChanges.subscribe((value) => {
         if (value.station) {
           this.routeForm.controls.stations.push(this.addStation());
         }
@@ -106,6 +106,7 @@ export class RouteFormComponent {
   public filterStations(event: { originalEvent: Event; query: string }): void {
     this.filteredStations.set([]);
     this.routeForm.controls.stations.updateValueAndValidity();
+    this.removeStationControlsBelowCurrentControl();
 
     const stations: string[] = [];
 
@@ -116,7 +117,6 @@ export class RouteFormComponent {
     });
 
     const lastStationControlValue = this.getPreviousControlValue();
-    this.removeStationControlsAfterCurrentControl();
     if (lastStationControlValue) {
       const currentStation = this.stationsService.findStationByCity(lastStationControlValue);
       if (currentStation) {
@@ -247,8 +247,9 @@ export class RouteFormComponent {
     }
   }
 
-  private removeStationControlsAfterCurrentControl(): void {
-    const stationsArray = this.routeForm.controls.stations.controls.slice(0, this.currentStationControl() + 1);
+  private removeStationControlsBelowCurrentControl(): void {
+    const stationsArray = this.routeForm.controls.stations.controls;
+    stationsArray.splice(this.currentStationControl() + 1);
     this.routeForm.controls.stations.controls = stationsArray;
   }
 }
