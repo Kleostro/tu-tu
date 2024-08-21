@@ -1,0 +1,32 @@
+@import 'variables';
+
+.scroll-to-top-button {
+  position: fixed;
+  z-index: 1;
+  bottom: $offset-s;
+  left: $offset-s;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: $offset-l;
+  height: $offset-l;
+
+  color: $white-100;
+
+  background-color: $main-color;
+  border: none;
+  border-radius: 50%;
+
+  transition:
+    transform 0.2s,
+    opacity 0.2s,
+    visibility 0.2s;
+
+  &.hidden {
+    transform: scale(0);
+    visibility: hidden;
+    opacity: 0;
+  }
+}
