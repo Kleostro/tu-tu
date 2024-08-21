@@ -1,1 +1,3 @@
-<p>routes works!</p>
+@if (routeService.allRoutes().length && stationsService.allStations().length) {
+  <app-routes-list [routes]="routeService.allRoutes()" [stations]="stationsService.allStations()"></app-routes-list>
+}

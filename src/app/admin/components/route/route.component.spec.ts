@@ -1,19 +1,19 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RoutesComponent } from './routes.component';
+import { RouteComponent } from './route.component';
 
-describe('RoutesComponent', () => {
-  let component: RoutesComponent;
-  let fixture: ComponentFixture<RoutesComponent>;
+describe('RouteComponent', () => {
+  let component: RouteComponent;
+  let fixture: ComponentFixture<RouteComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RoutesComponent],
+      imports: [RouteComponent],
       providers: [provideHttpClient()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RoutesComponent);
+    fixture = TestBed.createComponent(RouteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

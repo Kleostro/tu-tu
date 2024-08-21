@@ -1,0 +1,5 @@
+@if (routes().length) {
+  @for (route of routes(); track route.id) {
+    <app-route [route]="route"></app-route>
+  }
+}

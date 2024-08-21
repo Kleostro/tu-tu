@@ -1,0 +1,38 @@
+<div class="wrapper">
+  <div class="top">
+    <strong>Route {{ route()?.id }}</strong>
+  </div>
+  <div class="bottom">
+    @if (route()?.path?.length; as length) {
+      <div>
+        <strong>Cities:</strong>
+        <p>
+          @for (path of route()?.path; let i = $index; track i) {
+            @if (stationsService.findStationById(path)?.city; as city) {
+              @if (i < length - 1) {
+                {{ stationsService.findStationById(path)?.city }} -
+              } @else {
+                {{ stationsService.findStationById(path)?.city }}
+              }
+            }
+          }
+        </p>
+      </div>
+    }
+
+    @if (route()?.carriages?.length; as length) {
+      <div>
+        <strong>Carriage Types:</strong>
+        <p>
+          @for (carriage of route()?.carriages; let i = $index; track i) {
+            @if (i < length - 1) {
+              {{ carriage }} -
+            } @else {
+              {{ carriage }}
+            }
+          }
+        </p>
+      </div>
+    }
+  </div>
+</div>
