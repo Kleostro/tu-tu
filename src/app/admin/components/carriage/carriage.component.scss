@@ -14,7 +14,7 @@
 }
 
 .car-bottom {
-  overflow-x: scroll;
+  overflow: scroll;
   display: flex;
 
   max-width: 90dvw;
@@ -26,10 +26,13 @@
 }
 
 .seats {
+  overflow: scroll;
   display: flex;
   flex-direction: column;
   gap: 3rem;
+
   width: 100%;
+  max-height: 20rem;
 }
 
 .title {

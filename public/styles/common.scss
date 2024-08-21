@@ -1,5 +1,22 @@
 * {
   box-sizing: border-box;
+
+  &::-webkit-scrollbar {
+    width: 0.2rem;
+    height: 0.2rem;
+    border-radius: 0.2rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    // background: #ff2;
+    border-radius: 0.2rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    background-color: #757575;
+    border-radius: 0.2rem;
+  }
 }
 
 *::before,

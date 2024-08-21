@@ -33,9 +33,11 @@
 .modal-content {
   position: relative;
 
+  overflow: scroll;
   display: flex;
   flex-direction: column;
 
+  max-height: 90dvh;
   padding: 3rem;
 
   background-color: $white-100;
