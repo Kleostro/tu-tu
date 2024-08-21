@@ -11,12 +11,14 @@
       <p-button
         [icon]="isRouteDeleted() ? 'pi pi-spin pi-cog' : 'pi pi-times'"
         [disabled]="isRouteDeleted()"
+        [rounded]="true"
         (click)="modalService.closeModal()"
       ></p-button>
       <p-button
         [icon]="isRouteDeleted() ? 'pi pi-spin pi-cog' : 'pi pi-trash'"
         severity="danger"
         [disabled]="isRouteDeleted()"
+        [rounded]="true"
         (click)="deleteRoute()"
       ></p-button>
     </div>
