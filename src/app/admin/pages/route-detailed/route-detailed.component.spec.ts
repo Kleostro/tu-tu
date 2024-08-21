@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 
 import { RouteDetailedComponent } from './route-detailed.component';
 
@@ -9,6 +10,7 @@ describe('RouteDetailedComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouteDetailedComponent],
+      providers: [{ provide: ActivatedRoute, useValue: {} }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RouteDetailedComponent);
