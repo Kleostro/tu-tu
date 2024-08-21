@@ -1,20 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { firstValueFrom } from 'rxjs';
 
-import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
-import { SignInResponse } from '@/app/api/models/signInResponse';
 import { User } from '@/app/api/models/user';
-import { SignInService } from '@/app/api/signInService/sign-in.service';
-import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
-import { PersonalInfoService } from '@/app/profile/services/personalInfo/personal-info.service';
-import { APP_PATH } from '@/app/shared/constants/routes';
 import { PASSWORD_MIN_LENGTH, REGEX } from '@/app/shared/validators/constants/constants';
 import { minTrimmedLengthValidator } from '@/app/shared/validators/validators';
 
@@ -29,10 +22,6 @@ import { AuthService } from '../../services/auth-service/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
-  private signInService = inject(SignInService);
-  private localStorageService = inject(LocalStorageService);
-  private personalInfoService = inject(PersonalInfoService);
-  private router = inject(Router);
   private fb = inject(FormBuilder);
 
   public authService = inject(AuthService);
@@ -51,17 +40,7 @@ export class LoginComponent {
 
   public submitForm(): void {
     if (this.loginForm.valid) {
-      firstValueFrom(this.signInService.signIn(this.userData))
-        .then((data: SignInResponse) => {
-          const { email } = this.userData;
-          this.authService.setLoginSignals(this.userData);
-          this.personalInfoService.setUserInfo(email);
-          this.localStorageService.saveCurrentUser(email, data.token);
-          this.router.navigate([APP_PATH.DEFAULT]);
-        })
-        .catch((err: OverriddenHttpErrorResponse) => {
-          this.loginForm.setErrors({ [err.error.reason]: true });
-        });
+      this.authService.loginUser(this.userData, this.loginForm);
     } else {
       Object.values(this.loginForm.controls).forEach((control) => {
         if (control.invalid) {

@@ -1,24 +1,31 @@
 import { inject, Injectable, OnDestroy, signal } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 
 import { ADMIN_CREDENTIALS } from '@/app/admin/constants/adminCredentials';
 import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
+import { SignInResponse } from '@/app/api/models/signInResponse';
 import { User } from '@/app/api/models/user';
+import { SignInService } from '@/app/api/signInService/sign-in.service';
 import STORE_KEYS from '@/app/core/constants/store';
 import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
-import { APP_ROUTE } from '@/app/shared/constants/routes';
+import { PersonalInfoService } from '@/app/profile/services/personalInfo/personal-info.service';
+import { APP_PATH, APP_ROUTE } from '@/app/shared/constants/routes';
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
 import { SignUpService } from '../../../api/signUpService/sign-up.service';
+import { isOverriddenHttpErrorResponse } from './helpers/helper';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
   private signUpService = inject(SignUpService);
+  private signInService = inject(SignInService);
+  private personalInfoService = inject(PersonalInfoService);
   private router = inject(Router);
   private userMessageService = inject(UserMessageService);
   private localStorageService = inject(LocalStorageService);
@@ -44,6 +51,23 @@ export class AuthService implements OnDestroy {
         this.userMessageService.showErrorMessage(USER_MESSAGE.REGISTRATION_ERROR);
       },
     });
+  }
+
+  public async loginUser(userData: User, loginForm: FormGroup): Promise<void> {
+    try {
+      const data: SignInResponse = await firstValueFrom(this.signInService.signIn(userData));
+      const { email } = userData;
+      this.setLoginSignals(userData);
+      this.personalInfoService.setUserInfo(email);
+      this.localStorageService.saveCurrentUser(email, data.token);
+      this.router.navigate([APP_PATH.DEFAULT]);
+      this.userMessageService.showSuccessMessage(USER_MESSAGE.LOGIN_SUCCESSFUL);
+    } catch (err: unknown) {
+      if (isOverriddenHttpErrorResponse(err)) {
+        loginForm.setErrors({ [err.error.reason]: true });
+      }
+      this.userMessageService.showErrorMessage(USER_MESSAGE.LOGIN_ERROR);
+    }
   }
 
   public setLoginSignals(userData: User): void {
