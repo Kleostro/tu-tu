@@ -17,12 +17,6 @@ import { SearchService } from '@/app/api/searchService/search.service';
 })
 export class FilterComponent implements OnInit {
   private searchService = inject(SearchService);
-  public dates = [
-    '2024-08-12T22:19:57.708Z',
-    '2024-08-14T22:19:57.708Z',
-    '2024-08-15T22:19:57.708Z',
-    '2024-08-20T22:19:57.708Z',
-  ];
   public availableRoutes$$ = signal<Route[]>([]);
 
   public ngOnInit(): void {
