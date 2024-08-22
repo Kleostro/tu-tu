@@ -12,8 +12,8 @@
     <h1>Route {{ id() }}</h1>
   </div>
 
-  @let path = currentRide()?.path;
-  @let schedule = currentRide()?.schedule;
+  @let path = this.routeService.currentRouteInfo()?.path;
+  @let schedule = this.routeService.currentRouteInfo()?.schedule;
   @if (schedule && schedule.length && path && path.length) {
     <app-rides-list [schedule]="schedule" [path]="path"></app-rides-list>
   }
