@@ -19,9 +19,15 @@
       </ng-template>
     </p-timeline>
 
-    <p-button #buttonElement label="Route" text (click)="openModal($event)">
-      <i class="material-icons">route</i>
-    </p-button>
+    <div class="route-wrapper">
+      <div class="from-to-stations">
+        <i class="material-icons">route</i>{{ resultItem.startStation }} - {{ resultItem.endStation }}
+      </div>
+
+      <p-button #buttonElement class="route-button" label="Route" text (click)="openModal($event)">
+        <i class="material-icons">confirmation_number</i>
+      </p-button>
+    </div>
   </div>
   <div class="carriages-info">
     @let carriageInfo = resultItem.carriageInfo;
@@ -36,6 +42,7 @@
     }
   </div>
 </div>
+
 <ng-template #modalContent>
   <app-trip-details [trip]="resultItem"></app-trip-details>
 </ng-template>

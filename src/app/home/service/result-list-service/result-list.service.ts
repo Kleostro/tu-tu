@@ -8,6 +8,8 @@ export interface CarriageInfo {
   price: string;
 }
 export interface CurrentRide {
+  startStation: string;
+  endStation: string;
   rideId: string;
   from: string;
   fromId: string;
@@ -15,11 +17,12 @@ export interface CurrentRide {
   to: string;
   departureDate: string;
   arrivalDate: string;
-  city: string;
   carriageInfo: CarriageInfo[];
 }
 
 const currentRide1: CurrentRide = {
+  startStation: 'New York',
+  endStation: 'Tokyo',
   rideId: '1',
   from: 'New York',
   fromId: '111',
@@ -27,7 +30,6 @@ const currentRide1: CurrentRide = {
   to: 'London',
   departureDate: '2023-10-01T08:14:00',
   arrivalDate: '2023-10-01T18:51:00',
-  city: 'New York',
   carriageInfo: [
     { type: '1st class', freeSeats: 123, price: '$785' },
     { type: 'family', freeSeats: 75, price: '$300' },
@@ -37,14 +39,15 @@ const currentRide1: CurrentRide = {
 };
 
 const currentRide2: CurrentRide = {
+  startStation: 'Los Angeles',
+  endStation: 'Tokyo',
   rideId: '2',
   from: 'Los Angeles',
   fromId: '222',
   toId: '84',
-  to: 'Tokyo',
+  to: 'Paris',
   departureDate: '2023-10-05T12:00:00',
   arrivalDate: '2023-10-06T08:30:00',
-  city: 'Los Angeles',
   carriageInfo: [
     { type: '2nd class', freeSeats: 150, price: '$500' },
     { type: 'family', freeSeats: 75, price: '$300' },
@@ -53,6 +56,8 @@ const currentRide2: CurrentRide = {
 };
 
 const currentRide3: CurrentRide = {
+  startStation: 'San Francisco',
+  endStation: 'Hong Kong',
   rideId: '3',
   from: 'San Francisco',
   fromId: '333',
@@ -60,7 +65,6 @@ const currentRide3: CurrentRide = {
   to: 'Paris',
   departureDate: '2023-10-10T09:45:00',
   arrivalDate: '2023-10-11T11:20:00',
-  city: 'San Francisco',
   carriageInfo: [
     { type: '2nd class', freeSeats: 150, price: '$500' },
     { type: '3rd class', freeSeats: 200, price: '$400' },
@@ -71,6 +75,8 @@ const currentRide3: CurrentRide = {
 };
 
 const currentRide4: CurrentRide = {
+  startStation: 'Washington',
+  endStation: 'Amsterdam',
   rideId: '4',
   from: 'Chicago',
   fromId: '444',
@@ -78,7 +84,6 @@ const currentRide4: CurrentRide = {
   to: 'Berlin',
   departureDate: '2023-10-15T07:30:00',
   arrivalDate: '2023-10-15T19:45:00',
-  city: 'Chicago',
   carriageInfo: [
     { type: '1st class', freeSeats: 100, price: '$700' },
     { type: '2nd class', freeSeats: 150, price: '$450' },
@@ -87,6 +92,8 @@ const currentRide4: CurrentRide = {
 };
 
 const currentRide5: CurrentRide = {
+  startStation: 'Flordia',
+  endStation: 'Sydney',
   rideId: '5',
   from: 'Miami',
   fromId: '555',
@@ -94,8 +101,12 @@ const currentRide5: CurrentRide = {
   to: 'Sydney',
   departureDate: '2023-10-20T14:00:00',
   arrivalDate: '2023-10-21T10:00:00',
-  city: 'Miami',
-  carriageInfo: [],
+  carriageInfo: [
+    { type: '3rd class', freeSeats: 200, price: '$400' },
+    { type: 'business', freeSeats: 80, price: '$600' },
+    { type: 'economy', freeSeats: 50, price: '$200' },
+    { type: 'luxury', freeSeats: 10, price: '$1000' },
+  ],
 };
 
 const currentData: CurrentRide[] = [currentRide1, currentRide2, currentRide3, currentRide4, currentRide5];

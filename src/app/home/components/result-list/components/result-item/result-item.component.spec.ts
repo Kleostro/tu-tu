@@ -24,6 +24,8 @@ describe('ResultItemComponent', () => {
     component = fixture.componentInstance;
 
     component.resultItem = {
+      startStation: 'City A',
+      endStation: 'City B',
       rideId: '1',
       from: 'City A',
       fromId: '123',
@@ -31,7 +33,6 @@ describe('ResultItemComponent', () => {
       to: 'City B',
       departureDate: '2023-10-01T08:14:00',
       arrivalDate: '2023-10-01T18:51:00',
-      city: 'City A',
       carriageInfo: [
         { type: 'Type A', freeSeats: 10, price: '$100' },
         { type: 'Type B', freeSeats: 5, price: '$50' },

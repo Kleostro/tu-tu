@@ -122,3 +122,20 @@
   font-style: italic;
   color: $gray-700;
 }
+
+.route-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: $offset-xs;
+  align-items: center;
+}
+
+.from-to-stations {
+  display: flex;
+  flex-direction: row;
+  gap: $offset-xxxs;
+  align-items: center;
+
+  font-size: $font-size-xs;
+  color: $gray-700;
+}
