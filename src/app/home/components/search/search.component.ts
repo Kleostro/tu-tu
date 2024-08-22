@@ -9,6 +9,11 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputIconModule } from 'primeng/inputicon';
+import { firstValueFrom } from 'rxjs';
+
+import { Station } from '@/app/api/models/stations';
+import { StationsService } from '@/app/api/stationsService/stations.service';
+import { AutocompleteIconDirective } from '@/app/shared/directives/autocompleteIcon/autocomplete-icon.directive';
 
 @Component({
   selector: 'app-search',
@@ -22,6 +27,7 @@ import { InputIconModule } from 'primeng/inputicon';
     InputGroupAddonModule,
     FloatLabelModule,
     ReactiveFormsModule,
+    AutocompleteIconDirective,
     CalendarModule,
   ],
   templateUrl: './search.component.html',
@@ -30,22 +36,27 @@ import { InputIconModule } from 'primeng/inputicon';
 })
 export class SearchComponent implements OnInit {
   public tripForm!: FormGroup;
-  public cities: string[] = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'];
   public filteredCities: string[] = [];
   public minDate: Date = new Date();
   private fb: FormBuilder = inject(FormBuilder);
+  public stationsService = inject(StationsService);
+  public stations: Station[] = [];
 
   public ngOnInit(): void {
     this.tripForm = this.fb.group({
       startCity: ['', Validators.required.bind(this)],
       endCity: ['', Validators.required.bind(this)],
-      dateTime: ['', Validators.required.bind(this)],
+    });
+    firstValueFrom(this.stationsService.getStations()).then((stations) => {
+      this.stations = stations;
     });
   }
 
   public filterCity(event: AutoCompleteCompleteEvent): void {
     const query = event.query.toLowerCase();
-    this.filteredCities = this.cities.filter((city) => city.toLowerCase().includes(query));
+    this.filteredCities = this.stations
+      .filter(({ city }) => city.toLowerCase().includes(query))
+      .map(({ city }) => city);
   }
 
   public onSubmit(): void {}

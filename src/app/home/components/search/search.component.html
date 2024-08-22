@@ -3,6 +3,8 @@
     <form [formGroup]="tripForm" (ngSubmit)="onSubmit()" class="search-form">
       <div class="search-group start-city">
         <p-autoComplete
+          appAutocompleteIcon
+          [icon]="'pi-circle-off'"
           id="startCity"
           formControlName="startCity"
           [suggestions]="filteredCities"
@@ -14,6 +16,8 @@
 
       <div class="search-group end-city">
         <p-autoComplete
+          appAutocompleteIcon
+          [icon]="'pi-circle-on'"
           id="endCity"
           formControlName="endCity"
           [suggestions]="filteredCities"
@@ -22,14 +26,6 @@
           class="endCityAuto"
         ></p-autoComplete>
       </div>
-
-      <!-- <div class="search-group">
-            <p-calendar 
-              id="dateTime"
-              formControlName="dateTime"
-              placeholder="Select date and time"
-            ></p-calendar>
-          </div> -->
 
       <button pButton type="submit" label="Search" [disabled]="!tripForm.valid" class="submit-btn"></button>
     </form>
