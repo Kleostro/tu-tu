@@ -19,9 +19,11 @@
               }
             </div>
             <div class="price">
-              <span>Price</span>
-              @for (price of ride.price; track price) {
-                <span>{{ price.type }} - {{ price.price | currency }}</span>
+              @if (ride.price?.length) {
+                <span>Price</span>
+                @for (price of ride.price; track price) {
+                  <span>{{ price.type }} - {{ price.price | currency }}</span>
+                }
               }
             </div>
           </div>

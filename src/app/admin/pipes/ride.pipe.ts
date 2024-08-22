@@ -6,10 +6,12 @@ import { Station } from '@/app/api/models/stations';
 interface Ride {
   station: Station | null;
   path: { from: string | null; to: string | null };
-  price: {
-    type: string;
-    price: number;
-  }[];
+  price:
+    | {
+        type: string;
+        price: number;
+      }[]
+    | null;
 }
 
 @Pipe({
@@ -30,10 +32,7 @@ export class RidePipe implements PipeTransform {
         rides.push({
           station,
           path: { from: null, to: segments[index - 1].time[1] },
-          price: Object.keys(segments[index - 1].price).map((key) => ({
-            type: key,
-            price: segments[index - 1].price[key],
-          })),
+          price: null,
         });
       } else {
         rides.push({
