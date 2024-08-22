@@ -27,6 +27,20 @@
         ></p-autoComplete>
       </div>
 
+      <div class="search-group date-time">
+        <p-calendar
+          formControlName="tripDate"
+          [minDate]="minDate"
+          [showTime]="timeSelected"
+          placeholder="Date/Time"
+          dateFormat="D MM d"
+          [iconDisplay]="'input'"
+          [showIcon]="true"
+          inputId="icondisplay"
+          (onSelect)="onDateSelect($event)"
+        ></p-calendar>
+      </div>
+
       <button pButton type="submit" label="Search" [disabled]="!tripForm.valid" class="submit-btn"></button>
     </form>
   </div>
