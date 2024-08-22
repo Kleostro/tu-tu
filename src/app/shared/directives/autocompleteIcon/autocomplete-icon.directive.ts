@@ -19,7 +19,8 @@ export class AutocompleteIconDirective implements AfterViewInit {
     const searchIcon = document.createElement('i');
     searchIcon.classList.add('pi', this.icon);
     searchIcon.style.left = '.75rem';
-    searchIcon.style.color = 'blue';
+    searchIcon.style.color = '#0046b8';
+    searchIcon.style.textShadow = '0 0 0.5rem #0046b8';
     inputWrapper.appendChild(searchIcon);
     inputWrapper.classList.add('p-input-icon-left');
   }
