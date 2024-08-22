@@ -1,14 +1,5 @@
 import { DatePipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
@@ -32,7 +23,7 @@ import { Event } from './models/timeline-data';
   styleUrl: './result-item.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ResultItemComponent implements OnChanges {
+export class ResultItemComponent implements OnInit {
   private router = inject(Router);
   private modalService = inject(ModalService);
 
@@ -42,13 +33,11 @@ export class ResultItemComponent implements OnChanges {
 
   public events: Event[] = [];
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (changes['resultItem']) {
-      this.updateEvents();
-    }
+  public ngOnInit(): void {
+    this.setData();
   }
 
-  private updateEvents(): void {
+  private setData(): void {
     const { departureDate, arrivalDate, from, to } = this.resultItem;
 
     this.events = [
