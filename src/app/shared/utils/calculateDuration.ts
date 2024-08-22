@@ -7,6 +7,7 @@ export const calculateDuration = (startDate: Date | undefined, endDate: Date | u
   const hours = Math.floor(durationMs / (1000 * 60 * 60));
   const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
 
+  // TBD: check commented code
   // return minutes ? `${hours}h\u00A0${minutes}min` : `${hours}h`;
 
   return `${hours}h\u00A0${minutes}min`;

@@ -68,12 +68,6 @@ export class ResultItemComponent implements OnChanges {
     this.modalService.openModal(this.modalContent, `Route ${this.resultItem.rideId}`);
   }
 
-  // TBD: remove comments
-  // public redirectToDetailed(rideId = '1'): void {
-  //   this.router.navigate([`${APP_ROUTE.TRIP}/:${rideId}`], {
-  //     queryParams: { from: this.resultItem.fromId, to: this.resultItem.toId },
-  //   });
-  // }
   public redirectToDetailed(event: MouseEvent): void {
     const { target } = event;
 

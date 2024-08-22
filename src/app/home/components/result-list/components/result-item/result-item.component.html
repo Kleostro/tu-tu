@@ -31,6 +31,8 @@
         <div class="carriage-free-seats">{{ carriage.freeSeats }} free seats</div>
         <div class="carriage-price">{{ carriage.price }}</div>
       </div>
+    } @empty {
+      <div class="no-carriage-info">No carriage info</div>
     }
   </div>
 </div>
