@@ -16,22 +16,12 @@ import { TimelineModule } from 'primeng/timeline';
 
 import { CurrentRide } from '@/app/home/service/result-list-service/result-list.service';
 import { APP_ROUTE } from '@/app/shared/constants/routes';
+import { template } from '@/app/shared/constants/string-templates';
 import { ModalService } from '@/app/shared/services/modal/modal.service';
 import { calculateDuration } from '@/app/shared/utils/calculateDuration';
+import { stringTemplate } from '@/app/shared/utils/string-template';
 
-// TBD: move to different files
-function isHTMLElement(target: EventTarget | null): target is HTMLElement {
-  return target instanceof HTMLElement;
-}
-interface EventDetails {
-  date: Date;
-  city: string;
-}
-
-interface Duration {
-  duration: string;
-}
-type Event = Partial<EventDetails> & Partial<Duration>;
+import { Event } from './models/timeline-data';
 
 @Component({
   selector: 'app-result-item',
@@ -44,39 +34,45 @@ type Event = Partial<EventDetails> & Partial<Duration>;
 export class ResultItemComponent implements OnChanges {
   private router = inject(Router);
   private modalService = inject(ModalService);
+
   @Input() public resultItem!: CurrentRide;
+
   @ViewChild('modalContent') public modalContent!: TemplateRef<unknown>;
 
   public events: Event[] = [];
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes['resultItem']) {
-      this.events = [
-        { date: new Date(this.resultItem.departureDate), city: this.resultItem.from },
-        { duration: '' },
-        { date: new Date(this.resultItem.arrivalDate), city: this.resultItem.to },
-      ];
-      this.events[1].duration = calculateDuration(this.events[0].date, this.events[2].date);
+      this.updateEvents();
     }
+  }
+
+  private updateEvents(): void {
+    const { departureDate, arrivalDate, from, to } = this.resultItem;
+
+    this.events = [
+      { date: new Date(departureDate), city: from },
+      { duration: '' },
+      { date: new Date(arrivalDate), city: to },
+    ];
+
+    this.events[1].duration = calculateDuration(this.events[0].date, this.events[2].date);
   }
 
   public openModal(event: MouseEvent): void {
-    // TBD: remove comments
-    // eslint-disable-next-line no-console
-    console.log(event);
-    // event.stopPropagation();
-    this.modalService.openModal(this.modalContent, `Route ${this.resultItem.rideId}`);
+    event.stopPropagation();
+
+    this.modalService.openModal(
+      this.modalContent,
+      stringTemplate(template.ROUTE_TITLE, { id: this.resultItem.rideId }),
+    );
   }
 
-  public redirectToDetailed(event: MouseEvent): void {
-    const { target } = event;
+  public redirectToDetailed(): void {
+    const { rideId, fromId, toId } = this.resultItem;
 
-    if (isHTMLElement(target) && target.closest('.button-class')) {
-      return;
-    }
-
-    this.router.navigate([`${APP_ROUTE.TRIP}/:${this.resultItem.rideId}`], {
-      queryParams: { from: this.resultItem.fromId, to: this.resultItem.toId },
+    this.router.navigate([stringTemplate(template.DETAILED_PAGE_PATH, { route: APP_ROUTE.TRIP, id: rideId })], {
+      queryParams: { from: fromId, to: toId },
     });
   }
 }

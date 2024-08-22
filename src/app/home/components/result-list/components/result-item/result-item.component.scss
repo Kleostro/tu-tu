@@ -37,13 +37,7 @@
 }
 
 .custom-marker {
-  // TBD: check styles
-  // position: relative;
-  // left: -10%;
-
-  // margin: $offset-xxs 0;
-
-  margin: $offset-xxs 0 $offset-xxs (-0.75rem);
+  margin: $offset-xxs 0 $offset-xxs -0.65rem;
   padding: $offset-xxs;
 
   color: $white-100;
@@ -120,8 +114,4 @@
 
 .material-icons {
   font-size: $material-icon-size;
-}
-
-.button-class {
-  align-self: flex-end;
 }

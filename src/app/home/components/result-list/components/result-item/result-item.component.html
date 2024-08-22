@@ -1,4 +1,4 @@
-<div class="item-wrapper" (click)="redirectToDetailed($event)">
+<div class="item-wrapper" (click)="redirectToDetailed()">
   <div class="item">
     <p-timeline [value]="events" layout="horizontal" align="top" class="timeline">
       <ng-template pTemplate="marker" let-event>
@@ -19,7 +19,7 @@
       </ng-template>
     </p-timeline>
 
-    <p-button #buttonElement label="Route" text (click)="openModal($event)" class="button-class">
+    <p-button #buttonElement label="Route" text (click)="openModal($event)">
       <i class="material-icons">route</i>
     </p-button>
   </div>
@@ -32,6 +32,7 @@
         <div class="carriage-price">{{ carriage.price }}</div>
       </div>
     } @empty {
+      <!-- TBD: implement better message -->
       <div class="no-carriage-info">No carriage info</div>
     }
   </div>
