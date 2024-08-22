@@ -1,0 +1,39 @@
+@import 'variables';
+
+.top {
+  border-bottom: $three solid $gray-200;
+}
+
+.bottom {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.rides {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.ride {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+
+  width: 100%;
+  padding: 1rem 2rem;
+}
+
+.time {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.price {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
