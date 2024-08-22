@@ -1,3 +1,4 @@
+import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 
@@ -10,7 +11,7 @@ describe('RouteDetailedComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouteDetailedComponent],
-      providers: [{ provide: ActivatedRoute, useValue: {} }],
+      providers: [provideHttpClient(), { provide: ActivatedRoute, useValue: {} }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RouteDetailedComponent);

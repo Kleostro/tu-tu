@@ -10,7 +10,7 @@ import { RideBody, RouteInfo } from '../models/schedule';
 @Injectable({
   providedIn: 'root',
 })
-export class ScheduleService {
+export class RideService {
   private httpClient = inject(HttpClient);
 
   public getRouteById(id: number): Observable<RouteInfo> {

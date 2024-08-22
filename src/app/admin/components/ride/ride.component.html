@@ -1,0 +1,32 @@
+<div class="wrapper">
+  <div class="top">
+    <h2>Ride {{ ride()?.rideId }}</h2>
+  </div>
+  <div class="bottom">
+    <div class="rides">
+      @if (ride(); as ride) {
+        @for (ride of stations() | ride: ride.segments; track ride) {
+          <div class="ride">
+            <div class="station">
+              <strong>{{ ride.station?.city }}</strong>
+            </div>
+            <div class="time">
+              @if (ride.path.to; as to) {
+                <span>Arrival: {{ to | date: 'yyyy-MM-dd hh:mm a' }}</span>
+              }
+              @if (ride.path.from; as from) {
+                <span>Departure: {{ from | date: 'yyyy-MM-dd hh:mm a' }}</span>
+              }
+            </div>
+            <div class="price">
+              <span>Price</span>
+              @for (price of ride.price; track price) {
+                <span>{{ price.type }} - {{ price.price | currency }}</span>
+              }
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </div>
+</div>
