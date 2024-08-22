@@ -1,0 +1,40 @@
+<div class="item-wrapper" (click)="redirectToDetailed($event)">
+  <div class="item">
+    <p-timeline [value]="events" layout="horizontal" align="top" class="timeline">
+      <ng-template pTemplate="marker" let-event>
+        <span class="marker" [class]="event.duration ? 'custom-marker' : 'time-marker'">{{
+          event.duration ? event.duration : (event.date | date: 'HH:mm')
+        }}</span>
+      </ng-template>
+      <ng-template pTemplate="content" let-event>
+        <div class="p-timeline-event-content timeline-content">
+          <ng-container>
+            <div class="event-details">
+              <div>{{ event.city }}</div>
+              <div>{{ event.date | date: 'hh:mm a' }}</div>
+              <div>{{ event.date | date: 'dd-MMM-yyyy' }}</div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-template>
+    </p-timeline>
+
+    <p-button #buttonElement label="Route" text (click)="openModal($event)" class="button-class">
+      <i class="material-icons">route</i>
+    </p-button>
+  </div>
+  <div class="carriages-info">
+    @let carriageInfo = resultItem.carriageInfo;
+    @for (carriage of carriageInfo; track carriage.type) {
+      <div class="carriage-info">
+        <div class="carriage-type">{{ carriage.type }}</div>
+        <div class="carriage-free-seats">{{ carriage.freeSeats }} free seats</div>
+        <div class="carriage-price">{{ carriage.price }}</div>
+      </div>
+    }
+  </div>
+</div>
+<ng-template #modalContent>
+  <!-- TBD: will contain all stations -->
+  <div></div>
+</ng-template>
