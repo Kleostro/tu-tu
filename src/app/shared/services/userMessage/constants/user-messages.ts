@@ -21,4 +21,5 @@ export const USER_MESSAGE = {
   ROUTE_CREATED_SUCCESSFULLY: 'Route created successfully!',
   ROUTE_CREATED_ERROR: "We couldn't create your route. Please try again.",
   ROUTE_CREATION_UPDATED_ERROR: 'A minimum of 3 stations and 3 carriages must be specified!',
+  ROUTE_DATA_UPDATED_SUCCESSFULLY: 'Route data updated successfully!',
 };

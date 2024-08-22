@@ -1,0 +1,61 @@
+<div class="wrapper">
+  <div class="top">
+    <form class="form" [formGroup]="timeForm">
+      @if (to(); as to) {
+        <div class="control">
+          <span>Arrival: </span>
+          @if (isEdit()) {
+            <p-calendar
+              formControlName="to"
+              [minDate]="minDate"
+              [showTime]="toTime"
+              placeholder="Date/Time"
+              dateFormat="yyyy-MM-dd"
+              [iconDisplay]="'input'"
+              [showIcon]="true"
+              [hourFormat]="'12'"
+              (onSelect)="selectToTime($event)"
+            ></p-calendar>
+          } @else {
+            <span>{{ to | date: 'yyyy-MM-dd hh:mm a' }}</span>
+          }
+        </div>
+      }
+      @if (from(); as from) {
+        <div class="control">
+          <span>Departure: </span>
+          @if (isEdit()) {
+            <p-calendar
+              formControlName="from"
+              [minDate]="minDate"
+              [showTime]="fromTime"
+              placeholder="Date/Time"
+              dateFormat="yyyy-MM-dd"
+              [iconDisplay]="'input'"
+              [showIcon]="true"
+              [hourFormat]="'12'"
+              (onSelect)="selectFromTime($event)"
+            ></p-calendar>
+          } @else {
+            <span>{{ from | date: 'yyyy-MM-dd hh:mm a' }}</span>
+          }
+        </div>
+      }
+    </form>
+  </div>
+  <div class="bottom">
+    @if (isEdit()) {
+      <p-button
+        icon="pi pi-save"
+        [rounded]="true"
+        severity="success"
+        (click)="this.isEdit.set(false)"
+        (click)="timeChanged.emit(timeForm.getRawValue())"
+        [disabled]="(to() ? !timeForm.controls.to.valid : false) || (from() ? !timeForm.controls.from.valid : false)"
+      ></p-button>
+      <p-button icon="pi pi-arrow-left" [rounded]="true" severity="primary" (click)="this.isEdit.set(false)"></p-button>
+    } @else {
+      <p-button icon="pi pi-pencil" [rounded]="true" severity="primary" (click)="this.isEdit.set(true)"></p-button>
+    }
+  </div>
+</div>

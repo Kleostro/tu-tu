@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 import ENDPOINTS from '../constants/constants';
 import { RouteId } from '../models/route';
@@ -12,9 +12,16 @@ import { RideBody, RouteInfo } from '../models/schedule';
 })
 export class RideService {
   private httpClient = inject(HttpClient);
+  public currentRouteId = signal<number>(NaN);
+  public currentRouteInfo = signal<RouteInfo | null>(null);
 
   public getRouteById(id: number): Observable<RouteInfo> {
-    return this.httpClient.get<RouteInfo>(`${ENDPOINTS.ROUTE}/${id}`);
+    return this.httpClient.get<RouteInfo>(`${ENDPOINTS.ROUTE}/${id}`).pipe(
+      tap((routeInfo) => {
+        this.currentRouteId.set(id);
+        this.currentRouteInfo.set(routeInfo);
+      }),
+    );
   }
 
   public createRide(routeId: number, rideData: RideBody): Observable<RouteId> {
