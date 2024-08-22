@@ -55,7 +55,13 @@
       ></p-button>
       <p-button icon="pi pi-arrow-left" [rounded]="true" severity="primary" (click)="this.isEdit.set(false)"></p-button>
     } @else {
-      <p-button icon="pi pi-pencil" [rounded]="true" severity="primary" (click)="this.isEdit.set(true)"></p-button>
+      <p-button
+        [disabled]="!isTimeEdited()"
+        [icon]="!isTimeEdited() ? 'pi pi-spin pi-cog' : 'pi pi-pencil'"
+        [rounded]="true"
+        severity="primary"
+        (click)="this.isEdit.set(true)"
+      ></p-button>
     }
   </div>
 </div>

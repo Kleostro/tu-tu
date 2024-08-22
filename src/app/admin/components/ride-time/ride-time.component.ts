@@ -22,6 +22,7 @@ export class RideTimeComponent {
   public to = input<string | null>(null);
   public from = input<string | null>(null);
   public isEdit = signal(false);
+  public isTimeEdited = input(true);
   public minDate = new Date();
   public fromTime = false;
   public toTime = false;

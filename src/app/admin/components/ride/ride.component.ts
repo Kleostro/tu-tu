@@ -1,5 +1,5 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnDestroy, signal } from '@angular/core';
 
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
@@ -35,11 +35,13 @@ export class RideComponent implements OnDestroy {
     this.path().map((id) => this.stationsService.findStationById(id)),
   );
   public fullRideData = computed(() => collectAllRideData(this.stations(), this.ride()?.segments ?? []));
+  public isTimeEdited = signal(true);
   private subscription = new Subscription();
 
   public handleTimeChanged(event: RidePath, index: number): void {
     const currentRide = this.ride();
     if (currentRide) {
+      this.isTimeEdited.set(false);
       this.subscription.add(
         this.rideService
           .updateRide(
@@ -49,11 +51,10 @@ export class RideComponent implements OnDestroy {
           )
           .pipe(take(1))
           .subscribe(() => {
-            this.rideService
-              .getRouteById(this.rideService.currentRouteId())
-              .subscribe(() =>
-                this.userMessageService.showSuccessMessage(USER_MESSAGE.ROUTE_DATA_UPDATED_SUCCESSFULLY),
-              );
+            this.rideService.getRouteById(this.rideService.currentRouteId()).subscribe(() => {
+              this.userMessageService.showSuccessMessage(USER_MESSAGE.ROUTE_DATA_UPDATED_SUCCESSFULLY);
+              this.isTimeEdited.set(true);
+            });
           }),
       );
     }
