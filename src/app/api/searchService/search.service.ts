@@ -20,7 +20,7 @@ export class SearchService {
   private generateHttpParams(params: SearchParams): HttpParams {
     return Object.entries(params).reduce((httpParams, [key, value]) => {
       if (typeof value === 'number') {
-        return httpParams.append(key, value.toString());
+        return httpParams.append(key, value);
       }
       return httpParams;
     }, new HttpParams());

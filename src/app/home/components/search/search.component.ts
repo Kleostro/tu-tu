@@ -15,6 +15,8 @@ import { Station } from '@/app/api/models/stations';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 import { AutocompleteIconDirective } from '@/app/shared/directives/autocompleteIcon/autocomplete-icon.directive';
 
+import { FilterComponent } from '../filter/filter.component';
+
 @Component({
   selector: 'app-search',
   standalone: true,
@@ -29,6 +31,7 @@ import { AutocompleteIconDirective } from '@/app/shared/directives/autocompleteI
     ReactiveFormsModule,
     AutocompleteIconDirective,
     CalendarModule,
+    FilterComponent,
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',

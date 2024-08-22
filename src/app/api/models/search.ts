@@ -28,7 +28,7 @@ export interface SearchParams {
   fromLongitude: number;
   toLatitude: number;
   toLongitude: number;
-  time?: number;
+  time?: string;
 }
 
 export interface SearchResponse {
