@@ -32,12 +32,10 @@
         <div class="carriage-price">{{ carriage.price }}</div>
       </div>
     } @empty {
-      <!-- TBD: implement better message -->
-      <div class="no-carriage-info">No carriage info</div>
+      <div class="no-carriage-info">Sold out</div>
     }
   </div>
 </div>
 <ng-template #modalContent>
-  <!-- TBD: will contain all stations -->
-  <div></div>
+  <app-trip-details [trip]="resultItem"></app-trip-details>
 </ng-template>

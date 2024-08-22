@@ -21,12 +21,13 @@ import { ModalService } from '@/app/shared/services/modal/modal.service';
 import { calculateDuration } from '@/app/shared/utils/calculateDuration';
 import { stringTemplate } from '@/app/shared/utils/string-template';
 
+import { TripDetailsComponent } from '../../../trip-details/trip-details.component';
 import { Event } from './models/timeline-data';
 
 @Component({
   selector: 'app-result-item',
   standalone: true,
-  imports: [TimelineModule, DatePipe, ButtonModule],
+  imports: [TimelineModule, DatePipe, ButtonModule, TripDetailsComponent],
   templateUrl: './result-item.component.html',
   styleUrl: './result-item.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

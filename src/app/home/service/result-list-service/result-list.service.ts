@@ -95,12 +95,7 @@ const currentRide5: CurrentRide = {
   departureDate: '2023-10-20T14:00:00',
   arrivalDate: '2023-10-21T10:00:00',
   city: 'Miami',
-  carriageInfo: [
-    { type: 'economy', freeSeats: 200, price: '$300' },
-    { type: 'business', freeSeats: 50, price: '$700' },
-    { type: 'luxury', freeSeats: 20, price: '$1200' },
-    { type: 'family', freeSeats: 100, price: '$400' },
-  ],
+  carriageInfo: [],
 };
 
 const currentData: CurrentRide[] = [currentRide1, currentRide2, currentRide3, currentRide4, currentRide5];

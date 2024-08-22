@@ -115,3 +115,10 @@
 .material-icons {
   font-size: $material-icon-size;
 }
+
+.no-carriage-info {
+  display: flex;
+  font-size: $font-size-m;
+  font-style: italic;
+  color: $gray-700;
+}
