@@ -38,6 +38,7 @@ export class SearchComponent implements OnInit {
   public tripForm!: FormGroup;
   public filteredCities: string[] = [];
   public minDate: Date = new Date();
+  public timeSelected = false;
   private fb: FormBuilder = inject(FormBuilder);
   public stationsService = inject(StationsService);
   public stations: Station[] = [];
@@ -46,6 +47,7 @@ export class SearchComponent implements OnInit {
     this.tripForm = this.fb.group({
       startCity: ['', Validators.required.bind(this)],
       endCity: ['', Validators.required.bind(this)],
+      tripDate: ['', Validators.required.bind(this)],
     });
     firstValueFrom(this.stationsService.getStations()).then((stations) => {
       this.stations = stations;
@@ -57,6 +59,10 @@ export class SearchComponent implements OnInit {
     this.filteredCities = this.stations
       .filter(({ city }) => city.toLowerCase().includes(query))
       .map(({ city }) => city);
+  }
+
+  public onDateSelect(event: Date): void {
+    this.timeSelected = !!event;
   }
 
   public onSubmit(): void {}
