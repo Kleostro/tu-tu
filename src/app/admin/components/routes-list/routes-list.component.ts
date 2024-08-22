@@ -1,9 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   inject,
   input,
   OnDestroy,
+  Output,
   signal,
   TemplateRef,
   ViewChild,
@@ -41,6 +43,7 @@ export class RoutesListComponent implements OnDestroy {
   private subscription = new Subscription();
 
   @ViewChild('deleteRouteConfirm') public deleteRouteConfirm!: TemplateRef<unknown>;
+  @Output() public openRouteForm: EventEmitter<void> = new EventEmitter<void>();
 
   public handleOpenDeleteConfirm(id: number): void {
     this.deletionRouteId.set(id);

@@ -3,19 +3,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MessageService } from 'primeng/api';
 
-import { RoutesComponent } from './routes.component';
+import { RouteFormComponent } from './route-form.component';
 
-describe('RoutesComponent', () => {
-  let component: RoutesComponent;
-  let fixture: ComponentFixture<RoutesComponent>;
+describe('RouteFormComponent', () => {
+  let component: RouteFormComponent;
+  let fixture: ComponentFixture<RouteFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RoutesComponent],
+      imports: [RouteFormComponent],
       providers: [provideHttpClient(), { provide: MessageService, useValue: {} }],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RoutesComponent);
+    fixture = TestBed.createComponent(RouteFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

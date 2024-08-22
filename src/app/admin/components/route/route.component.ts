@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, input, Output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
@@ -10,7 +11,7 @@ import { StationsService } from '@/app/api/stationsService/stations.service';
 @Component({
   selector: 'app-route',
   standalone: true,
-  imports: [ButtonModule, RippleModule],
+  imports: [ButtonModule, RippleModule, RouterLink],
   templateUrl: './route.component.html',
   styleUrl: './route.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,4 +22,5 @@ export class RouteComponent {
   public route = input<RouteResponse | null>(null);
 
   @Output() public openDeleteConfirm: EventEmitter<number> = new EventEmitter<number>();
+  @Output() public openRouteForm: EventEmitter<void> = new EventEmitter<void>();
 }

@@ -1,1 +1,20 @@
-<p>route-detailed works!</p>
+<div class="wrapper">
+  <div class="top">
+    <a
+      pButton
+      pRipple
+      icon="pi pi-arrow-left"
+      [rounded]="true"
+      [style.color]="'white'"
+      class="back-link p-button"
+      routerLink="/admin/routes"
+    ></a>
+    <h1>Route {{ id() }}</h1>
+  </div>
+
+  @let path = currentRide()?.path;
+  @let schedule = currentRide()?.schedule;
+  @if (schedule && schedule.length && path && path.length) {
+    <app-rides-list [schedule]="schedule" [path]="path"></app-rides-list>
+  }
+</div>

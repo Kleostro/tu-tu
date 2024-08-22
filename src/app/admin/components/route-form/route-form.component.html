@@ -1,0 +1,51 @@
+<form [formGroup]="routeForm" class="form" (ngSubmit)="submit()">
+  <div class="controls-wrapper">
+    <label class="p-float-label control-label">
+      <span class="p-float-label__label">Stations</span>
+      <ng-container formArrayName="stations">
+        <div class="stations-wrapper">
+          @for (station of routeForm.controls.stations.controls; track station.controls.station; let i = $index) {
+            <div [formGroup]="station" class="station-wrapper">
+              <p-autoComplete
+                formControlName="station"
+                class="control"
+                (class.p-focus)="this.currentStationControl.set(i)"
+                [suggestions]="filteredStations()"
+                (completeMethod)="filterStations($event)"
+                (click)="this.currentStationControl.set(i)"
+              />
+            </div>
+          }
+        </div>
+      </ng-container>
+    </label>
+    <label class="p-float-label control-label">
+      <span class="p-float-label__label">Carriages</span>
+      <ng-container formArrayName="carriages">
+        <div class="carriages-wrapper">
+          @for (carriage of routeForm.controls.carriages.controls; track carriage.controls.carriage; let i = $index) {
+            <div [formGroup]="carriage" class="carriage-wrapper">
+              <p-autoComplete
+                formControlName="carriage"
+                class="control"
+                [suggestions]="filteredCarriages()"
+                (completeMethod)="filterCarriages($event)"
+              />
+            </div>
+          }
+        </div>
+      </ng-container>
+    </label>
+  </div>
+
+  <button
+    pButton
+    pRipple
+    type="submit"
+    class="p-button submit"
+    [rounded]="true"
+    [icon]="isRouteChanged() ? 'pi pi-spin pi-cog' : 'pi pi-check'"
+    label="Save"
+    [disabled]="isRouteChanged()"
+  ></button>
+</form>

@@ -1,0 +1,42 @@
+@import 'variables';
+
+.top {
+  border-bottom: $three solid $gray-200;
+}
+
+.bottom {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.rides {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.ride {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+
+  width: 100%;
+  padding: 1rem 2rem;
+}
+
+.time {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.price {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+
+  padding-top: 5rem;
+}

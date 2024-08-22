@@ -1,0 +1,12 @@
+<p-tabView [scrollable]="true">
+  @for (route of availableRoutes$$(); track route.id; let index = $index) {
+    @for (schedule of route.schedule; track schedule.rideId) {
+      @for (segment of schedule.segments; track segment) {
+        <p-tabPanel [header]="(segment.time[0] | date: 'MMMM d, EEEE')!">
+          Departure: {{ segment.time[0] | date: 'MMM d, y, h:mm:ss a' }} - Arrival
+          {{ segment.time[1] | date: 'MMM d, y, h:mm:ss a' }}
+        </p-tabPanel>
+      }
+    }
+  }
+</p-tabView>

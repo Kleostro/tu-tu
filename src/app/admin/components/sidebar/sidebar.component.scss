@@ -3,6 +3,7 @@
 
 :host {
   width: 12rem;
+  min-height: 100dvh;
   background-color: $gray-200;
 
   ::ng-deep .p-element {

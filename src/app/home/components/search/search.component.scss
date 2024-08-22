@@ -1,0 +1,20 @@
+@import 'variables';
+
+.search-container {
+  .search-form {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .icon-left {
+    position: absolute;
+    left: 5px;
+    transform: translateY(-50%);
+  }
+}
+
+.search-group {
+  position: relative;
+}
