@@ -36,9 +36,6 @@ export class FilterComponent implements OnInit {
     };
     this.searchService.search(searchPrms).subscribe({
       next: (res) => {
-        const availableRoutes = this.findAvaillableRoutes(res.routes, new Date('2024-08-30T22:19:57.708Z'));
-        // eslint-disable-next-line no-console
-        console.log(availableRoutes);
         this.availableRoutes$$.set(this.findAvaillableRoutes(res.routes, new Date('2024-08-30T22:19:57.708Z')));
       },
       error: (err: OverriddenHttpErrorResponse) => {
