@@ -33,12 +33,6 @@ export class RoutingService {
     this.location.back();
   }
 
-  public setQueryParam(params: Params): void {
-    const currentParams = this.activatedRoute.snapshot.queryParams;
-    const newParams = { ...currentParams, ...params };
-    this.updateQueryParams(newParams);
-  }
-
   public updateQueryParams(params: Params): void {
     this.router.navigate([], {
       queryParams: params,
