@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 
 import { TabViewModule } from 'primeng/tabview';
 
-import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { Route } from '@/app/api/models/search';
 import { SearchService } from '@/app/api/searchService/search.service';
 
@@ -15,28 +14,9 @@ import { SearchService } from '@/app/api/searchService/search.service';
   styleUrl: './filter.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent {
   private searchService = inject(SearchService);
   public availableRoutes$$ = signal<Route[]>([]);
-
-  public ngOnInit(): void {
-    const date = new Date('2024-08-22T22:19:57.708Z');
-    const searchPrms = {
-      fromLatitude: 33.6253023965961,
-      fromLongitude: -62.87929972362075,
-      toLatitude: -64.91480386879022,
-      toLongitude: -169.82655423507208,
-      time: date.toISOString(),
-    };
-    this.searchService.search(searchPrms).subscribe({
-      next: (res) => {
-        this.availableRoutes$$.set(this.findAvaillableRoutes(res.routes, new Date('2024-08-30T22:19:57.708Z')));
-      },
-      error: (err: OverriddenHttpErrorResponse) => {
-        throw Error(err.message);
-      },
-    });
-  }
 
   private findAvaillableRoutes(routes: Route[], targetDate: Date): Route[] {
     return routes
