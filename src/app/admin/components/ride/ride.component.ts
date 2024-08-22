@@ -52,7 +52,7 @@ export class RideComponent implements OnDestroy {
           .pipe(take(1))
           .subscribe(() => {
             this.rideService.getRouteById(this.rideService.currentRouteId()).subscribe(() => {
-              this.userMessageService.showSuccessMessage(USER_MESSAGE.ROUTE_DATA_UPDATED_SUCCESSFULLY);
+              this.userMessageService.showSuccessMessage(USER_MESSAGE.RIDE_DATA_UPDATED_SUCCESSFULLY);
               this.isTimeEdited.set(true);
             });
           }),
