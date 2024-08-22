@@ -1,0 +1,33 @@
+<section class="search-section">
+  <div class="search-container">
+    <form [formGroup]="tripForm" (ngSubmit)="onSubmit()" class="search-form">
+      <div class="search-group start-city">
+        <p-autoComplete
+          appAutocompleteIcon
+          [icon]="'pi-circle-off'"
+          id="startCity"
+          formControlName="startCity"
+          [suggestions]="filteredCities"
+          (completeMethod)="filterCity($event)"
+          placeholder="From"
+        >
+        </p-autoComplete>
+      </div>
+
+      <div class="search-group end-city">
+        <p-autoComplete
+          appAutocompleteIcon
+          [icon]="'pi-circle-on'"
+          id="endCity"
+          formControlName="endCity"
+          [suggestions]="filteredCities"
+          (completeMethod)="filterCity($event)"
+          placeholder="To"
+          class="endCityAuto"
+        ></p-autoComplete>
+      </div>
+
+      <button pButton type="submit" label="Search" [disabled]="!tripForm.valid" class="submit-btn"></button>
+    </form>
+  </div>
+</section>
