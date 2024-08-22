@@ -20,7 +20,7 @@ export class FilterComponent implements OnInit {
   public availableRoutes$$ = signal<Route[]>([]);
 
   public ngOnInit(): void {
-    const date = new Date('2024-08-22T22:19:57.708Z');
+    const date = new Date('2024-08-20T22:19:57.708Z');
     const searchPrms = {
       fromLatitude: 33.6253023965961,
       fromLongitude: -62.87929972362075,
@@ -30,7 +30,10 @@ export class FilterComponent implements OnInit {
     };
     this.searchService.search(searchPrms).subscribe({
       next: (res) => {
-        this.availableRoutes$$.set(this.findAvaillableRoutes(res.routes, new Date('2024-08-30T22:19:57.708Z')));
+        this.availableRoutes$$.set(this.findAvaillableRoutes(res.routes, new Date('2024-08-20T22:19:57.708Z')));
+        // eslint-disable-next-line no-console
+        console.log(res)
+        // console.log(this.availableRoutes$$())
       },
       error: (err: OverriddenHttpErrorResponse) => {
         throw Error(err.message);
@@ -39,23 +42,23 @@ export class FilterComponent implements OnInit {
   }
 
   private findAvaillableRoutes(routes: Route[], targetDate: Date): Route[] {
-    return routes
-      .map((route) => {
-        const filteredSegments = route.schedule.flatMap((schedule) =>
-          schedule.segments.filter((segment) => {
-            const targetDateUnix = new Date(targetDate).toISOString();
-            const departureDate = new Date(segment.time[0]).toISOString();
-            const arrivalDate = new Date(segment.time[1]).toISOString();
-
-            return targetDateUnix <= departureDate && targetDateUnix <= arrivalDate;
-          }),
-        );
-
-        return {
-          ...route,
-          schedule: filteredSegments.length ? [{ ...route.schedule[0], segments: filteredSegments }] : route.schedule,
-        };
-      })
-      .filter((route) => route.schedule.some((schedule) => schedule.segments.length > 0));
+    return routes.map((route) => {
+      const filteredSchedules = route.schedule.map((schedule) => {
+        const filteredSegments = schedule.segments.filter((segment) => {
+          const targetDateUnix = targetDate.getTime();
+          const departureDate = new Date(segment.time[0]).getTime();
+          const arrivalDate = new Date(segment.time[1]).getTime();
+  
+          return targetDateUnix <= departureDate && targetDateUnix <= arrivalDate;
+        });
+  
+        return { ...schedule, segments: filteredSegments };
+      });
+  
+      return {
+        ...route,
+        schedule: filteredSchedules.filter((schedule) => schedule.segments.length > 0),
+      };
+    }).filter((route) => route.schedule.length > 0);
   }
 }

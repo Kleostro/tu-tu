@@ -4,7 +4,7 @@
       @for (segment of schedule.segments; track segment) {
         <p-tabPanel [header]="(segment.time[0] | date: 'MMMM d, EEEE')!">
           Departure: {{ segment.time[0] | date: 'MMM d, y, h:mm:ss a' }} - Arrival
-          {{ segment.time[1] | date: 'MMM d, y, h:mm:ss a' }}
+          {{ segment.time[1] | date: 'MMM d, y, h:mm:ss a' }} RideId: {{ schedule.rideId }}
         </p-tabPanel>
       }
     }
