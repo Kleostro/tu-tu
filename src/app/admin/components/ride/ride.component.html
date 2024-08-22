@@ -5,23 +5,23 @@
   <div class="bottom">
     <div class="rides">
       @if (ride(); as ride) {
-        @for (ride of stations() | ride: ride.segments; track ride) {
+        @for (ride of fullRideData(); let i = $index; track i) {
           <div class="ride">
             <div class="station">
               <strong>{{ ride.station?.city }}</strong>
             </div>
             <div class="time">
-              @if (ride.path.to; as to) {
-                <span>Arrival: {{ to | date: 'yyyy-MM-dd hh:mm a' }}</span>
-              }
-              @if (ride.path.from; as from) {
-                <span>Departure: {{ from | date: 'yyyy-MM-dd hh:mm a' }}</span>
-              }
+              <app-ride-time
+                [to]="ride.path.to | date: 'yyyy-MM-dd hh:mm a'"
+                [from]="ride.path.from | date: 'yyyy-MM-dd hh:mm a'"
+                [isTimeEdited]="isTimeEdited()"
+                (timeChanged)="handleTimeChanged($event, i)"
+              ></app-ride-time>
             </div>
             <div class="price">
               @if (ride.price?.length) {
                 <span>Price</span>
-                @for (price of ride.price; track price) {
+                @for (price of ride.price; let i = $index; track i) {
                   <span>{{ price.type }} - {{ price.price | currency }}</span>
                 }
               }

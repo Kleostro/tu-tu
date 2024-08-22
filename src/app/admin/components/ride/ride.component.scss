@@ -28,8 +28,8 @@
 
 .time {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
+  justify-content: space-between;
 }
 
 .price {
@@ -39,4 +39,10 @@
   align-items: flex-end;
 
   padding-top: 5rem;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
