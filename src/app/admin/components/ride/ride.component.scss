@@ -18,9 +18,9 @@
 }
 
 .ride {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
-  justify-content: space-between;
 
   width: 100%;
   padding: 1rem 2rem;
@@ -36,4 +36,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  align-items: flex-end;
+
+  padding-top: 5rem;
 }
