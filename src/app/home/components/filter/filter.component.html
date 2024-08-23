@@ -1,12 +1,20 @@
+@if (filterService.tripPoints$$()) {
+  <strong>From: {{ filterService.tripPoints$$()?.from }} - To: {{ filterService.tripPoints$$()?.to }}</strong>
+}
 <p-tabView [scrollable]="true">
-  @for (route of availableRoutes$$(); track route.id; let index = $index) {
-    @for (schedule of route.schedule; track schedule.rideId) {
-      @for (segment of schedule.segments; track segment) {
-        <p-tabPanel [header]="(segment.time[0] | date: 'MMMM d, EEEE')!">
-          Departure: {{ segment.time[0] | date: 'MMM d, y, h:mm:ss a' }} - Arrival
-          {{ segment.time[1] | date: 'MMM d, y, h:mm:ss a' }} RideId: {{ schedule.rideId }}
-        </p-tabPanel>
+  @for (route of filterService.availableRoutesGroup$$() | keyvalue; track route.key) {
+    <p-tabPanel [header]="(route.key | date: 'MMMM d, EEEE')!">
+      <p>Amount of available rides: {{ route.value.length }}</p>
+      @for (data of route.value; track data) {
+        <hr />
+        <p>
+          Departure: <strong>{{ data.segment.time[0] | date: 'MMM d, y, h:mm:ss a' : 'UTC' }}</strong>
+        </p>
+        <p>
+          Arrival: <strong>{{ data.segment.time[1] | date: 'MMM d, y, h:mm:ss a' : 'UTC' }}</strong>
+        </p>
+        <strong>Ride ID: {{ data.rideId }} Route ID: {{ data.routeId }}</strong>
       }
-    }
+    </p-tabPanel>
   }
 </p-tabView>
