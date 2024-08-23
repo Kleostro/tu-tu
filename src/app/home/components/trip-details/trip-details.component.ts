@@ -41,7 +41,6 @@ export class TripDetailsComponent implements OnInit {
       { arrivalDate: new Date(arrivalDate), departureDate: new Date(departureDate), station: to, duration: '2min' },
       { arrivalDate: new Date(arrivalDate), departureDate: new Date(departureDate), station: to, duration: '2min' },
       { arrivalDate: new Date(arrivalDate), departureDate: new Date(departureDate), station: to, duration: '2min' },
-
       {
         arrivalDate: new Date(arrivalDate),
         departureDate: new Date(departureDate),
