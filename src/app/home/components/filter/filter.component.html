@@ -1,20 +1,32 @@
-@if (filterService.tripPoints$$()) {
-  <strong>From: {{ filterService.tripPoints$$()?.from }} - To: {{ filterService.tripPoints$$()?.to }}</strong>
-}
-<p-tabView [scrollable]="true">
-  @for (route of filterService.availableRoutesGroup$$() | keyvalue; track route.key) {
-    <p-tabPanel [header]="(route.key | date: 'MMMM d, EEEE')!">
-      <p>Amount of available rides: {{ route.value.length }}</p>
-      @for (data of route.value; track data) {
-        <hr />
-        <p>
-          Departure: <strong>{{ data.segment.time[0] | date: 'MMM d, y, h:mm:ss a' : 'UTC' }}</strong>
-        </p>
-        <p>
-          Arrival: <strong>{{ data.segment.time[1] | date: 'MMM d, y, h:mm:ss a' : 'UTC' }}</strong>
-        </p>
-        <strong>Ride ID: {{ data.rideId }} Route ID: {{ data.routeId }}</strong>
-      }
-    </p-tabPanel>
+<div class="filter-container">
+  @if (filterService.tripPoints$$()) {
+    <strong class="from-to-title">From: {{ filterService.tripPoints$$()?.from }} - To: {{ filterService.tripPoints$$()?.to }}</strong>
   }
-</p-tabView>
+  <p-tabView [scrollable]="true">
+    @for (route of filterService.availableRoutesGroup$$() | keyvalue; track route.key; let index = $index) {
+      <p-tabPanel>
+        <ng-template pTemplate="header">
+          <div class="tab-container">
+            <div class="tab-title-month">
+              {{ route.key | date: 'MMMM d' }}
+            </div>
+            <div class="tab-title-day">
+              {{ route.key | date: 'EEEE' }}
+            </div>
+          </div>
+        </ng-template>
+        <p>Amount of available rides: {{ route.value.length }}</p>
+        @for (data of route.value; track data) {
+          <hr />
+          <p>
+            Departure: <strong>{{ data.segment.time[0] | date: 'MMM d, y, h:mm:ss a' : 'UTC' }}</strong>
+          </p>
+          <p>
+            Arrival: <strong>{{ data.segment.time[1] | date: 'MMM d, y, h:mm:ss a' : 'UTC' }}</strong>
+          </p>
+          <strong>Ride ID: {{ data.rideId }} Route ID: {{ data.routeId }}</strong>
+        }
+      </p-tabPanel>
+    }
+  </p-tabView>
+</div>
