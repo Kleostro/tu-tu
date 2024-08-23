@@ -21,7 +21,7 @@
 
     <div class="route-wrapper">
       <div class="from-to-stations">
-        <i class="material-icons">train</i>{{ resultItem.startStation }} - {{ resultItem.endStation }}
+        <i class="material-icons">train</i>{{ resultItem.routeStartStation }} - {{ resultItem.routeEndStation }}
       </div>
 
       <p-button #buttonElement class="route-button" label="Route" text (click)="openModal($event)">
@@ -35,7 +35,7 @@
       <div class="carriage-info">
         <div class="carriage-type">{{ carriage.type }}</div>
         <div class="carriage-free-seats">{{ carriage.freeSeats }} free seats</div>
-        <div class="carriage-price">{{ carriage.price }}</div>
+        <div class="carriage-price">{{ carriage.price / 100 | currency: 'USD' }}</div>
       </div>
     } @empty {
       <div class="no-carriage-info">Sold out</div>

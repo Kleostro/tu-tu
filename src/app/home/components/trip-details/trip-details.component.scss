@@ -29,6 +29,10 @@
 
 .marker {
   margin: $three auto;
+  color: $gray-700;
+}
+
+.selected {
   color: $main-color;
 }
 
@@ -39,6 +43,7 @@
 }
 
 .p-text-secondary {
+  padding-top: $offset-xxs;
   word-break: normal;
 }
 
@@ -47,6 +52,7 @@
   flex-direction: row;
 
   width: max-content;
+  padding-top: $offset-xxs;
 
   font-size: $font-size-xxs;
   font-style: italic;

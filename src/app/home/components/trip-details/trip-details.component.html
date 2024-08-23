@@ -2,13 +2,13 @@
   <div class="modal-item">
     <div class="route-wrapper">
       <div class="from-to-stations">
-        <i class="material-icons">train</i>{{ trip.startStation }} - {{ trip.endStation }}
+        <i class="material-icons">train</i>{{ trip.routeStartStation }} - {{ trip.routeEndStation }}
       </div>
     </div>
 
     <p-timeline [value]="events">
       <ng-template pTemplate="marker" let-event>
-        <span class="marker">
+        <span class="marker" [class]="event.userStation ? 'selected' : ''">
           <i class="material-icons">location_on</i>
         </span>
       </ng-template>
@@ -16,10 +16,12 @@
       <ng-template pTemplate="content" let-event>
         <div class="stops">
           <small class="p-text-secondary">
-            {{ event.station }}
+            {{ event.stationName }}
           </small>
           <div class="duration">
-            {{ event.firstStation ? 'First station' : event.lastStation ? 'Last station' : event.duration }}
+            {{
+              event.firstStation ? 'First station' : event.lastStation ? 'Last station' : event.stopDuration + ' min'
+            }}
           </div>
         </div>
       </ng-template>

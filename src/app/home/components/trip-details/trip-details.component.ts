@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 
 import { TimelineModule } from 'primeng/timeline';
 
-import { CurrentRide } from '../../service/result-list-service/result-list.service';
-import { EventDetails } from './models/timeline-data';
+import { CurrentRide } from '../../models/currentRide.model';
+import { StationInfo } from '../../models/stationInfo.model';
 
 @Component({
   selector: 'app-trip-details',
@@ -17,39 +17,15 @@ import { EventDetails } from './models/timeline-data';
 export class TripDetailsComponent implements OnInit {
   @Input() public trip!: CurrentRide;
 
-  public events: EventDetails[] = [];
+  public events: StationInfo[] = [];
 
   public ngOnInit(): void {
     this.setData();
   }
 
   private setData(): void {
-    const { departureDate, arrivalDate, to } = this.trip;
+    const { stationsInfo } = this.trip;
 
-    this.events = [
-      {
-        arrivalDate: new Date(arrivalDate),
-        departureDate: new Date(departureDate),
-        station: to,
-        duration: '',
-        firstStation: true,
-      },
-      { arrivalDate: new Date(arrivalDate), departureDate: new Date(departureDate), station: to, duration: '2min' },
-      { arrivalDate: new Date(arrivalDate), departureDate: new Date(departureDate), station: to, duration: '2min' },
-      { arrivalDate: new Date(arrivalDate), departureDate: new Date(departureDate), station: to, duration: '2min' },
-      { arrivalDate: new Date(arrivalDate), departureDate: new Date(departureDate), station: to, duration: '2min' },
-      { arrivalDate: new Date(arrivalDate), departureDate: new Date(departureDate), station: to, duration: '2min' },
-      { arrivalDate: new Date(arrivalDate), departureDate: new Date(departureDate), station: to, duration: '2min' },
-      { arrivalDate: new Date(arrivalDate), departureDate: new Date(departureDate), station: to, duration: '2min' },
-      {
-        arrivalDate: new Date(arrivalDate),
-        departureDate: new Date(departureDate),
-        station: to,
-        duration: '',
-        lastStation: true,
-      },
-    ];
-    // TBD: check comment
-    // this.events[1].duration = calculateDuration(this.events[0].date, this.events[2].date);
+    this.events = stationsInfo;
   }
 }

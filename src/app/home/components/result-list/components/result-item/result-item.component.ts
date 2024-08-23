@@ -1,11 +1,11 @@
-import { DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { TimelineModule } from 'primeng/timeline';
 
-import { CurrentRide } from '@/app/home/service/result-list-service/result-list.service';
+import { CurrentRide } from '@/app/home/models/currentRide.model';
 import { APP_ROUTE } from '@/app/shared/constants/routes';
 import { template } from '@/app/shared/constants/string-templates';
 import { ModalService } from '@/app/shared/services/modal/modal.service';
@@ -18,7 +18,7 @@ import { Event } from './models/timeline-data';
 @Component({
   selector: 'app-result-item',
   standalone: true,
-  imports: [TimelineModule, DatePipe, ButtonModule, TripDetailsComponent],
+  imports: [TimelineModule, DatePipe, CurrencyPipe, ButtonModule, TripDetailsComponent],
   templateUrl: './result-item.component.html',
   styleUrl: './result-item.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,12 +38,12 @@ export class ResultItemComponent implements OnInit {
   }
 
   private setData(): void {
-    const { departureDate, arrivalDate, from, to } = this.resultItem;
+    const { tripDepartureDate, tripArrivalDate, tripStartStation, tripEndStation } = this.resultItem;
 
     this.events = [
-      { date: new Date(departureDate), city: from },
+      { date: new Date(tripDepartureDate), city: tripStartStation },
       { duration: '' },
-      { date: new Date(arrivalDate), city: to },
+      { date: new Date(tripArrivalDate), city: tripEndStation },
     ];
 
     this.events[1].duration = calculateDuration(this.events[0].date, this.events[2].date);
@@ -59,10 +59,10 @@ export class ResultItemComponent implements OnInit {
   }
 
   public redirectToDetailed(): void {
-    const { rideId, fromId, toId } = this.resultItem;
+    const { rideId, tripStartStationId, tripEndStationId } = this.resultItem;
 
     this.router.navigate([stringTemplate(template.DETAILED_PAGE_PATH, { route: APP_ROUTE.TRIP, id: rideId })], {
-      queryParams: { from: fromId, to: toId },
+      queryParams: { from: tripStartStationId, to: tripEndStationId },
     });
   }
 }
