@@ -6,15 +6,63 @@
     flex-direction: row;
     gap: 10px;
     justify-content: center;
-  }
 
-  .icon-left {
-    position: absolute;
-    left: 5px;
-    transform: translateY(-50%);
+    .autocomlete-section {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+    }
   }
 }
 
-.search-group {
-  position: relative;
+@media screen and (width <= 1024px) {
+  .search-container {
+    max-width: 748px;
+    margin: 0 auto;
+
+    .search-form {
+      flex-direction: column;
+      gap: 10px;
+      max-width: 748px;
+
+      .autocomlete-section {
+        display: flex;
+        flex: 50%;
+        flex-direction: row;
+        gap: 10px;
+      }
+
+      ::ng-deep .p-autocomplete input {
+        width: 369px;
+      }
+
+      ::ng-deep .p-calendar {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (width <= 768px) {
+  .search-container {
+    .search-form {
+      flex-direction: column;
+      gap: 10px;
+      max-width: 340px;
+      margin: 0 auto;
+
+      .autocomlete-section {
+        display: flex;
+        flex-direction: column;
+      }
+
+      ::ng-deep .p-autocomplete input {
+        width: 340px;
+      }
+
+      .submit-btn {
+        width: 100%;
+      }
+    }
+  }
 }
