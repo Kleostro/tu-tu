@@ -4,36 +4,36 @@
   .search-form {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: $ten;
     justify-content: center;
 
     .autocomlete-section {
       display: flex;
       flex-direction: row;
-      gap: 10px;
+      gap: $ten;
     }
   }
 }
 
 @media screen and (width <= 1024px) {
   .search-container {
-    max-width: 748px;
+    max-width: $offset-xxxl * 9;
     margin: 0 auto;
 
     .search-form {
       flex-direction: column;
-      gap: 10px;
-      max-width: 748px;
+      gap: $ten;
+      max-width: $offset-xxxl * 9;
 
       .autocomlete-section {
         display: flex;
         flex: 50%;
         flex-direction: row;
-        gap: 10px;
+        gap: $ten;
       }
 
       ::ng-deep .p-autocomplete input {
-        width: 369px;
+        width: $offset-xxxl * 4.4375;
       }
 
       ::ng-deep .p-calendar {
@@ -48,7 +48,7 @@
     .search-form {
       flex-direction: column;
       gap: 10px;
-      max-width: 340px;
+      max-width: $offset-xxxl * 5;
       margin: 0 auto;
 
       .autocomlete-section {
@@ -57,7 +57,7 @@
       }
 
       ::ng-deep .p-autocomplete input {
-        width: 340px;
+        width: $offset-xxxl * 5;
       }
 
       .submit-btn {
