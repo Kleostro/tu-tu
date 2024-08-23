@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { ResultListService } from '../../service/result-list-service/result-list.service';
+import { ResultListService } from '../../services/result-list/result-list.service';
 import { TripDetailsComponent } from '../trip-details/trip-details.component';
 import { ResultItemComponent } from './components/result-item/result-item.component';
 

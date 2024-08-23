@@ -34,8 +34,8 @@ describe('TripDetailsComponent', () => {
       tripStartStationId: 1,
       tripEndStationId: 1,
 
-      tripDepartureDate: 'tripDepartureDate',
-      tripArrivalDate: 'tripArrivalDate',
+      tripDepartureDate: '2023-10-01T08:14:00',
+      tripArrivalDate: '2023-10-01T08:14:00',
       carriageInfo: [],
       stationsInfo: [],
     } as CurrentRide;
