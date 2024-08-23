@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { firstValueFrom } from 'rxjs';
 
 import { LogoutService } from '@/app/api/logoutService/logout.service';
+import { APP_ROUTE } from '@/app/shared/constants/routes';
 
 import { NavigationComponent } from '../../../core/components/navigation/navigation.component';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
@@ -31,7 +32,7 @@ export class LogoutComponent {
       .then(() => {
         this.authService.setLogoutSignals();
         this.localStorageService.clear();
-        this.router.navigate(['/sign-in']);
+        this.router.navigate([APP_ROUTE.SIGN_IN]);
       })
       .catch(() => {
         // TBD: handle error

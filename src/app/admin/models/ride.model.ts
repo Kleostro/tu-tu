@@ -8,12 +8,7 @@ export interface RidePath {
 interface FullRide {
   station: Station | null;
   path: RidePath;
-  price:
-    | {
-        type: string;
-        price: number;
-      }[]
-    | null;
+  price: { type: string; price: number }[] | null;
 }
 
 export default FullRide;
