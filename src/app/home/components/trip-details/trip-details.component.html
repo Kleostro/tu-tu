@@ -1,36 +1,38 @@
-<div class="item-wrapper">
-  <div class="modal-item">
-    <div class="route-wrapper">
-      <div class="from-to-stations">
-        <i class="material-icons">train</i>{{ trip.routeStartStation }} - {{ trip.routeEndStation }}
+@if (trip) {
+  <div class="item-wrapper">
+    <div class="modal-item">
+      <div class="route-wrapper">
+        <div class="from-to-stations">
+          <i class="material-icons">train</i>{{ trip.routeStartStation }} - {{ trip.routeEndStation }}
+        </div>
       </div>
-    </div>
 
-    <p-timeline [value]="events">
-      <ng-template pTemplate="marker" let-event>
-        <span class="marker" [class]="event.userStation ? 'selected' : ''">
-          <i class="material-icons">location_on</i>
-        </span>
-      </ng-template>
+      <p-timeline [value]="events">
+        <ng-template pTemplate="marker" let-event>
+          <span class="marker" [class]="event.userStation ? 'selected' : ''">
+            <i class="material-icons">location_on</i>
+          </span>
+        </ng-template>
 
-      <ng-template pTemplate="content" let-event>
-        <div class="stops">
-          <small class="p-text-secondary">
-            {{ event.stationName }}
-          </small>
-          <div class="duration">
-            {{
-              event.firstStation ? 'First station' : event.lastStation ? 'Last station' : event.stopDuration + ' min'
-            }}
+        <ng-template pTemplate="content" let-event>
+          <div class="stops">
+            <small class="p-text-secondary">
+              {{ event.stationName }}
+            </small>
+            <div class="duration">
+              {{
+                event.firstStation ? 'First station' : event.lastStation ? 'Last station' : event.stopDuration + ' min'
+              }}
+            </div>
           </div>
-        </div>
-      </ng-template>
-      <ng-template pTemplate="opposite" let-event>
-        <div class="time">
-          <small>{{ event.firstStation ? null : (event.arrivalDate | date: 'HH:mm') }}</small>
-          <small>{{ event.lastStation ? null : (event.departureDate | date: 'HH:mm') }}</small>
-        </div>
-      </ng-template>
-    </p-timeline>
+        </ng-template>
+        <ng-template pTemplate="opposite" let-event>
+          <div class="time">
+            <small>{{ event.firstStation ? null : (event.arrivalDate | date: 'HH:mm') }}</small>
+            <small>{{ event.lastStation ? null : (event.departureDate | date: 'HH:mm') }}</small>
+          </div>
+        </ng-template>
+      </p-timeline>
+    </div>
   </div>
-</div>
+}

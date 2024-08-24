@@ -1,6 +1,6 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 
-import { RouteInfo } from '@/app/api/models/schedule';
+import { CustomSchedule, RouteInfo } from '@/app/api/models/schedule';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 
 import { CarriageInfo } from '../../models/carriageInfo.model';
@@ -16,7 +16,7 @@ export class ResultListService {
 
   public currentRides: CurrentRide[] = [];
 
-  public currentResultList = computed<CurrentRide[]>(() => this.currentRides);
+  public currentResultList = signal<CurrentRide[]>(this.currentRides);
   public routesInfo$$ = signal<Record<string, RouteInfo> | null>(null);
 
   constructor() {
@@ -30,41 +30,64 @@ export class ResultListService {
   }
 
   private createCurrentRides(data: RouteInfo): void {
-    const ride = data;
+    const filterDate = new Date(this.filterService.searchPrms().time);
+    const rides = data.schedule
+      .map((schedule) => this.createCurrentRide(data, schedule))
+      .filter((ride): ride is CurrentRide => ride !== null && new Date(ride.tripDepartureDate) > filterDate);
 
-    const currentRide = this.createCurrentRide(ride);
-    this.currentRides.push(currentRide);
+    this.currentRides.push(...rides);
+
+    const updatedResultList = [...this.currentResultList(), ...rides];
+    updatedResultList.sort((a, b) => new Date(a.tripDepartureDate).getTime() - new Date(b.tripDepartureDate).getTime());
+
+    this.currentResultList.set(updatedResultList);
   }
 
-  private createCurrentRide(ride: RouteInfo): CurrentRide {
+  private createCurrentRide(routeInfo: RouteInfo, schedule: CustomSchedule): CurrentRide {
     const tripPoints = this.filterService.tripPoints$$();
-    const routeInfo: RouteInfo = ride;
+
+    const routeId = routeInfo.id;
 
     const routeStartStation = this.stationsService.findStationById(routeInfo.path[0])!.city;
     const routeEndStation = this.stationsService.findStationById(routeInfo.path[routeInfo.path.length - 1])!.city;
-    const aggregatedPriceMap = this.aggregatePrices(routeInfo.schedule[1].segments);
+    const aggregatedPriceMap = this.aggregatePrices(schedule.segments);
+
+    const tripStartStation = tripPoints!.from;
+    const tripEndStation = tripPoints!.to;
+
+    const tripStartStationId = this.stationsService.findStationByCity(tripStartStation)!.id;
+    const tripEndStationId = this.stationsService.findStationByCity(tripEndStation)!.id;
+
+    const routeStartStationId = routeInfo.path[0];
+    const routeEndStationId = routeInfo.path[routeInfo.path.length - 1];
+
+    const tripStartStationIdIndex = routeInfo.path.indexOf(tripStartStationId);
+    const tripEndStationIdIndex = routeInfo.path.indexOf(tripEndStationId);
+
+    const tripDepartureDate = schedule.segments[tripStartStationIdIndex].time[0];
+    const tripArrivalDate = schedule.segments[tripEndStationIdIndex - 1].time[1];
 
     return {
-      rideId: routeInfo.schedule[1].rideId, // ??
-      routeId: routeInfo.id, // correct
+      rideId: schedule.rideId, // Use rideId from the current schedule
+      routeId, // correct
 
       routeStartStation, // correct
       routeEndStation, // correct
 
-      tripStartStation: tripPoints!.from, // correct
-      tripEndStation: tripPoints!.to, // correct
+      tripStartStation, // correct
+      tripEndStation, // correct
 
-      routeStartStationId: routeInfo.path[0], // correct
-      routeEndStationId: routeInfo.path[routeInfo.path.length - 1], // correct
+      routeStartStationId, // correct
+      routeEndStationId, // correct
 
-      tripStartStationId: this.stationsService.findStationByCity(tripPoints!.from)?.id ?? 0, // correct
-      tripEndStationId: this.stationsService.findStationByCity(tripPoints!.to)?.id ?? 0, // correct
+      tripStartStationId, // correct
+      tripEndStationId, // correct
 
-      tripDepartureDate: routeInfo.schedule[0].segments[0].time[1], // ??
-      tripArrivalDate: routeInfo.schedule[0].segments[routeInfo.schedule[0].segments.length - 1].time[0], // ??
+      tripDepartureDate, // correct
+      tripArrivalDate, // correct
 
-      carriageInfo: this.createCarriageInfo(routeInfo.carriages, aggregatedPriceMap), // ?? for all route
-      stationsInfo: [], // ?? do later
+      carriageInfo: this.createCarriageInfo(routeInfo.carriages, aggregatedPriceMap), // For the current schedule
+      stationsInfo: [], // To be done later
     };
   }
 

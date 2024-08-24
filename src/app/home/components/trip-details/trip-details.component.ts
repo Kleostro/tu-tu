@@ -15,7 +15,7 @@ import { StationInfo } from '../../models/stationInfo.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TripDetailsComponent implements OnInit {
-  @Input() public trip!: CurrentRide;
+  @Input() public trip: CurrentRide | null = null;
 
   public events: StationInfo[] = [];
 
@@ -24,8 +24,9 @@ export class TripDetailsComponent implements OnInit {
   }
 
   private setData(): void {
-    const { stationsInfo } = this.trip;
-
-    this.events = stationsInfo;
+    if (this.trip) {
+      const { stationsInfo } = this.trip;
+      this.events = stationsInfo;
+    }
   }
 }
