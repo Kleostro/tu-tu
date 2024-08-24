@@ -16,7 +16,7 @@
 }
 
 .item {
-  width: 35%;
+  width: 50%;
 }
 
 ::ng-deep .p-timeline {
@@ -37,7 +37,7 @@
 }
 
 .custom-marker {
-  margin: $offset-xxs 0 $offset-xxs -0.65rem;
+  margin: $offset-xxs 0 $offset-xxs -0.7rem;
   padding: $offset-xxs;
 
   color: $white-100;
@@ -47,7 +47,6 @@
 }
 
 .time-marker {
-  margin: $offset-xxs;
   font-size: $font-size-ms;
   font-weight: bold;
   color: $main-color;

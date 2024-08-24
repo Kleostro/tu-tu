@@ -47,6 +47,11 @@
   word-break: normal;
 }
 
+.route-stations {
+  font-weight: bold;
+  color: $gray-900;
+}
+
 .duration {
   display: flex;
   flex-direction: column;

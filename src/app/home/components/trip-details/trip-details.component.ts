@@ -31,24 +31,21 @@ export class TripDetailsComponent implements OnInit {
   }
 
   public getDurationText(event: StationInfo): string {
-    if (event.firstUserStation && event.firstStation) {
-      return 'Boarding station';
+    switch (true) {
+      case event.firstUserStation && event.firstStation:
+        return 'Boarding station';
+      case event.firstUserStation:
+        return `Boarding station<br>${event.stopDuration} min`;
+      case event.firstStation:
+        return 'First station';
+      case event.lastUserStation && event.lastStation:
+        return 'Destination station';
+      case event.lastUserStation:
+        return `Destination station<br>${event.stopDuration} min`;
+      case event.lastStation:
+        return 'Last station';
+      default:
+        return `${event.stopDuration} min`;
     }
-    if (event.firstUserStation) {
-      return `Boarding station<br>${event.stopDuration} min`;
-    }
-    if (event.firstStation) {
-      return 'First station';
-    }
-    if (event.lastUserStation && event.lastStation) {
-      return 'Destination station';
-    }
-    if (event.lastUserStation) {
-      return `Destination station<br>${event.stopDuration} min`;
-    }
-    if (event.lastStation) {
-      return 'Last station';
-    }
-    return `${event.stopDuration} min`;
   }
 }

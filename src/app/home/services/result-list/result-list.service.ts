@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 
 import { CustomSchedule, RouteInfo } from '@/app/api/models/schedule';
 import { Station } from '@/app/api/models/stations';
+import { RideService } from '@/app/api/rideService/ride.service';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 
 import { CarriageInfo } from '../../models/carriageInfo.model';
@@ -16,11 +17,13 @@ export class ResultListService {
   private stationsService = inject(StationsService);
   private filterService = inject(FilterService);
 
+  private routeAPI = inject(RideService);
+
   public currentRides: CurrentRide[] = [];
 
   private allStations = signal<Station[]>(this.stationsService.allStations());
 
-  public currentResultList = signal<CurrentRide[]>(this.currentRides);
+  public currentResultList = signal<CurrentRide[]>([...this.currentRides]);
   public routesInfo$$ = signal<Record<string, RouteInfo> | null>(null);
 
   constructor() {
@@ -55,7 +58,6 @@ export class ResultListService {
 
     const routeStartStation = this.stationsService.findStationById(routeInfo.path[0])!.city;
     const routeEndStation = this.stationsService.findStationById(routeInfo.path[routeInfo.path.length - 1])!.city;
-    const aggregatedPriceMap = this.aggregatePrices(schedule.segments);
 
     const tripStartStation = tripPoints!.from;
     const tripEndStation = tripPoints!.to;
@@ -71,6 +73,8 @@ export class ResultListService {
 
     const tripDepartureDate = schedule.segments[tripStartStationIdIndex].time[0];
     const tripArrivalDate = schedule.segments[tripEndStationIdIndex - 1].time[1];
+
+    const aggregatedPriceMap = this.aggregatePrices(schedule.segments, tripStartStationIdIndex, tripEndStationIdIndex);
 
     const stationsInfo = this.createStationsInfo(routeInfo.path, tripStartStationIdIndex, tripEndStationIdIndex);
 
@@ -98,10 +102,14 @@ export class ResultListService {
     };
   }
 
-  private aggregatePrices(segments: { price: { [key: string]: number } }[]): { [key: string]: number } {
+  private aggregatePrices(
+    segments: { price: { [key: string]: number } }[],
+    startIndex: number,
+    endIndex: number,
+  ): { [key: string]: number } {
     const priceMap: { [key: string]: number } = {};
 
-    segments.forEach((segment) => {
+    segments.slice(startIndex, endIndex + 1).forEach((segment) => {
       Object.keys(segment.price).forEach((carriage) => {
         if (priceMap[carriage]) {
           priceMap[carriage] += segment.price[carriage];
@@ -132,7 +140,7 @@ export class ResultListService {
     });
 
     const stationsInfo = paths.map((stationId, index) => {
-      const stationName = stationMap.get(stationId) ?? '';
+      const stationName = stationMap.get(stationId) ?? 'no station';
       return {
         stationId,
         stationName,

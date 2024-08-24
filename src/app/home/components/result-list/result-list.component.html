@@ -1,6 +1,4 @@
-<!-- TBD: remove when done -->
-<app-trip-details [trip]="resultListService.currentResultList()[0]"></app-trip-details>
-
+<!-- TBD: check no results message when we have working search and filter -->
 @if (resultListService.currentResultList()) {
   <div class="result-list">
     <h1>Showing {{ resultListService.currentResultList().length }} results</h1>
@@ -17,5 +15,12 @@
         </div>
       }
     }
+  </div>
+} @else {
+  <div class="no-result">
+    <h1 class="description">
+      Sorry, we couldn't find anything for your search.<br />Please try another date or station.
+    </h1>
+    <img class="image" [src]="imageUrl" alt="No result" />
   </div>
 }
