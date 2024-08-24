@@ -19,11 +19,7 @@
             <small class="p-text-secondary">
               {{ event.stationName }}
             </small>
-            <div class="duration">
-              {{
-                event.firstStation ? 'First station' : event.lastStation ? 'Last station' : event.stopDuration + ' min'
-              }}
-            </div>
+            <div class="duration" [innerHTML]="getDurationText(event)"></div>
           </div>
         </ng-template>
         <ng-template pTemplate="opposite" let-event>

@@ -1,10 +1,12 @@
 import { inject, Injectable, signal } from '@angular/core';
 
 import { CustomSchedule, RouteInfo } from '@/app/api/models/schedule';
+import { Station } from '@/app/api/models/stations';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 
 import { CarriageInfo } from '../../models/carriageInfo.model';
 import { CurrentRide } from '../../models/currentRide.model';
+import { StationInfo } from '../../models/stationInfo.model';
 import { FilterService } from '../filter/filter.service';
 
 @Injectable({
@@ -16,16 +18,19 @@ export class ResultListService {
 
   public currentRides: CurrentRide[] = [];
 
+  private allStations = signal<Station[]>(this.stationsService.allStations());
+
   public currentResultList = signal<CurrentRide[]>(this.currentRides);
   public routesInfo$$ = signal<Record<string, RouteInfo> | null>(null);
 
   constructor() {
-    this.stationsService.getStations().subscribe(() => {
-      this.filterService.routesInfo$.subscribe((data) => {
-        if (data) {
-          this.createCurrentRides(data);
-        }
-      });
+    this.stationsService.getStations().subscribe((data) => {
+      this.allStations.set(data);
+    });
+    this.filterService.routesInfo$.subscribe((data) => {
+      if (data) {
+        this.createCurrentRides(data);
+      }
     });
   }
 
@@ -67,6 +72,8 @@ export class ResultListService {
     const tripDepartureDate = schedule.segments[tripStartStationIdIndex].time[0];
     const tripArrivalDate = schedule.segments[tripEndStationIdIndex - 1].time[1];
 
+    const stationsInfo = this.createStationsInfo(routeInfo.path, tripStartStationIdIndex, tripEndStationIdIndex);
+
     return {
       rideId: schedule.rideId, // Use rideId from the current schedule
       routeId, // correct
@@ -87,7 +94,7 @@ export class ResultListService {
       tripArrivalDate, // correct
 
       carriageInfo: this.createCarriageInfo(routeInfo.carriages, aggregatedPriceMap), // For the current schedule
-      stationsInfo: [], // To be done later
+      stationsInfo, // correct
     };
   }
 
@@ -114,5 +121,32 @@ export class ResultListService {
       freeSeats: 0,
       price: priceMap[carriage] ?? 0,
     }));
+  }
+
+  private createStationsInfo(paths: number[], start: number, end: number): StationInfo[] {
+    const stations = this.allStations();
+    const stationMap = new Map<number, string>();
+
+    stations.forEach((station) => {
+      stationMap.set(station.id, station.city);
+    });
+
+    const stationsInfo = paths.map((stationId, index) => {
+      const stationName = stationMap.get(stationId) ?? '';
+      return {
+        stationId,
+        stationName,
+        arrivalDate: '',
+        departureDate: '',
+        stopDuration: 0,
+        firstStation: index === 0,
+        lastStation: index === paths.length - 1,
+        firstUserStation: index === start,
+        lastUserStation: index === end,
+        userStation: index >= start && index <= end,
+      };
+    });
+
+    return stationsInfo;
   }
 }
