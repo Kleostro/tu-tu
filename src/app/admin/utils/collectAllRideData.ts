@@ -1,7 +1,7 @@
 import { Station } from '@/app/api/models/stations';
 
 import { CustomSchedule, OmitedSegment } from '../../api/models/schedule';
-import FullRide from '../models/ride.model';
+import FullRide, { RidePrice } from '../models/ride.model';
 
 export const collectAllRideData = (stations: (Station | null)[], segments: OmitedSegment[]): FullRide[] => {
   const rides: FullRide[] = [];
@@ -33,7 +33,7 @@ export const collectAllRideData = (stations: (Station | null)[], segments: Omite
   return rides;
 };
 
-export const exrtactRideData = (
+export const exrtactRideDataWithUpdateTime = (
   currentRide: CustomSchedule,
   event: { from: string | null; to: string | null },
   index: number,
@@ -50,6 +50,23 @@ export const exrtactRideData = (
     const updatedToTime = event.to ? event.to : currentRide.segments[index].time[0];
     updatedData.segments[index].time[0] = new Date(updatedFromTime).toISOString();
     updatedData.segments[index - 1].time[1] = new Date(updatedToTime).toISOString();
+  }
+
+  return updatedData;
+};
+
+export const exrtactRideDataWithUpdatePrice = (
+  currentRide: CustomSchedule,
+  event: RidePrice[],
+  index: number,
+): CustomSchedule => {
+  const updatedData: CustomSchedule = { rideId: currentRide.rideId ?? 0, segments: currentRide.segments ?? [] };
+  if (index === 0) {
+    updatedData.segments[0].price = event.reduce((acc, curr) => ({ ...acc, [curr.type]: curr.price }), {});
+  } else if (index === currentRide.segments.length) {
+    updatedData.segments[index - 1].price = event.reduce((acc, curr) => ({ ...acc, [curr.type]: curr.price }), {});
+  } else {
+    updatedData.segments[index].price = event.reduce((acc, curr) => ({ ...acc, [curr.type]: curr.price }), {});
   }
 
   return updatedData;

@@ -1,4 +1,3 @@
-import { CurrencyPipe, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnDestroy, signal } from '@angular/core';
 
 import { ButtonModule } from 'primeng/button';
@@ -12,15 +11,20 @@ import { StationsService } from '@/app/api/stationsService/stations.service';
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
-import { RidePath } from '../../models/ride.model';
-import { collectAllRideData, exrtactRideData } from '../../utils/collectAllRideData';
+import { RidePath, RidePrice } from '../../models/ride.model';
+import {
+  collectAllRideData,
+  exrtactRideDataWithUpdatePrice,
+  exrtactRideDataWithUpdateTime,
+} from '../../utils/collectAllRideData';
+import { RidePriceComponent } from '../ride-price/ride-price.component';
 import { RideTimeComponent } from '../ride-time/ride-time.component';
 
 @Component({
   selector: 'app-ride',
   standalone: true,
-  imports: [CurrencyPipe, DatePipe, ButtonModule, RippleModule, RideTimeComponent],
-  providers: [CurrencyPipe, DatePipe],
+  imports: [ButtonModule, RippleModule, RideTimeComponent, RidePriceComponent],
+  providers: [],
   templateUrl: './ride.component.html',
   styleUrl: './ride.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,6 +40,7 @@ export class RideComponent implements OnDestroy {
   );
   public fullRideData = computed(() => collectAllRideData(this.stations(), this.ride()?.segments ?? []));
   public isTimeEdited = signal(true);
+  public isPriceEdited = signal(true);
   private subscription = new Subscription();
 
   public handleTimeChanged(event: RidePath, index: number): void {
@@ -47,13 +52,35 @@ export class RideComponent implements OnDestroy {
           .updateRide(
             this.rideService.currentRouteId(),
             this.ride()?.rideId ?? 0,
-            exrtactRideData(currentRide, event, index),
+            exrtactRideDataWithUpdateTime(currentRide, event, index),
           )
           .pipe(take(1))
           .subscribe(() => {
             this.rideService.getRouteById(this.rideService.currentRouteId()).subscribe(() => {
               this.userMessageService.showSuccessMessage(USER_MESSAGE.RIDE_DATA_UPDATED_SUCCESSFULLY);
               this.isTimeEdited.set(true);
+            });
+          }),
+      );
+    }
+  }
+
+  public handlePriceChanged(event: RidePrice[], index: number): void {
+    const currentRide = this.ride();
+    if (currentRide) {
+      this.isPriceEdited.set(false);
+      this.subscription.add(
+        this.rideService
+          .updateRide(
+            this.rideService.currentRouteId(),
+            this.ride()?.rideId ?? 0,
+            exrtactRideDataWithUpdatePrice(currentRide, event, index),
+          )
+          .pipe(take(1))
+          .subscribe(() => {
+            this.rideService.getRouteById(this.rideService.currentRouteId()).subscribe(() => {
+              this.userMessageService.showSuccessMessage(USER_MESSAGE.RIDE_PRICE_UPDATED_SUCCESSFULLY);
+              this.isPriceEdited.set(true);
             });
           }),
       );
