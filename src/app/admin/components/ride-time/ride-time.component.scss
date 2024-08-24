@@ -4,6 +4,7 @@
 
 .wrapper {
   display: flex;
+  gap: 1rem;
   align-items: flex-start;
   justify-content: space-between;
 }
@@ -22,4 +23,5 @@
 .control {
   display: flex;
   gap: 0.5rem;
+  align-items: center;
 }
