@@ -1,9 +1,9 @@
 import { inject, Injectable, signal } from '@angular/core';
 
-import { Route } from '@/app/api/models/search';
-
-import { SearchService } from '@/app/api/searchService/search.service';
 import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
+import { Route } from '@/app/api/models/search';
+import { SearchService } from '@/app/api/searchService/search.service';
+
 import { GroupedRoutes, TripPoints } from '../../model/groupedRoutes';
 
 @Injectable({
@@ -44,7 +44,7 @@ export class FilterService {
           });
       });
     });
-    
+
     return groupedRoutes;
   }
 
@@ -63,13 +63,11 @@ export class FilterService {
         this.tripPoints$$.set({
           from: res.from.city,
           to: res.to.city,
-        })
+        });
       },
       error: (err: OverriddenHttpErrorResponse) => {
         throw Error(err.message);
       },
-    })
+    });
   }
 }
-
-

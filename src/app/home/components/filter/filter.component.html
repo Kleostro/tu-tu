@@ -1,6 +1,8 @@
 <div class="filter-container">
   @if (filterService.tripPoints$$()) {
-    <strong class="from-to-title">From: {{ filterService.tripPoints$$()?.from }} - To: {{ filterService.tripPoints$$()?.to }}</strong>
+    <strong class="from-to-title"
+      >From: {{ filterService.tripPoints$$()?.from }} - To: {{ filterService.tripPoints$$()?.to }}</strong
+    >
   }
   <p-tabView [scrollable]="true">
     @for (route of filterService.availableRoutesGroup$$() | keyvalue; track route.key; let index = $index) {
