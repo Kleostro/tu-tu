@@ -4,11 +4,20 @@ export const calculateDuration = (startDate: Date | undefined, endDate: Date | u
   }
 
   const durationMs = endDate.getTime() - startDate.getTime();
-  const hours = Math.floor(durationMs / (1000 * 60 * 60));
+  const days = Math.floor(durationMs / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((durationMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
 
-  // TBD: check commented code
-  // return minutes ? `${hours}h\u00A0${minutes}min` : `${hours}h`;
+  let durationString = '';
+  if (days > 0) {
+    durationString += `${days}d\u00A0`;
+  }
+  if (hours > 0) {
+    durationString += `${hours}h\u00A0`;
+  }
+  if (minutes > 0) {
+    durationString += `${minutes}min`;
+  }
 
-  return `${hours}h\u00A0${minutes}min`;
+  return durationString.trim();
 };
