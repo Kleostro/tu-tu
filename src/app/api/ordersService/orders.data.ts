@@ -63,7 +63,7 @@ export const ordersDummyData: Order[] = [
     schedule: {
       segments: [
         {
-          time: ['2021-08-11T08:00:00', '2021-08-11T08:30:00'],
+          time: ['2021-09-11T07:00:00', '2021-09-11T08:30:00'],
           price: {
             adult: 1000,
             child: 500,
@@ -72,7 +72,7 @@ export const ordersDummyData: Order[] = [
           occupiedSeats: [33],
         },
         {
-          time: ['2021-08-11T08:30:00', '2021-08-11T09:00:00'],
+          time: ['2021-09-11T08:30:00', '2021-09-11T10:00:00'],
           price: {
             adult: 1000,
             child: 500,
