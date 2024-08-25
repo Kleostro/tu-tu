@@ -15,8 +15,6 @@ export interface Order {
   schedule: {
     segments: Segment[];
   };
-  stationStart: number;
-  stationEnd: number;
 }
 
 export interface User extends Profile {
