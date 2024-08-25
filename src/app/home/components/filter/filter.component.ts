@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, signal } from '@angular/core';
 
 import { TabViewModule } from 'primeng/tabview';
 
+import { TripData } from '../../models/tripData';
 import { FilterService } from '../../services/filter/filter.service';
 
 @Component({
@@ -15,4 +16,11 @@ import { FilterService } from '../../services/filter/filter.service';
 })
 export class FilterComponent {
   public filterService = inject(FilterService);
+  @Input() public tripData!: TripData | null;
+  public timeStampMs$$ = signal(0);
+
+  
+  public generateDateInMs(date: string | Date): number {
+    return new Date(date).getTime();
+  }
 }

@@ -16,7 +16,10 @@ import { StationsService } from '@/app/api/stationsService/stations.service';
 import { AutocompleteIconDirective } from '@/app/shared/directives/autocompleteIcon/autocomplete-icon.directive';
 
 import { TripData } from '../../models/tripData';
+import { CitiesService } from '../../services/cities/cities.service';
+import { FilterService } from '../../services/filter/filter.service';
 import { FilterComponent } from '../filter/filter.component';
+import { City } from '../../models/groupedRoutes';
 
 @Component({
   selector: 'app-search',
@@ -43,10 +46,12 @@ export class SearchComponent implements OnInit {
   public minDate: Date = new Date();
   public timeSelected = false;
   public tripData$$ = signal<TripData | null>(null);
-
+  private filterService = inject(FilterService);
   private fb: FormBuilder = inject(FormBuilder);
   public stationsService = inject(StationsService);
   public stations: Station[] = [];
+  private citiesService = inject(CitiesService);
+  private additionalCities: City[] = [];
 
   public tripForm = this.fb.group({
     startCity: this.fb.control<string>('', [Validators.required.bind(this)]),
@@ -62,13 +67,17 @@ export class SearchComponent implements OnInit {
     firstValueFrom(this.stationsService.getStations()).then((stations) => {
       this.stations = stations;
     });
+    firstValueFrom(this.citiesService.getCities()).then((cities) => {
+      this.additionalCities = cities;
+    });
   }
 
   public filterCity(event: AutoCompleteCompleteEvent): void {
     const query = event.query.toLowerCase();
-    this.filteredCities = this.stations
-      .filter(({ city }) => city.toLowerCase().includes(query))
-      .map(({ city }) => city);
+    this.filteredCities = [
+      ...this.stations.filter(({ city }) => city.toLowerCase().includes(query)).map(({ city }) => city),
+      ...this.additionalCities.map((city) => city.name),
+    ];
   }
 
   public onDateSelect(event: Date): void {
@@ -77,12 +86,24 @@ export class SearchComponent implements OnInit {
 
   public onSubmit(): void {
     if (this.tripForm.valid) {
+      const startCityData = this.stations.find((station) => station.city === this.tripForm.value.startCity)!;
+      const endCityData = this.stations.find((station) => station.city === this.tripForm.value.endCity)!;
       const tripData: TripData = {
-        startCity: this.tripForm.controls['startCity'].value ?? '',
-        endCity: this.tripForm.controls['endCity'].value ?? '',
+        startCity: startCityData,
+        endCity: endCityData,
         tripDate: new Date(this.tripForm.controls['tripDate'].value ?? ''),
       };
       this.tripData$$.set(tripData);
+      const searchPrms = {
+        fromLatitude: startCityData?.latitude,
+        toLatitude: endCityData?.latitude,
+        fromLongitude: startCityData?.longitude,
+        toLongitude: endCityData?.longitude,
+        time: this.tripForm.value.tripDate!,
+      };
+      if (startCityData && endCityData) {
+        this.filterService.startSearch(searchPrms);
+      }
     }
   }
 }
