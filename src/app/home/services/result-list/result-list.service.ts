@@ -142,9 +142,11 @@ export class ResultListService {
     let departureDate = '';
 
     if (index === 0) {
-      [, departureDate] = schedule.segments[index].time;
+      arrivalDate = '';
+      [departureDate] = schedule.segments[index].time;
     } else if (index === pathsLength - 1) {
       [, arrivalDate] = schedule.segments[index - 1].time;
+      departureDate = '';
     } else if (index > 0 && index < pathsLength - 1) {
       [, arrivalDate] = schedule.segments[index - 1].time;
       [departureDate] = schedule.segments[index].time;
