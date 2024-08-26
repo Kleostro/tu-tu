@@ -3,11 +3,13 @@ import { inject, Injectable, signal } from '@angular/core';
 import { RouteInfo } from '@/app/api/models/schedule';
 import { Schedule } from '@/app/api/models/search';
 import { StationsService } from '@/app/api/stationsService/stations.service';
+import { calculateDuration } from '@/app/shared/utils/calculateDuration';
 
 import { CarriageInfo } from '../../models/carriageInfo.model';
 import { CurrentRide } from '../../models/currentRide.model';
 import { GroupedRoute, TripPoints } from '../../models/groupedRoutes';
 import { StationInfo } from '../../models/stationInfo.model';
+import { PLACEHOLDER } from './constants/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -58,9 +60,9 @@ export class ResultListService {
     const { routeId } = routeInfo;
     const { rideId } = schedule;
 
-    const routeStartStation = this.stationsService.findStationById(routeInfo.path[0])?.city ?? 'deleted city';
+    const routeStartStation = this.stationsService.findStationById(routeInfo.path[0])?.city ?? PLACEHOLDER.CITY;
     const routeEndStation =
-      this.stationsService.findStationById(routeInfo.path[routeInfo.path.length - 1])?.city ?? 'deleted city';
+      this.stationsService.findStationById(routeInfo.path[routeInfo.path.length - 1])?.city ?? PLACEHOLDER.CITY;
 
     const tripStartStation = tripPoints.from;
     const tripEndStation = tripPoints.to;
@@ -142,16 +144,17 @@ export class ResultListService {
     if (index === 0) {
       [, departureDate] = schedule.segments[index].time;
     } else if (index === pathsLength - 1) {
-      [arrivalDate] = schedule.segments[index - 1].time.slice(1);
+      [, arrivalDate] = schedule.segments[index - 1].time;
     } else if (index > 0 && index < pathsLength - 1) {
-      [arrivalDate] = schedule.segments[index - 1].time.slice(1);
-      [, departureDate] = schedule.segments[index].time;
+      [, arrivalDate] = schedule.segments[index - 1].time;
+      [departureDate] = schedule.segments[index].time;
     }
 
     return { arrivalDate, departureDate };
   }
 
   private createStationsInfo(paths: number[], schedule: Schedule, start: number, end: number): StationInfo[] {
+    const pathsLength = paths.length;
     const stations = this.stationsService.allStations();
     const stationMap = new Map<number, string>();
 
@@ -160,17 +163,17 @@ export class ResultListService {
     });
 
     const stationsInfo = paths.map((stationId, index) => {
-      const stationName = stationMap.get(stationId) ?? 'no station';
-      const { arrivalDate, departureDate } = this.getArrivalAndDepartureDates(index, paths.length, schedule);
+      const stationName = stationMap.get(stationId) ?? PLACEHOLDER.STATION;
+      const { arrivalDate, departureDate } = this.getArrivalAndDepartureDates(index, pathsLength, schedule);
 
       return {
         stationId,
         stationName,
         arrivalDate,
         departureDate,
-        stopDuration: '',
+        stopDuration: calculateDuration(arrivalDate, departureDate),
         firstStation: index === 0,
-        lastStation: index === paths.length - 1,
+        lastStation: index === pathsLength - 1,
         firstUserStation: index === start,
         lastUserStation: index === end,
         userStation: index >= start && index <= end,

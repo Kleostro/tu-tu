@@ -1,4 +1,7 @@
-export const calculateDuration = (startDate: Date | undefined, endDate: Date | undefined): string => {
+export const calculateDuration = (start: Date | string | undefined, end: Date | string | undefined): string => {
+  const startDate = typeof start === 'string' ? new Date(start) : start;
+  const endDate = typeof end === 'string' ? new Date(end) : end;
+
   if (!startDate || !endDate) {
     return '';
   }
@@ -16,7 +19,7 @@ export const calculateDuration = (startDate: Date | undefined, endDate: Date | u
     durationString += `${hours}h\u00A0`;
   }
   if (minutes > 0) {
-    durationString += `${minutes}\u00A0min`;
+    durationString += `${minutes}min`;
   }
 
   return durationString.trim();
