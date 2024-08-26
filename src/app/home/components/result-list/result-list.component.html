@@ -1,6 +1,10 @@
 <div class="result-list">
   @let searchResults = resultListService.currentResultList$$();
-  <h1>Showing {{ searchResults.length }} results</h1>
+  @if (searchResults.length > 0) {
+    <h1>Showing {{ searchResults.length }} results</h1>
+  } @else {
+    <h1>No results for today</h1>
+  }
   @if (searchResults) {
     @for (item of searchResults; track item.rideId) {
       <app-result-item [resultItem]="item"></app-result-item>
