@@ -1,4 +1,7 @@
-export const calculateDuration = (startDate: Date | undefined, endDate: Date | undefined): string => {
+export const calculateDuration = (start: Date | string | undefined, end: Date | string | undefined): string => {
+  const startDate = typeof start === 'string' ? new Date(start) : start;
+  const endDate = typeof end === 'string' ? new Date(end) : end;
+
   if (!startDate || !endDate) {
     return '';
   }

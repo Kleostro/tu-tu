@@ -38,12 +38,7 @@ export class FilterComponent {
   }
 
   public onTabChange(event: TabViewChangeEvent): void {
-    const tabIndex = event.index;
-    const selectedDate = this.takeTabsDates()[tabIndex];
+    const selectedDate = this.takeTabsDates()[event.index];
     this.setCurrentRides(selectedDate);
-  }
-
-  public trackByFn(index: number): number {
-    return index;
   }
 }

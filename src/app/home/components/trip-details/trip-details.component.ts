@@ -35,17 +35,17 @@ export class TripDetailsComponent implements OnInit {
       case event.firstUserStation && event.firstStation:
         return 'Boarding station';
       case event.firstUserStation:
-        return `Boarding station<br>${event.stopDuration} min`;
+        return `Boarding station<br>${event.stopDuration}`;
       case event.firstStation:
         return 'First station';
       case event.lastUserStation && event.lastStation:
         return 'Destination station';
       case event.lastUserStation:
-        return `Destination station<br>${event.stopDuration} min`;
+        return `Destination station<br>${event.stopDuration}`;
       case event.lastStation:
         return 'Last station';
       default:
-        return `${event.stopDuration} min`;
+        return `${event.stopDuration}`;
     }
   }
 }
