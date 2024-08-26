@@ -38,7 +38,7 @@ const routes: Routes = [
   },
 
   {
-    path: `${APP_PATH.TRIP.toLowerCase()}/:id`,
+    path: `${APP_PATH.TRIP.toLowerCase()}/:rideId`,
     loadComponent: () =>
       import('./trip-detailed/pages/trip-detailed/trip-detailed.component').then((c) => c.TripDetailedComponent),
     title: `Tu-Tu | ${APP_PATH.TRIP}`,

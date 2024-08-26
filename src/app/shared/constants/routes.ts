@@ -1,7 +1,7 @@
 export const APP_PATH = {
   DEFAULT: '',
-  SIGN_IN: 'Sign-in',
-  SIGN_UP: 'Sign-up',
+  SIGN_IN: 'Signin',
+  SIGN_UP: 'Signup',
   ADMIN: 'Admin',
   NOT_FOUND: '404',
   NO_MATCH: '**',

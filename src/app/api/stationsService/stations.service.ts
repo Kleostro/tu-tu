@@ -14,6 +14,10 @@ export class StationsService {
   public allStations = signal<Station[]>([]);
   public allStationNames = computed(() => this.allStations().map((station) => station.city));
 
+  constructor() {
+    this.getStations();
+  }
+
   public getStations(): Observable<Station[]> {
     return this.httpClient.get<Station[]>(ENDPOINTS.STATION).pipe(
       shareReplay(1),

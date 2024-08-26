@@ -1,0 +1,16 @@
+<div class="result-list">
+  <h1>Showing {{ resultListService.currentResultList().length }} results</h1>
+  @let searchResults = resultListService.currentResultList();
+  @if (searchResults) {
+    @for (item of searchResults; track item.rideId) {
+      <app-result-item [resultItem]="item"></app-result-item>
+    } @empty {
+      <div class="no-result">
+        <h1 class="description">
+          Sorry, we couldn't find anything for your search.<br />Please try another date or station.
+        </h1>
+        <img class="image" [src]="imageUrl" alt="No result" />
+      </div>
+    }
+  }
+</div>
