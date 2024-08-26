@@ -17,15 +17,15 @@ export class ResultListService {
 
   public currentRides: CurrentRide[] = [];
 
-  public currentResultList = signal<CurrentRide[]>([]);
+  public currentResultList$$ = signal<CurrentRide[]>([]);
   public routesInfo$$ = signal<Record<string, RouteInfo> | null>(null);
 
   public createCurrentRides(date: Date, data: GroupedRoute[], tripPoints: TripPoints): void {
     this.currentRides = [];
-    this.currentResultList.set([]);
+    this.currentResultList$$.set([]);
 
     if (data === undefined) {
-      this.currentResultList.set([]);
+      this.currentResultList$$.set([]);
       return;
     }
 
@@ -44,12 +44,12 @@ export class ResultListService {
 
       this.currentRides = [...this.currentRides, ...rides];
 
-      const updatedResultList = [...this.currentResultList(), ...rides];
+      const updatedResultList = [...this.currentResultList$$(), ...rides];
       updatedResultList.sort(
         (a, b) => new Date(a.tripDepartureDate).getTime() - new Date(b.tripDepartureDate).getTime(),
       );
 
-      this.currentResultList.set(updatedResultList);
+      this.currentResultList$$.set(updatedResultList);
     });
   }
 
