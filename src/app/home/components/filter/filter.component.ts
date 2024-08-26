@@ -4,9 +4,10 @@ import { ChangeDetectionStrategy, Component, effect, inject, Input } from '@angu
 import { TabViewModule } from 'primeng/tabview';
 
 import { Segment } from '@/app/api/models/search';
+
+import { GroupedRoutes } from '../../models/groupedRoutes';
 import { TripData } from '../../models/tripData';
 import { FilterService } from '../../services/filter/filter.service';
-import { GroupedRoutes } from '../../models/groupedRoutes';
 
 @Component({
   selector: 'app-filter',
@@ -24,9 +25,9 @@ export class FilterComponent {
 
   constructor() {
     effect(() => {
-      this.groupRoutes = this.filterService.availableRoutesGroup$$()
+      this.groupRoutes = this.filterService.availableRoutesGroup$$();
       this.takeTabsDates();
-    })
+    });
   }
 
   public filterSegments(segment: Segment): boolean {
@@ -38,7 +39,8 @@ export class FilterComponent {
   }
 
   public filterSegmentsByTab(segments: Segment[], tabDate: string): Segment[] {
-    return segments.filter(segment => segment.time[0].split('T')[0] === new Date(tabDate).toISOString().split('T')[0]);
+    return segments.filter(
+      (segment) => segment.time[0].split('T')[0] === new Date(tabDate).toISOString().split('T')[0],
+    );
   }
-
 }

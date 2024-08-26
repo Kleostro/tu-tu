@@ -1,6 +1,5 @@
 import { Schedule, Segment } from '@/app/api/models/search';
 
-
 export interface TripPoints {
   from: string;
   to: string;

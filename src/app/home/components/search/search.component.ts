@@ -15,11 +15,11 @@ import { Station } from '@/app/api/models/stations';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 import { AutocompleteIconDirective } from '@/app/shared/directives/autocompleteIcon/autocomplete-icon.directive';
 
+import { City } from '../../models/groupedRoutes';
 import { TripData } from '../../models/tripData';
 import { CitiesService } from '../../services/cities/cities.service';
 import { FilterService } from '../../services/filter/filter.service';
 import { FilterComponent } from '../filter/filter.component';
-import { City } from '../../models/groupedRoutes';
 
 @Component({
   selector: 'app-search',

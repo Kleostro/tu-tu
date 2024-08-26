@@ -1,10 +1,11 @@
-import { inject, Injectable, signal, OnDestroy } from '@angular/core';
+import { inject, Injectable, OnDestroy, signal } from '@angular/core';
+
+import { Subscription } from 'rxjs';
 
 import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { Route, SearchParams } from '@/app/api/models/search';
 import { SearchService } from '@/app/api/searchService/search.service';
 
-import { Subscription } from 'rxjs';
 import { GroupedRoutes, TripPoints } from '../../models/groupedRoutes';
 
 @Injectable({
@@ -15,7 +16,6 @@ export class FilterService implements OnDestroy {
   public tripPoints$$ = signal<TripPoints | null>(null);
   private searchService = inject(SearchService);
   private subscription: Subscription | null = null;
-
 
   public startSearch(searchPrms: SearchParams): void {
     const targetDate = new Date(searchPrms.time!).toISOString();
@@ -57,7 +57,7 @@ export class FilterService implements OnDestroy {
               path,
               carriages,
               segments,
-              rideId
+              rideId,
             });
           });
       });

@@ -17,10 +17,10 @@
             </div>
           </ng-template>
           <strong>{{ tab | date: 'MMMM d EEEE' }}</strong>
-          @for(route of groupRoutes[tab]; track $index) {
-            @for(segment of filterSegmentsByTab(route.segments, tab); track segment.time[0]) {
-              <br>
-              <hr>
+          @for (route of groupRoutes[tab]; track $index) {
+            @for (segment of filterSegmentsByTab(route.segments, tab); track segment.time[0]) {
+              <br />
+              <hr />
               <strong>Route ID: {{ route.routeId }}</strong>
               <br /><strong>Ride ID: {{ route.rideId }}</strong>
               <span>
