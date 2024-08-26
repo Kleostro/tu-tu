@@ -17,13 +17,10 @@ import { PLACEHOLDER } from './constants/constants';
 export class ResultListService {
   private stationsService = inject(StationsService);
 
-  public currentRides: CurrentRide[] = [];
-
   public currentResultList$$ = signal<CurrentRide[]>([]);
   public routesInfo$$ = signal<Record<string, RouteInfo> | null>(null);
 
   public createCurrentRides(date: Date, data: GroupedRoute[], tripPoints: TripPoints): void {
-    this.currentRides = [];
     this.currentResultList$$.set([]);
 
     if (data === undefined) {
@@ -31,86 +28,141 @@ export class ResultListService {
       return;
     }
 
+    const startOfNextDay = this.getStartOfNextDay(date);
+    let currentRides: CurrentRide[] = [];
+
     data.forEach((routeInfo) => {
-      const startOfNextDay = new Date(date);
-      startOfNextDay.setDate(startOfNextDay.getDate() + 1);
-      startOfNextDay.setHours(0, 0, 0, 0);
+      const rides = this.filterValidRides(routeInfo, tripPoints, date, startOfNextDay, currentRides);
 
-      const rides: CurrentRide[] = routeInfo.schedule
-        .map((schedule) => this.createCurrentRide(routeInfo, schedule, tripPoints))
-        .filter((ride): ride is CurrentRide => {
-          const rideDate = new Date(ride.tripDepartureDate);
-          return rideDate > date && rideDate < startOfNextDay;
-        })
-        .filter((ride) => !this.currentRides.some((existingRide) => existingRide.rideId === ride.rideId));
-
-      this.currentRides = [...this.currentRides, ...rides];
-
-      const updatedResultList = [...this.currentResultList$$(), ...rides];
-      updatedResultList.sort(
-        (a, b) => new Date(a.tripDepartureDate).getTime() - new Date(b.tripDepartureDate).getTime(),
-      );
-
-      this.currentResultList$$.set(updatedResultList);
+      currentRides = [...currentRides, ...rides];
+      this.updateResultList(currentRides);
     });
   }
 
-  // eslint-disable-next-line max-lines-per-function
+  private updateResultList(currentRides: CurrentRide[]): void {
+    const updatedResultList = [...currentRides];
+    updatedResultList.sort((a, b) => new Date(a.tripDepartureDate).getTime() - new Date(b.tripDepartureDate).getTime());
+    this.currentResultList$$.set(updatedResultList);
+  }
+
+  private getStartOfNextDay(date: Date): Date {
+    const startOfNextDay = new Date(date);
+    startOfNextDay.setDate(startOfNextDay.getDate() + 1);
+    startOfNextDay.setHours(0, 0, 0, 0);
+    return startOfNextDay;
+  }
+
+  private filterValidRides(
+    routeInfo: GroupedRoute,
+    tripPoints: TripPoints,
+    date: Date,
+    startOfNextDay: Date,
+    currentRides: CurrentRide[],
+  ): CurrentRide[] {
+    return routeInfo.schedule
+      .map((schedule) => this.createCurrentRide(routeInfo, schedule, tripPoints))
+      .filter((ride): ride is CurrentRide => {
+        const rideDate = new Date(ride.tripDepartureDate);
+        return rideDate > date && rideDate < startOfNextDay;
+      })
+      .filter((ride) => !currentRides.some((existingRide) => existingRide.rideId === ride.rideId));
+  }
+
   private createCurrentRide(routeInfo: GroupedRoute, schedule: Schedule, tripPoints: TripPoints): CurrentRide {
-    const { routeId } = routeInfo;
-    const { rideId } = schedule;
+    const routeStations = this.getRouteStations(routeInfo.path);
+    const tripStations = this.getTripStations(tripPoints);
 
-    const routeStartStation = this.stationsService.findStationById(routeInfo.path[0])?.city ?? PLACEHOLDER.CITY;
-    const routeEndStation =
-      this.stationsService.findStationById(routeInfo.path[routeInfo.path.length - 1])?.city ?? PLACEHOLDER.CITY;
+    const tripStationIds = this.getTripStationIds(tripStations);
+    const routeStationIds = this.getRouteStationIds(routeInfo.path);
 
-    const tripStartStation = tripPoints.from;
-    const tripEndStation = tripPoints.to;
+    const tripStationIndices = this.getTripStationIndices(routeInfo.path, tripStationIds);
+    const tripDates = this.getTripDates(schedule, tripStationIndices);
 
-    const tripStartStationId = this.stationsService.findStationByCity(tripStartStation)!.id;
-    const tripEndStationId = this.stationsService.findStationByCity(tripEndStation)!.id;
-
-    const routeStartStationId = routeInfo.path[0];
-    const routeEndStationId = routeInfo.path[routeInfo.path.length - 1];
-
-    const tripStartStationIdIndex = routeInfo.path.indexOf(tripStartStationId);
-    const tripEndStationIdIndex = routeInfo.path.indexOf(tripEndStationId);
-
-    const tripDepartureDate = schedule.segments[tripStartStationIdIndex].time[0];
-    const tripArrivalDate = schedule.segments[tripEndStationIdIndex - 1].time[1];
-
-    const aggregatedPriceMap = this.aggregatePrices(schedule.segments, tripStartStationIdIndex, tripEndStationIdIndex);
+    const aggregatedPriceMap = this.aggregatePrices(
+      schedule.segments,
+      tripStationIndices.start,
+      tripStationIndices.end,
+    );
     const carriageInfo = this.createCarriageInfo(routeInfo.carriages, aggregatedPriceMap);
-
     const stationsInfo = this.createStationsInfo(
       routeInfo.path,
       schedule,
-      tripStartStationIdIndex,
-      tripEndStationIdIndex,
+      tripStationIndices.start,
+      tripStationIndices.end,
     );
 
     return {
-      rideId, // correct
-      routeId, // correct
-
-      routeStartStation, // correct
-      routeEndStation, // correct
-
-      tripStartStation, // correct
-      tripEndStation, // correct
-
-      routeStartStationId, // correct
-      routeEndStationId, // correct
-
-      tripStartStationId, // correct
-      tripEndStationId, // correct
-
-      tripDepartureDate, // correct
-      tripArrivalDate, // correct
-
-      carriageInfo, // For the current schedule
-      stationsInfo, // correct
+      rideId: schedule.rideId,
+      routeId: routeInfo.routeId,
+      routeStartStation: routeStations.start,
+      routeEndStation: routeStations.end,
+      tripStartStation: tripStations.start,
+      tripEndStation: tripStations.end,
+      routeStartStationId: routeStationIds.start,
+      routeEndStationId: routeStationIds.end,
+      tripStartStationId: tripStationIds.start,
+      tripEndStationId: tripStationIds.end,
+      tripDepartureDate: tripDates.departure,
+      tripArrivalDate: tripDates.arrival,
+      carriageInfo,
+      stationsInfo,
     };
+  }
+
+  private getRouteStations(path: number[]): { start: string; end: string } {
+    return {
+      start: this.getStationCityById(path[0]),
+      end: this.getStationCityById(path[path.length - 1]),
+    };
+  }
+
+  private getTripStations(tripPoints: TripPoints): { start: string; end: string } {
+    return {
+      start: tripPoints.from,
+      end: tripPoints.to,
+    };
+  }
+
+  private getTripStationIds(tripStations: { start: string; end: string }): { start: number; end: number } {
+    return {
+      start: this.getStationIdByCity(tripStations.start),
+      end: this.getStationIdByCity(tripStations.end),
+    };
+  }
+
+  private getRouteStationIds(path: number[]): { start: number; end: number } {
+    return {
+      start: path[0],
+      end: path[path.length - 1],
+    };
+  }
+
+  private getTripStationIndices(
+    path: number[],
+    tripStationIds: { start: number; end: number },
+  ): { start: number; end: number } {
+    return {
+      start: path.indexOf(tripStationIds.start),
+      end: path.indexOf(tripStationIds.end),
+    };
+  }
+
+  private getTripDates(
+    schedule: Schedule,
+    indices: { start: number; end: number },
+  ): { departure: string; arrival: string } {
+    return {
+      departure: schedule.segments[indices.start].time[0],
+      arrival: schedule.segments[indices.end - 1].time[1],
+    };
+  }
+
+  private getStationCityById(stationId: number): string {
+    return this.stationsService.findStationById(stationId)?.city ?? PLACEHOLDER.CITY;
+  }
+
+  private getStationIdByCity(city: string): number {
+    return this.stationsService.findStationByCity(city)!.id;
   }
 
   private aggregatePrices(
@@ -189,7 +241,7 @@ export class ResultListService {
     const uniqueCarriages = Array.from(new Set(carriages));
     return uniqueCarriages.map((carriage) => ({
       type: carriage,
-      freeSeats: 0,
+      freeSeats: 0, // TBD: need to be calculated
       price: priceMap[carriage] ?? 0,
     }));
   }
