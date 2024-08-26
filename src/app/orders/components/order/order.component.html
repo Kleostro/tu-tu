@@ -1,23 +1,31 @@
-<hr />
-<div class="wrapper">
-  <p>Order ID: {{ order.id }}</p>
-  <p>
-    Start Station:
-    @if (stationsService.findStationById(order.path[0]); as startStation) {
-      <b>{{ startStation.city }}</b>
-    }
-  </p>
-  <p>
-    Start Time: <b>{{ order.schedule.segments[0].time[0] | date: 'MMMM dd HH:mm' }}</b>
-  </p>
-  <p>
-    End Station:
-    @if (stationsService.findStationById(order.path[order.path.length - 1]); as endStation) {
-      <b>{{ endStation.city }}</b>
-    }
-  </p>
-  <p>
-    End Time:
-    <b>{{ order.schedule.segments[order.schedule.segments.length - 1].time[1] | date: 'MMMM dd HH:mm' }}</b>
-  </p>
+<div class="item-wrapper">
+  <div class="item">
+    <p-timeline [value]="events" layout="horizontal" align="top" class="timeline">
+      <ng-template pTemplate="marker" let-event>
+        <span class="marker" [class]="event.duration ? 'custom-marker' : 'time-marker'">{{
+          event.duration ? event.duration : (event.date | date: 'HH:mm')
+        }}</span>
+      </ng-template>
+
+      <ng-template pTemplate="content" let-event>
+        <div class="p-timeline-event-content timeline-content">
+          <ng-container>
+            <div class="event-details">
+              @if (stationsService.findStationById(event.stationID); as station) {
+                <div>
+                  <b>{{ station.city }} </b>
+                </div>
+              }
+              <!-- <div>{{ event.date | date: 'hh:mm a' }}</div> -->
+              <div>{{ event.date | date: 'MMMM dd hh:mm' }}</div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-template>
+    </p-timeline>
+
+    <div class="route-wrapper">
+      <span>Order ID: {{ order.id }}</span>
+    </div>
+  </div>
 </div>
