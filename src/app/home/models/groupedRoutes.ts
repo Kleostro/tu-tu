@@ -1,17 +1,15 @@
-import { Schedule, Segment } from '@/app/api/models/search';
+import { Schedule } from '@/app/api/models/search';
 
 export interface TripPoints {
   from: string;
   to: string;
 }
 
-interface GroupedRoute {
+export interface GroupedRoute {
   routeId: number;
   path: number[];
   carriages: string[];
   schedule: Schedule[];
-  segments: Segment[];
-  rideId: number;
 }
 
 export interface GroupedRoutes {

@@ -42,16 +42,19 @@ import { FilterComponent } from '../filter/filter.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit {
+  private filterService = inject(FilterService);
+  private citiesService = inject(CitiesService);
+  private stationsService = inject(StationsService);
+  private fb: FormBuilder = inject(FormBuilder);
+
+  private additionalCities: City[] = [];
+  public stations: Station[] = [];
   public filteredCities: string[] = [];
+
   public minDate: Date = new Date();
   public timeSelected = false;
+
   public tripData$$ = signal<TripData | null>(null);
-  private filterService = inject(FilterService);
-  private fb: FormBuilder = inject(FormBuilder);
-  public stationsService = inject(StationsService);
-  public stations: Station[] = [];
-  private citiesService = inject(CitiesService);
-  private additionalCities: City[] = [];
 
   public tripForm = this.fb.group({
     startCity: this.fb.control<string>('', [Validators.required.bind(this)]),
@@ -93,17 +96,17 @@ export class SearchComponent implements OnInit {
         endCity: endCityData,
         tripDate: new Date(this.tripForm.controls['tripDate'].value ?? ''),
       };
+
       this.tripData$$.set(tripData);
       const searchPrms = {
-        fromLatitude: startCityData?.latitude,
-        toLatitude: endCityData?.latitude,
-        fromLongitude: startCityData?.longitude,
-        toLongitude: endCityData?.longitude,
+        fromLatitude: startCityData.latitude,
+        toLatitude: endCityData.latitude,
+        fromLongitude: startCityData.longitude,
+        toLongitude: endCityData.longitude,
         time: this.tripForm.value.tripDate!,
       };
-      if (startCityData && endCityData) {
-        this.filterService.startSearch(searchPrms);
-      }
+
+      this.filterService.startSearch(searchPrms);
     }
   }
 }

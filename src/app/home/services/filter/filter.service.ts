@@ -7,25 +7,30 @@ import { Route, SearchParams } from '@/app/api/models/search';
 import { SearchService } from '@/app/api/searchService/search.service';
 
 import { GroupedRoutes, TripPoints } from '../../models/groupedRoutes';
+import { ResultListService } from '../result-list/result-list.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FilterService implements OnDestroy {
+  private searchService = inject(SearchService);
+  private resultListService = inject(ResultListService);
+
   public availableRoutesGroup$$ = signal<GroupedRoutes>({});
   public tripPoints$$ = signal<TripPoints | null>(null);
-  private searchService = inject(SearchService);
+
   private subscription: Subscription | null = null;
 
   public startSearch(searchPrms: SearchParams): void {
     const targetDate = new Date(searchPrms.time!).toISOString();
     this.subscription = this.searchService.search(searchPrms).subscribe({
       next: (res) => {
-        this.availableRoutesGroup$$.set(this.generateAvaillableRoutesGroup(res.routes, targetDate));
+        this.availableRoutesGroup$$.set(this.generateAvailableRoutesGroup(res.routes, targetDate));
         this.tripPoints$$.set({
           from: res.from.city,
           to: res.to.city,
         });
+        this.setCurrentRides(targetDate);
       },
       error: (err: OverriddenHttpErrorResponse) => {
         throw Error(err.message);
@@ -33,19 +38,25 @@ export class FilterService implements OnDestroy {
     });
   }
 
-  private generateAvaillableRoutesGroup(routes: Route[], targetDate: string): GroupedRoutes {
+  public setCurrentRides(targetDate: string): void {
+    this.resultListService.createCurrentRides(
+      new Date(targetDate),
+      this.availableRoutesGroup$$()[targetDate.split('T')[0]],
+      this.tripPoints$$()!,
+    );
+  }
+
+  private generateAvailableRoutesGroup(routes: Route[], targetDate: string): GroupedRoutes {
     const groupedRoutes: GroupedRoutes = {};
     const targetTimestamp = new Date(targetDate).getTime();
 
     routes.forEach(({ id: routeId, schedule, path, carriages }) => {
-      schedule.forEach(({ segments, rideId }) => {
+      schedule.forEach(({ segments }) => {
         segments
           .filter(({ time }) => new Date(time[0]).getTime() > targetTimestamp)
           .forEach((segment) => {
             const departureDateTime = new Date(segment.time[0]);
-            const departureDate = `${departureDateTime.getFullYear()}-${(departureDateTime.getMonth() + 1)
-              .toString()
-              .padStart(2, '0')}-${departureDateTime.getDate().toString().padStart(2, '0')}`;
+            const departureDate = departureDateTime.toISOString().split('T')[0];
 
             if (!groupedRoutes[departureDate]) {
               groupedRoutes[departureDate] = [];
@@ -56,8 +67,6 @@ export class FilterService implements OnDestroy {
               schedule,
               path,
               carriages,
-              segments,
-              rideId,
             });
           });
       });

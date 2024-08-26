@@ -1,66 +1,67 @@
 import { inject, Injectable, signal } from '@angular/core';
 
-import { CustomSchedule, RouteInfo } from '@/app/api/models/schedule';
-import { Station } from '@/app/api/models/stations';
-import { RideService } from '@/app/api/rideService/ride.service';
+import { RouteInfo } from '@/app/api/models/schedule';
+import { Schedule } from '@/app/api/models/search';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 
 import { CarriageInfo } from '../../models/carriageInfo.model';
 import { CurrentRide } from '../../models/currentRide.model';
+import { GroupedRoute, TripPoints } from '../../models/groupedRoutes';
 import { StationInfo } from '../../models/stationInfo.model';
-import { FilterService } from '../filter/filter.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ResultListService {
   private stationsService = inject(StationsService);
-  private filterService = inject(FilterService);
-
-  private routeAPI = inject(RideService);
 
   public currentRides: CurrentRide[] = [];
 
-  private allStations = signal<Station[]>(this.stationsService.allStations());
-
-  public currentResultList = signal<CurrentRide[]>([...this.currentRides]);
+  public currentResultList = signal<CurrentRide[]>([]);
   public routesInfo$$ = signal<Record<string, RouteInfo> | null>(null);
 
-  constructor() {
-    this.stationsService.getStations().subscribe((data) => {
-      this.allStations.set(data);
-    });
-    this.filterService.routesInfo$.subscribe((data) => {
-      if (data) {
-        this.createCurrentRides(data);
-      }
+  public createCurrentRides(date: Date, data: GroupedRoute[], tripPoints: TripPoints): void {
+    this.currentRides = [];
+    this.currentResultList.set([]);
+
+    if (data === undefined) {
+      this.currentResultList.set([]);
+      return;
+    }
+
+    data.forEach((routeInfo) => {
+      const startOfNextDay = new Date(date);
+      startOfNextDay.setDate(startOfNextDay.getDate() + 1);
+      startOfNextDay.setHours(0, 0, 0, 0);
+
+      const rides: CurrentRide[] = routeInfo.schedule
+        .map((schedule) => this.createCurrentRide(routeInfo, schedule, tripPoints))
+        .filter((ride): ride is CurrentRide => {
+          const rideDate = new Date(ride.tripDepartureDate);
+          return rideDate > date && rideDate < startOfNextDay;
+        })
+        .filter((ride) => !this.currentRides.some((existingRide) => existingRide.rideId === ride.rideId));
+
+      this.currentRides = [...this.currentRides, ...rides];
+
+      const updatedResultList = [...this.currentResultList(), ...rides];
+      updatedResultList.sort(
+        (a, b) => new Date(a.tripDepartureDate).getTime() - new Date(b.tripDepartureDate).getTime(),
+      );
+
+      this.currentResultList.set(updatedResultList);
     });
   }
 
-  private createCurrentRides(data: RouteInfo): void {
-    const filterDate = new Date(this.filterService.searchPrms().time);
-    const rides = data.schedule
-      .map((schedule) => this.createCurrentRide(data, schedule))
-      .filter((ride): ride is CurrentRide => ride !== null && new Date(ride.tripDepartureDate) > filterDate);
+  private createCurrentRide(routeInfo: GroupedRoute, schedule: Schedule, tripPoints: TripPoints): CurrentRide {
+    const { routeId } = routeInfo;
 
-    this.currentRides.push(...rides);
+    const routeStartStation = this.stationsService.findStationById(routeInfo.path[0])?.city ?? 'no city';
+    const routeEndStation =
+      this.stationsService.findStationById(routeInfo.path[routeInfo.path.length - 1])?.city ?? 'no city';
 
-    const updatedResultList = [...this.currentResultList(), ...rides];
-    updatedResultList.sort((a, b) => new Date(a.tripDepartureDate).getTime() - new Date(b.tripDepartureDate).getTime());
-
-    this.currentResultList.set(updatedResultList);
-  }
-
-  private createCurrentRide(routeInfo: RouteInfo, schedule: CustomSchedule): CurrentRide {
-    const tripPoints = this.filterService.tripPoints$$();
-
-    const routeId = routeInfo.id;
-
-    const routeStartStation = this.stationsService.findStationById(routeInfo.path[0])!.city;
-    const routeEndStation = this.stationsService.findStationById(routeInfo.path[routeInfo.path.length - 1])!.city;
-
-    const tripStartStation = tripPoints!.from;
-    const tripEndStation = tripPoints!.to;
+    const tripStartStation = tripPoints.from;
+    const tripEndStation = tripPoints.to;
 
     const tripStartStationId = this.stationsService.findStationByCity(tripStartStation)!.id;
     const tripEndStationId = this.stationsService.findStationByCity(tripEndStation)!.id;
@@ -79,7 +80,7 @@ export class ResultListService {
     const stationsInfo = this.createStationsInfo(routeInfo.path, tripStartStationIdIndex, tripEndStationIdIndex);
 
     return {
-      rideId: schedule.rideId, // Use rideId from the current schedule
+      rideId: schedule.rideId, // correct
       routeId, // correct
 
       routeStartStation, // correct
@@ -132,7 +133,7 @@ export class ResultListService {
   }
 
   private createStationsInfo(paths: number[], start: number, end: number): StationInfo[] {
-    const stations = this.allStations();
+    const stations = this.stationsService.allStations();
     const stationMap = new Map<number, string>();
 
     stations.forEach((station) => {

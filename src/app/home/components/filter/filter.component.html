@@ -3,8 +3,8 @@
     <strong class="from-to-title"
       >From: {{ filterService.tripPoints$$()?.from }} - To: {{ filterService.tripPoints$$()?.to }}</strong
     >
-    <p-tabView [scrollable]="true">
-      @for (tab of takeTabsDates(); track tab) {
+    <p-tabView [scrollable]="true" (onChange)="onTabChange($event)">
+      @for (tab of takeTabsDates(); track trackByFn) {
         <p-tabPanel>
           <ng-template pTemplate="header">
             <div class="tab-container">
@@ -17,21 +17,7 @@
             </div>
           </ng-template>
           <strong>{{ tab | date: 'MMMM d EEEE' }}</strong>
-          @for (route of groupRoutes[tab]; track $index) {
-            @for (segment of filterSegmentsByTab(route.segments, tab); track segment.time[0]) {
-              <br />
-              <hr />
-              <strong>Route ID: {{ route.routeId }}</strong>
-              <br /><strong>Ride ID: {{ route.rideId }}</strong>
-              <span>
-                Departure: <strong>{{ segment.time[0] | date: 'MMM d, y, h:mm:ss a' }}</strong>
-              </span>
-              -
-              <span>
-                Arrival: <strong>{{ segment.time[1] | date: 'MMM d, y, h:mm:ss a' }}</strong>
-              </span>
-            }
-          }
+          <app-result-list></app-result-list>
         </p-tabPanel>
       }
     </p-tabView>
