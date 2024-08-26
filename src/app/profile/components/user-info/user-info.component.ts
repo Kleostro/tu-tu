@@ -51,7 +51,7 @@ export class UserInfoComponent {
     ]),
   });
 
-  public cancelEditingField(field: FormFieldType, setInitial: boolean): void {
+  public cancelEditingField(field: FormFieldType, setInitial = true): void {
     this[field].set(false);
 
     if (setInitial) {
