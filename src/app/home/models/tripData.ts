@@ -1,5 +1,7 @@
+import { Station } from '@/app/api/models/stations';
+
 export interface TripData {
-  startCity: string;
-  endCity: string;
+  startCity: Station;
+  endCity: Station;
   tripDate: Date;
 }
