@@ -3,45 +3,33 @@
     <strong class="from-to-title"
       >From: {{ filterService.tripPoints$$()?.from }} - To: {{ filterService.tripPoints$$()?.to }}</strong
     >
-    <strong>{{ tripData?.tripDate | date: 'MMM d, y, h:mm:ss a' }}</strong>
     <p-tabView [scrollable]="true">
-      @for (route of filterService.availableRoutesGroup$$() | keyvalue; track route.key; let index = $index) {
+      @for (tab of takeTabsDates(); track tab) {
         <p-tabPanel>
           <ng-template pTemplate="header">
             <div class="tab-container">
               <div class="tab-title-month">
-                {{ route.key | date: 'MMMM d' }}
+                {{ tab | date: 'MMMM d' }}
               </div>
               <div class="tab-title-day">
-                {{ route.key | date: 'EEEE' }}
+                {{ tab | date: 'EEEE' }}
               </div>
             </div>
           </ng-template>
-          <p>Amount of available rides: {{ route.value.length }}</p>
-          @for (data of route.value; let index = $index; track index) {
-            <hr />
-            <strong>Route ID: {{ data.routeId }}</strong>
-            @for (ride of data.schedule; let index2 = $index; track index2) {
-              <br /><strong>Ride ID: {{ ride.rideId }}</strong>
-              @for (segment of ride.segments; track $index) {
-                <hr />
-                <!-- <p>
-                  Departure: <strong>{{ segment.time[0] | date: 'MMM d, y, h:mm:ss a' }}</strong>
-                </p>
-                <p>
-                  Arrival: <strong>{{ segment.time[1] | date: 'MMM d, y, h:mm:ss a' }}</strong>
-                </p> -->
-                {{ timeStampMs$$() }} -- {{ generateDateInMs(segment.time[0]) }}
-                @if (timeStampMs$$() >= generateDateInMs(segment.time[0])) {
-                  {{ 'Why?' }}
-                  <p>
-                    Departure: <strong>{{ segment.time[0] | date: 'MMM d, y, h:mm:ss a' }}</strong>
-                  </p>
-                  <p>
-                    Arrival: <strong>{{ segment.time[1] | date: 'MMM d, y, h:mm:ss a' }}</strong>
-                  </p>
-                }
-              }
+          <strong>{{ tab | date: 'MMMM d EEEE' }}</strong>
+          @for(route of groupRoutes[tab]; track $index) {
+            @for(segment of filterSegmentsByTab(route.segments, tab); track segment.time[0]) {
+              <br>
+              <hr>
+              <strong>Route ID: {{ route.routeId }}</strong>
+              <br /><strong>Ride ID: {{ route.rideId }}</strong>
+              <span>
+                Departure: <strong>{{ segment.time[0] | date: 'MMM d, y, h:mm:ss a' }}</strong>
+              </span>
+              -
+              <span>
+                Arrival: <strong>{{ segment.time[1] | date: 'MMM d, y, h:mm:ss a' }}</strong>
+              </span>
             }
           }
         </p-tabPanel>

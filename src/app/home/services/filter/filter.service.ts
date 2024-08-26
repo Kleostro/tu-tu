@@ -1,22 +1,25 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal, OnDestroy } from '@angular/core';
 
 import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { Route, SearchParams } from '@/app/api/models/search';
 import { SearchService } from '@/app/api/searchService/search.service';
 
+import { Subscription } from 'rxjs';
 import { GroupedRoutes, TripPoints } from '../../models/groupedRoutes';
 
 @Injectable({
   providedIn: 'root',
 })
-export class FilterService {
+export class FilterService implements OnDestroy {
   public availableRoutesGroup$$ = signal<GroupedRoutes>({});
   public tripPoints$$ = signal<TripPoints | null>(null);
   private searchService = inject(SearchService);
+  private subscription: Subscription | null = null;
+
 
   public startSearch(searchPrms: SearchParams): void {
     const targetDate = new Date(searchPrms.time!).toISOString();
-    this.searchService.search(searchPrms).subscribe({
+    this.subscription = this.searchService.search(searchPrms).subscribe({
       next: (res) => {
         this.availableRoutesGroup$$.set(this.generateAvaillableRoutesGroup(res.routes, targetDate));
         this.tripPoints$$.set({
@@ -35,7 +38,7 @@ export class FilterService {
     const targetTimestamp = new Date(targetDate).getTime();
 
     routes.forEach(({ id: routeId, schedule, path, carriages }) => {
-      schedule.forEach(({ segments }) => {
+      schedule.forEach(({ segments, rideId }) => {
         segments
           .filter(({ time }) => new Date(time[0]).getTime() > targetTimestamp)
           .forEach((segment) => {
@@ -53,11 +56,20 @@ export class FilterService {
               schedule,
               path,
               carriages,
+              segments,
+              rideId
             });
           });
       });
     });
 
     return groupedRoutes;
+  }
+
+  public ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
   }
 }
