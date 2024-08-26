@@ -51,9 +51,15 @@ export class UserInfoComponent {
     ]),
   });
 
-  public cancelEditingField(field: FormFieldType): void {
+  public cancelEditingField(field: FormFieldType, setInitial: boolean): void {
     this[field].set(false);
 
+    if (setInitial) {
+      this.setInitialValue(field);
+    }
+  }
+
+  public setInitialValue(field: FormFieldType): void {
     if (field === formField.isEditingName) {
       this.userForm.controls['name'].patchValue(this.personalInfoService.currentUserName$$());
     }
@@ -75,7 +81,7 @@ export class UserInfoComponent {
 
   public updateName(): void {
     if (this.userForm.controls['name'].valid) {
-      this.cancelEditingField(formField.isEditingName);
+      this.cancelEditingField(formField.isEditingName, false);
     }
     if (this.userForm.controls['name'].valid && this.userForm.controls['name'].dirty) {
       const name = this.userForm.controls['name'].value;
@@ -88,7 +94,7 @@ export class UserInfoComponent {
 
   public updateEmail(): void {
     if (this.userForm.controls['email'].valid) {
-      this.cancelEditingField(formField.isEditingEmail);
+      this.cancelEditingField(formField.isEditingEmail, false);
     }
     if (this.userForm.controls['email'].valid && this.userForm.controls['email'].dirty) {
       const email = this.userForm.controls['email'].value;

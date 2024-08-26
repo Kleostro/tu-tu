@@ -40,7 +40,7 @@
             [icon]="nameValid ? 'pi pi-check' : 'pi pi-ban'"
             [class]="nameValid ? 'p-button-success' : 'p-button-danger'"
             [title]="nameValid ? 'Save name' : 'Cancel editing'"
-            (click)="nameValid ? updateName() : cancelEditingField('isEditingName')"
+            (click)="nameValid ? updateName() : cancelEditingField('isEditingName', true)"
           ></button>
         </p-inputGroup>
         @if (!userForm.valid && userForm.get('name')?.errors?.['required']) {
@@ -80,7 +80,7 @@
             [icon]="emailValid ? 'pi pi-check' : 'pi pi-ban'"
             [class]="emailValid ? 'p-button-success' : 'p-button-danger'"
             [title]="emailValid ? 'Save email' : 'Cancel editing'"
-            (click)="emailValid ? updateEmail() : cancelEditingField('isEditingEmail')"
+            (click)="emailValid ? updateEmail() : cancelEditingField('isEditingEmail', true)"
           ></button>
         </p-inputGroup>
         @if (
