@@ -4,7 +4,7 @@ import { ResultListService } from '../../services/result-list/result-list.servic
 import { TripDetailsComponent } from '../trip-details/trip-details.component';
 import { ResultItemComponent } from './components/result-item/result-item.component';
 
-const imgUrl = '/img/no-results.webp';
+const imgUrl = '/img/no-results.png';
 
 @Component({
   selector: 'app-result-list',
