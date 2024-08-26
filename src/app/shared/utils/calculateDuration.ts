@@ -16,7 +16,7 @@ export const calculateDuration = (startDate: Date | undefined, endDate: Date | u
     durationString += `${hours}h\u00A0`;
   }
   if (minutes > 0) {
-    durationString += `${minutes}min`;
+    durationString += `${minutes}\u00A0min`;
   }
 
   return durationString.trim();

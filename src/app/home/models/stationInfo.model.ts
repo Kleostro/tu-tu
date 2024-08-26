@@ -3,7 +3,7 @@ export interface StationInfo {
   stationName: string;
   arrivalDate: string;
   departureDate: string;
-  stopDuration: number;
+  stopDuration: string;
   firstStation: boolean;
   lastStation: boolean;
   firstUserStation: boolean;
