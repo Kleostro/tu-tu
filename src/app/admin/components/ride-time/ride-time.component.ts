@@ -21,8 +21,8 @@ export class RideTimeComponent {
   private fb = inject(FormBuilder);
   public to = input<string | null>(null);
   public from = input<string | null>(null);
-  public isEdit = signal(false);
   public isTimeEdited = input(true);
+  public isEdit = signal(false);
   public minDate = new Date();
   public fromTime = false;
   public toTime = false;

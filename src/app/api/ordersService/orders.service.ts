@@ -1,19 +1,26 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, shareReplay, tap } from 'rxjs';
 
 import ENDPOINTS from '../constants/constants';
 import { Order, OrderId, OrderRequest, User } from '../models/order';
+import { ordersDummyData } from './orders.data';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrdersService {
   private httpClient = inject(HttpClient);
+  public allOrders = signal<Order[]>([]);
 
-  public getAllOrders(): Observable<Order[]> {
-    return this.httpClient.get<Order[]>(ENDPOINTS.ORDER);
+  public getOrders(): Observable<Order[]> {
+    return this.httpClient.get<Order[]>(ENDPOINTS.ORDER).pipe(
+      shareReplay(1),
+      // Temporar solution with hardcoded data
+      // tap((orders) => this.allOrders.set(orders)),
+      tap(() => this.allOrders.set(ordersDummyData)),
+    );
   }
 
   public makeOrder(order: OrderRequest): Observable<OrderId> {

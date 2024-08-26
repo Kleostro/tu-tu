@@ -12,18 +12,19 @@
             </div>
             <div class="time">
               <app-ride-time
-                [to]="ride.path.to | date: 'yyyy-MM-dd hh:mm a'"
-                [from]="ride.path.from | date: 'yyyy-MM-dd hh:mm a'"
+                [to]="ride.path.to"
+                [from]="ride.path.from"
                 [isTimeEdited]="isTimeEdited()"
                 (timeChanged)="handleTimeChanged($event, i)"
               ></app-ride-time>
             </div>
             <div class="price">
               @if (ride.price?.length) {
-                <span>Price</span>
-                @for (price of ride.price; let i = $index; track i) {
-                  <span>{{ price.type }} - {{ price.price | currency }}</span>
-                }
+                <app-ride-price
+                  [isPriceEdited]="isPriceEdited()"
+                  [priceList]="ride.price"
+                  (priceChanged)="handlePriceChanged($event, i)"
+                ></app-ride-price>
               }
             </div>
           </div>

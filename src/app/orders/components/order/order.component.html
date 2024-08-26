@@ -1,0 +1,23 @@
+<hr />
+<div class="wrapper">
+  <p>Order ID: {{ order.id }}</p>
+  <p>
+    Start Station:
+    @if (stationsService.findStationById(order.path[0]); as startStation) {
+      <b>{{ startStation.city }}</b>
+    }
+  </p>
+  <p>
+    Start Time: <b>{{ order.schedule.segments[0].time[0] | date: 'MMMM dd HH:mm' }}</b>
+  </p>
+  <p>
+    End Station:
+    @if (stationsService.findStationById(order.path[order.path.length - 1]); as endStation) {
+      <b>{{ endStation.city }}</b>
+    }
+  </p>
+  <p>
+    End Time:
+    <b>{{ order.schedule.segments[order.schedule.segments.length - 1].time[1] | date: 'MMMM dd HH:mm' }}</b>
+  </p>
+</div>

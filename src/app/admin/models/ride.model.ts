@@ -5,10 +5,15 @@ export interface RidePath {
   to: string | null;
 }
 
+export interface RidePrice {
+  type: string;
+  price: number;
+}
+
 interface FullRide {
   station: Station | null;
   path: RidePath;
-  price: { type: string; price: number }[] | null;
+  price: RidePrice[] | null;
 }
 
 export default FullRide;
