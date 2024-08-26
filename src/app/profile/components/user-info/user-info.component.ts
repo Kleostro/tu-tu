@@ -53,6 +53,14 @@ export class UserInfoComponent {
 
   public cancelEditingField(field: FormFieldType): void {
     this[field].set(false);
+
+    if (field === formField.isEditingName) {
+      this.userForm.controls['name'].patchValue(this.personalInfoService.currentUserName$$());
+    }
+
+    if (field === formField.isEditingEmail) {
+      this.userForm.controls['email'].patchValue(this.personalInfoService.currentUserEmail$$());
+    }
   }
 
   private updateProfile(email: unknown, name: unknown): void {
