@@ -3,6 +3,7 @@ import { Schedule } from '@/app/api/models/search';
 export interface TripPoints {
   from: string;
   to: string;
+  date: string;
 }
 
 export interface GroupedRoute {

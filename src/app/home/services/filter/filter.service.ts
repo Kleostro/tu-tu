@@ -30,6 +30,7 @@ export class FilterService implements OnDestroy {
         this.tripPoints$$.set({
           from: res.from.city,
           to: res.to.city,
+          date: targetDate,
         });
         this.setCurrentRides(targetDate);
       },

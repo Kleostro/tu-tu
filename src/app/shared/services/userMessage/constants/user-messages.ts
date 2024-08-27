@@ -23,4 +23,5 @@ export const USER_MESSAGE = {
   ROUTE_CREATION_UPDATED_ERROR: 'A minimum of 3 stations and 3 carriages must be specified!',
   RIDE_DATA_UPDATED_SUCCESSFULLY: 'Ride data updated successfully!',
   RIDE_PRICE_UPDATED_SUCCESSFULLY: 'Ride price updated successfully!',
+  RIDE_CREATED_SUCCESSFULLY: 'Ride created successfully!',
 };

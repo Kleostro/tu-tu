@@ -4,6 +4,7 @@
     class="create-btn"
     [severity]="isFormVisible() ? 'danger' : 'success'"
     [icon]="isFormVisible() ? 'pi pi-times' : 'pi pi-plus'"
+    [label]="isFormVisible() ? 'Close' : 'Create new route'"
     (click)="isFormVisible.set(!isFormVisible())"
     (click)="routeService.currentRoute.set(null)"
   />

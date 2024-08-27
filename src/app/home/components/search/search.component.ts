@@ -66,6 +66,16 @@ export class SearchComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    const tripDataSaved = this.filterService.tripPoints$$();
+    if (tripDataSaved) {
+      this.tripForm.setValue({
+        startCity: tripDataSaved?.from,
+        endCity: tripDataSaved?.to,
+        tripDate: '',
+      });
+      this.tripForm.controls.tripDate.setErrors({ invalidDate: true });
+      this.tripForm.controls.tripDate.markAsTouched();
+    }
     try {
       const stations = await firstValueFrom(this.stationsService.getStations());
       const newCities = await firstValueFrom(this.citiesService.getCities());

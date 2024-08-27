@@ -1,6 +1,6 @@
 import { Station } from '@/app/api/models/stations';
 
-import { CustomSchedule, OmitedSegment } from '../../api/models/schedule';
+import { CustomSchedule, OmitedSegment, RideBody } from '../../api/models/schedule';
 import FullRide, { RidePrice } from '../models/ride.model';
 
 export const collectAllRideData = (stations: (Station | null)[], segments: OmitedSegment[]): FullRide[] => {
@@ -70,4 +70,18 @@ export const exrtactRideDataWithUpdatePrice = (
   }
 
   return updatedData;
+};
+
+export const collectNewRideData = (
+  carriageTypes: { [key: string]: number }[],
+  times: { departure: string; arrival: string }[],
+): RideBody => {
+  const newRide: RideBody = { segments: [] };
+  times.forEach((time, index) => {
+    newRide.segments.push({
+      time: [time.departure, time.arrival],
+      price: carriageTypes[index],
+    });
+  });
+  return newRide;
 };
