@@ -30,7 +30,7 @@ export class FilterComponent {
   }
 
   public takeTabsDates(): string[] {
-    return Object.keys(this.groupRoutes).sort();
+    return Object.keys(this.groupRoutes).sort((a, b) => a.localeCompare(b));
   }
 
   public setCurrentRides(targetDate: string): void {

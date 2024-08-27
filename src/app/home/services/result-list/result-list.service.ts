@@ -1,5 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 
+import { CarriageService } from '@/app/api/carriagesService/carriage.service';
 import { RouteInfo } from '@/app/api/models/schedule';
 import { Schedule } from '@/app/api/models/search';
 import { StationsService } from '@/app/api/stationsService/stations.service';
@@ -16,6 +17,7 @@ import { PLACEHOLDER } from './constants/constants';
 })
 export class ResultListService {
   private stationsService = inject(StationsService);
+  private carriagesService = inject(CarriageService);
 
   public currentResultList$$ = signal<CurrentRide[]>([]);
   public routesInfo$$ = signal<Record<string, RouteInfo> | null>(null);
@@ -238,10 +240,48 @@ export class ResultListService {
   }
 
   private createCarriageInfo(carriages: string[], priceMap: { [key: string]: number }): CarriageInfo[] {
-    const uniqueCarriages = Array.from(new Set(carriages));
-    return uniqueCarriages.map((carriage) => ({
+    const carriageCountMap = this.countCarriages(carriages);
+    const freeSeatsMap = this.calculateFreeSeats(carriageCountMap);
+
+    return this.generateCarriageInfo(carriageCountMap, freeSeatsMap, priceMap);
+  }
+
+  private countCarriages(carriages: string[]): { [key: string]: number } {
+    const carriageCountMap: { [key: string]: number } = {};
+    carriages.forEach((carriage) => {
+      if (carriageCountMap[carriage]) {
+        carriageCountMap[carriage] += 1;
+      } else {
+        carriageCountMap[carriage] = 1;
+      }
+    });
+    return carriageCountMap;
+  }
+
+  private calculateFreeSeats(carriageCountMap: { [key: string]: number }): { [key: string]: number } {
+    // TBD: account for occupied seats later when we have orders
+    const allCarriages = this.carriagesService.allCarriages();
+    const freeSeatsMap: { [key: string]: number } = {};
+
+    allCarriages.forEach((carriage) => {
+      const { code, leftSeats, rightSeats, rows } = carriage;
+      const totalSeatsPerCarriage = rows * (leftSeats + rightSeats);
+      if (carriageCountMap[code]) {
+        freeSeatsMap[code] = totalSeatsPerCarriage * carriageCountMap[code];
+      }
+    });
+
+    return freeSeatsMap;
+  }
+
+  private generateCarriageInfo(
+    carriageCountMap: { [key: string]: number },
+    freeSeatsMap: { [key: string]: number },
+    priceMap: { [key: string]: number },
+  ): CarriageInfo[] {
+    return Object.keys(carriageCountMap).map((carriage) => ({
       type: carriage,
-      freeSeats: 0, // TBD: need to be calculated
+      freeSeats: freeSeatsMap[carriage] ?? 0,
       price: priceMap[carriage] ?? 0,
     }));
   }
