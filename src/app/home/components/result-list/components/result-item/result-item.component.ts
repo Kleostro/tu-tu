@@ -59,9 +59,9 @@ export class ResultItemComponent implements OnInit {
   }
 
   public redirectToDetailed(): void {
-    const { rideId, tripStartStationId, tripEndStationId } = this.resultItem;
+    const { routeId, tripStartStationId, tripEndStationId } = this.resultItem;
 
-    this.router.navigate([stringTemplate(template.DETAILED_PAGE_PATH, { route: APP_ROUTE.TRIP, id: rideId })], {
+    this.router.navigate([stringTemplate(template.DETAILED_PAGE_PATH, { route: APP_ROUTE.TRIP, id: routeId })], {
       queryParams: { from: tripStartStationId, to: tripEndStationId },
     });
   }
