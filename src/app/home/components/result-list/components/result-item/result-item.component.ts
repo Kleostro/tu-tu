@@ -54,14 +54,14 @@ export class ResultItemComponent implements OnInit {
 
     this.modalService.openModal(
       this.modalContent,
-      stringTemplate(template.ROUTE_TITLE, { id: this.resultItem.rideId }),
+      stringTemplate(template.ROUTE_TITLE, { id: this.resultItem.routeId }),
     );
   }
 
   public redirectToDetailed(): void {
-    const { routeId, tripStartStationId, tripEndStationId } = this.resultItem;
+    const { rideId, tripStartStationId, tripEndStationId } = this.resultItem;
 
-    this.router.navigate([stringTemplate(template.DETAILED_PAGE_PATH, { route: APP_ROUTE.TRIP, id: routeId })], {
+    this.router.navigate([stringTemplate(template.DETAILED_PAGE_PATH, { route: APP_ROUTE.TRIP, id: rideId })], {
       queryParams: { from: tripStartStationId, to: tripEndStationId },
     });
   }
