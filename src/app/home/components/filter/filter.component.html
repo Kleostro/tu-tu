@@ -4,7 +4,7 @@
       >From: {{ filterService.tripPoints$$()?.from }} - To: {{ filterService.tripPoints$$()?.to }}</strong
     >
     <p-tabView [scrollable]="true" (onChange)="onTabChange($event)">
-      @for (tab of takeTabsDates(); track trackByFn) {
+      @for (tab of takeTabsDates(); track tab) {
         <p-tabPanel>
           <ng-template pTemplate="header">
             <div class="tab-container">

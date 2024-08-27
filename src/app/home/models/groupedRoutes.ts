@@ -15,10 +15,3 @@ export interface GroupedRoute {
 export interface GroupedRoutes {
   [departureDate: string]: GroupedRoute[];
 }
-
-export type City = {
-  name: string;
-  country: string;
-  lat: number;
-  lng: number;
-};

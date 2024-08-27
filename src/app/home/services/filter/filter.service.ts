@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { Route, SearchParams } from '@/app/api/models/search';
 import { SearchService } from '@/app/api/searchService/search.service';
+import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
 import { GroupedRoutes, TripPoints } from '../../models/groupedRoutes';
 import { ResultListService } from '../result-list/result-list.service';
@@ -15,7 +16,7 @@ import { ResultListService } from '../result-list/result-list.service';
 export class FilterService implements OnDestroy {
   private searchService = inject(SearchService);
   private resultListService = inject(ResultListService);
-
+  private userMessageServise = inject(UserMessageService);
   public availableRoutesGroup$$ = signal<GroupedRoutes>({});
   public tripPoints$$ = signal<TripPoints | null>(null);
 
@@ -33,7 +34,7 @@ export class FilterService implements OnDestroy {
         this.setCurrentRides(targetDate);
       },
       error: (err: OverriddenHttpErrorResponse) => {
-        throw Error(err.message);
+        this.userMessageServise.showErrorMessage(err.error.message);
       },
     });
   }
