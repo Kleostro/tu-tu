@@ -1,6 +1,18 @@
 .top {
   display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.route-info {
+  display: flex;
   gap: 1rem;
   align-items: center;
-  margin-bottom: 3rem;
+}
+
+.new-ride {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }

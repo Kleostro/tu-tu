@@ -1,0 +1,141 @@
+<form class="form" [formGroup]="createRideForm" (ngSubmit)="submit()">
+  <div class="wrapper">
+    @for (station of stationNamesList(); let i = $index; track i) {
+      <div class="ride-item" [class.deleted]="!stationNamesList()[i]">
+        @if (!stationNamesList()[i]) {
+          <strong class="deleted-text"
+            >Station has been deleted, but the fields will still have to be filled in :)</strong
+          >
+        }
+        <strong>{{ station }}</strong>
+
+        <div class="time">
+          @if (i === 0) {
+            <div class="times-wrapper" formArrayName="times">
+              <div [formGroup]="createRideForm.controls.times.controls[0]" class="time-wrapper">
+                Departure:
+                <p-calendar
+                  class="time-calendar"
+                  formControlName="departure"
+                  [minDate]="minDate"
+                  [showTime]="time"
+                  (onSelect)="selectTime($event)"
+                  placeholder="Date/Time"
+                  dateFormat="yyyy-MM-dd"
+                  [iconDisplay]="'input'"
+                  [showIcon]="true"
+                  [hourFormat]="'12'"
+                ></p-calendar>
+              </div>
+            </div>
+          } @else if (i < stationNamesList().length - 1) {
+            <div class="times-wrapper" formArrayName="times">
+              <div [formGroup]="createRideForm.controls.times.controls[i - 1]" class="time-wrapper">
+                Arrival:
+                <p-calendar
+                  class="time-calendar"
+                  formControlName="arrival"
+                  [minDate]="minDate"
+                  [showTime]="time"
+                  placeholder="Date/Time"
+                  dateFormat="yyyy-MM-dd"
+                  [iconDisplay]="'input'"
+                  (onSelect)="selectTime($event)"
+                  [showIcon]="true"
+                  [hourFormat]="'12'"
+                ></p-calendar>
+              </div>
+              <div [formGroup]="createRideForm.controls.times.controls[i]" class="time-wrapper">
+                Departure:
+                <p-calendar
+                  class="time-calendar"
+                  formControlName="departure"
+                  [minDate]="minDate"
+                  [showTime]="time"
+                  placeholder="Date/Time"
+                  dateFormat="yyyy-MM-dd"
+                  [iconDisplay]="'input'"
+                  (onSelect)="selectTime($event)"
+                  [showIcon]="true"
+                  [hourFormat]="'12'"
+                ></p-calendar>
+              </div>
+            </div>
+          } @else {
+            <div class="times-wrapper" formArrayName="times">
+              <div [formGroup]="createRideForm.controls.times.controls[i - 1]" class="time-wrapper">
+                Arrival:
+                <p-calendar
+                  class="time-calendar"
+                  formControlName="arrival"
+                  [minDate]="minDate"
+                  [showTime]="time"
+                  placeholder="Date/Time"
+                  dateFormat="yyyy-MM-dd"
+                  (onSelect)="selectTime($event)"
+                  [iconDisplay]="'input'"
+                  [showIcon]="true"
+                  [hourFormat]="'12'"
+                ></p-calendar>
+              </div>
+            </div>
+          }
+        </div>
+        <div class="carriages">
+          @if (i === 0) {
+            <div class="control" formArrayName="carriageTypes">
+              <div [formGroup]="createRideForm.controls.carriageTypes.controls[0]" class="carriages-wrapper">
+                @for (
+                  carriageType of Object.keys(createRideForm.controls.carriageTypes.controls[0].controls);
+                  let i = $index;
+                  track i
+                ) {
+                  <div class="carriage-wrapper">
+                    <span>{{ carriageType }}</span>
+                    <p-inputNumber
+                      [formControlName]="carriageType"
+                      [showButtons]="false"
+                      mode="currency"
+                      currency="USD"
+                      locale="en-US"
+                    ></p-inputNumber>
+                  </div>
+                }
+              </div>
+            </div>
+          } @else if (i < stationNamesList().length - 1) {
+            <div class="control" formArrayName="carriageTypes">
+              <div [formGroup]="createRideForm.controls.carriageTypes.controls[i]" class="carriages-wrapper">
+                @for (
+                  carriageType of Object.keys(createRideForm.controls.carriageTypes.controls[i].controls);
+                  let i = $index;
+                  track i
+                ) {
+                  <div class="carriage-wrapper">
+                    <span>{{ carriageType }}</span>
+                    <p-inputNumber
+                      [formControlName]="carriageType"
+                      [showButtons]="false"
+                      mode="currency"
+                      currency="USD"
+                      locale="en-US"
+                    ></p-inputNumber>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+    <button
+      pButton
+      pRipple
+      type="submit"
+      label="Create"
+      [disabled]="!createRideForm.valid || !isRideCreated()"
+      [icon]="isRideCreated() ? 'pi pi-plus' : 'pi pi-spin pi-cog'"
+      class="p-button submit"
+    ></button>
+  </div>
+</form>

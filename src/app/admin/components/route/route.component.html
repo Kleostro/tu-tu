@@ -5,6 +5,7 @@
       <div class="btn-wrapper">
         <p-button
           icon="pi pi-pencil"
+          label="Edit"
           [rounded]="true"
           severity="success"
           (click)="routeService.currentRoute.set(route)"
@@ -15,12 +16,19 @@
           pButton
           pRipple
           icon="pi pi-car"
+          label="Rides"
           [rounded]="true"
           severity="warning"
           [style.color]="'white'"
           [routerLink]="'/admin/routes/' + route.id"
         ></a>
-        <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (onClick)="openDeleteConfirm.emit(route.id)" />
+        <p-button
+          icon="pi pi-trash"
+          [rounded]="true"
+          severity="danger"
+          label="Delete"
+          (onClick)="openDeleteConfirm.emit(route.id)"
+        />
       </div>
     </div>
     <div class="bottom">
