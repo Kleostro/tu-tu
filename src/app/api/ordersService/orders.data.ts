@@ -9,16 +9,7 @@ export const ordersDummyData: Order[] = [
     userId: 3,
     status: 'active',
     path: [33, 5, 62, 11, 48, 34],
-    carriages: [
-      'carriage_type_2',
-      'carriage_type_2',
-      'carriage_type_2',
-      'carriage_type_2',
-      'carriage_type_7',
-      'carriage_type_7',
-      'carriage_type_7',
-      'carriage_type_7',
-    ],
+    carriages: ['carriage1'],
     schedule: {
       segments: [
         {
@@ -50,16 +41,7 @@ export const ordersDummyData: Order[] = [
     userId: 3,
     status: 'active',
     path: [33, 5, 62, 11, 48, 34],
-    carriages: [
-      'carriage_type_2',
-      'carriage_type_2',
-      'carriage_type_2',
-      'carriage_type_2',
-      'carriage_type_7',
-      'carriage_type_7',
-      'carriage_type_7',
-      'carriage_type_7',
-    ],
+    carriages: ['carriage2'],
     schedule: {
       segments: [
         {

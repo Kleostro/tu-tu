@@ -16,7 +16,6 @@
                   <b>{{ station.city }} </b>
                 </div>
               }
-              <!-- <div>{{ event.date | date: 'hh:mm a' }}</div> -->
               <div>{{ event.date | date: 'MMMM dd hh:mm' }}</div>
             </div>
           </ng-container>
@@ -25,6 +24,7 @@
     </p-timeline>
 
     <div class="route-wrapper">
+      <div class="carriage-type"><b>Carriage type:</b> {{ carriageName }}</div>
       <span>Order ID: {{ order.id }}</span>
     </div>
   </div>
