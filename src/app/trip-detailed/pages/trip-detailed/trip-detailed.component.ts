@@ -25,6 +25,7 @@ export class TripDetailedComponent implements OnInit {
   private resultListService = inject(ResultListService);
   private routingService = inject(RoutingService);
   private modalService = inject(ModalService);
+
   public tripItem!: CurrentRide | null;
 
   @ViewChild('modalContent') public modalContent!: TemplateRef<unknown>;
