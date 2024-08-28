@@ -1,7 +1,12 @@
 @import 'variables';
+@import 'mixins';
 
 .wrapper {
   display: flex;
   flex-direction: column;
   gap: $offset-s;
+}
+
+.empty {
+  @include empty;
 }

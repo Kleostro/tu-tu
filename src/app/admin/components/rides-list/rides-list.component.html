@@ -1,5 +1,3 @@
-@if (schedule().length && path().length) {
-  @for (ride of schedule(); track ride.rideId) {
-    <app-ride [ride]="ride" [path]="path()"></app-ride>
-  }
+@for (ride of schedule(); track ride.rideId) {
+  <app-ride [ride]="ride" [path]="path()"></app-ride>
 }

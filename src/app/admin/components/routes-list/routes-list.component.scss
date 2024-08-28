@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'mixins';
 
 :host {
   display: flex;
@@ -20,4 +21,8 @@
 .btn-wrapper {
   display: flex;
   gap: 0.5rem;
+}
+
+.empty {
+  @include empty;
 }

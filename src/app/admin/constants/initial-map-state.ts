@@ -5,7 +5,7 @@ export const MARKER_PARAMS = {
   height: 40,
   radius: 40,
   offset: 20,
-  max_width: '5rem',
+  max_width: 'max-content',
   color: '#3B82F6',
 };
 
