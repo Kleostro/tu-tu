@@ -8,6 +8,7 @@
   justify-content: space-between;
 
   width: 100%;
+  margin-top: $offset-s;
   padding: $offset-xs;
 
   background: $gray-100;
@@ -17,4 +18,10 @@
 
 .item {
   width: 50%;
+}
+
+.cancel-button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }

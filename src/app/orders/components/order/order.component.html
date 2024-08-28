@@ -15,10 +15,20 @@
 
     <div class="route-wrapper">
       <div class="carriage-type">
-        Carriage type:<b>{{ carriageName }}</b>
+        Carriage type: <b>{{ carriageName }}</b>
       </div>
-      <div class="price">Price: {{ currentPrice | currency: 'USD' }}</div>
+      <div class="price">
+        Price: <b>{{ currentPrice | currency: 'USD' }}</b>
+      </div>
       <span>Order ID: {{ order.id }}</span>
     </div>
   </div>
+
+  @if (order.status === 'active') {
+    <div class="cancel-button-wrapper">
+      <p-button class="cancel-button" (click)="cancelOrder()">Cancel</p-button>
+    </div>
+  } @else {
+    <span>Order status: {{ order.status }}</span>
+  }
 </div>

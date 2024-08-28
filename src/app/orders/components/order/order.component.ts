@@ -1,6 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 
+import { ButtonModule } from 'primeng/button';
 import { Subscription } from 'rxjs';
 
 import { CarriageService } from '@/app/api/carriagesService/carriage.service';
@@ -12,7 +13,7 @@ import { TripTimelineComponent } from '../../../home/components/trip-timeline/tr
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [TripTimelineComponent, CurrencyPipe],
+  imports: [TripTimelineComponent, CurrencyPipe, ButtonModule],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,6 +38,11 @@ export class OrderComponent implements OnInit, OnDestroy {
         }
       }),
     );
+  }
+
+  public cancelOrder(): void {
+    this.order.status = 'active';
+    this.cdr.detectChanges();
   }
 
   public ngOnDestroy(): void {

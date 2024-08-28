@@ -39,7 +39,7 @@ export const ordersDummyData: Order[] = [
     routeId: 19,
     seatId: 34,
     userId: 3,
-    status: 'active',
+    status: 'completed',
     path: [33, 5, 62, 11, 48, 34],
     carriages: ['carriage2'],
     schedule: {
