@@ -42,8 +42,7 @@ export class TripDetailedComponent implements OnInit {
 
   public ngOnInit(): void {
     const rides = this.resultListService.currentResultList$$();
-    const foundRide = rides.find((ride) => ride.rideId === +this.routingService.currentRideId$$());
-    this.tripItem = foundRide ?? null;
+    this.tripItem = rides.find((ride) => ride.rideId === +this.routingService.currentRideId$$()) ?? null;
   }
 
   public goBack(): void {
