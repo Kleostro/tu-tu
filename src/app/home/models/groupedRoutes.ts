@@ -16,3 +16,8 @@ export interface GroupedRoute {
 export interface GroupedRoutes {
   [departureDate: string]: GroupedRoute[];
 }
+
+export interface TripIds {
+  from: number;
+  to: number;
+}
