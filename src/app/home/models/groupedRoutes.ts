@@ -3,6 +3,7 @@ import { Schedule } from '@/app/api/models/search';
 export interface TripPoints {
   from: string;
   to: string;
+  date: string;
 }
 
 export interface GroupedRoute {
@@ -16,9 +17,7 @@ export interface GroupedRoutes {
   [departureDate: string]: GroupedRoute[];
 }
 
-export type City = {
-  name: string;
-  country: string;
-  lat: number;
-  lng: number;
-};
+export interface TripIds {
+  from: number;
+  to: number;
+}

@@ -14,8 +14,8 @@ import { firstValueFrom } from 'rxjs';
 import { Station } from '@/app/api/models/stations';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 import { AutocompleteIconDirective } from '@/app/shared/directives/autocompleteIcon/autocomplete-icon.directive';
+import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
-import { City } from '../../models/groupedRoutes';
 import { TripData } from '../../models/tripData';
 import { CitiesService } from '../../services/cities/cities.service';
 import { FilterService } from '../../services/filter/filter.service';
@@ -46,8 +46,7 @@ export class SearchComponent implements OnInit {
   private citiesService = inject(CitiesService);
   private stationsService = inject(StationsService);
   private fb: FormBuilder = inject(FormBuilder);
-
-  private additionalCities: City[] = [];
+  private userMessageService = inject(UserMessageService);
   public stations: Station[] = [];
   public filteredCities: string[] = [];
 
@@ -66,21 +65,31 @@ export class SearchComponent implements OnInit {
     return this.tripData$$();
   }
 
-  public ngOnInit(): void {
-    firstValueFrom(this.stationsService.getStations()).then((stations) => {
-      this.stations = stations;
-    });
-    firstValueFrom(this.citiesService.getCities()).then((cities) => {
-      this.additionalCities = cities;
-    });
+  public async ngOnInit(): Promise<void> {
+    const tripDataSaved = this.filterService.tripPoints$$();
+    if (tripDataSaved) {
+      this.tripForm.setValue({
+        startCity: tripDataSaved?.from,
+        endCity: tripDataSaved?.to,
+        tripDate: '',
+      });
+      this.tripForm.controls.tripDate.setErrors({ invalidDate: true });
+      this.tripForm.controls.tripDate.markAsTouched();
+    }
+    try {
+      const stations = await firstValueFrom(this.stationsService.getStations());
+      const newCities = await firstValueFrom(this.citiesService.getCities());
+      this.stations = [...stations, ...newCities];
+    } catch {
+      this.userMessageService.showErrorMessage('Connection is lost!');
+    }
   }
 
   public filterCity(event: AutoCompleteCompleteEvent): void {
     const query = event.query.toLowerCase();
-    this.filteredCities = [
-      ...this.stations.filter(({ city }) => city.toLowerCase().includes(query)).map(({ city }) => city),
-      ...this.additionalCities.map((city) => city.name),
-    ];
+    this.filteredCities = this.stations
+      .filter(({ city }) => city.toLowerCase().includes(query))
+      .map(({ city }) => city);
   }
 
   public onDateSelect(event: Date): void {

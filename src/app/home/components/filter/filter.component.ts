@@ -30,6 +30,9 @@ export class FilterComponent {
   }
 
   public takeTabsDates(): string[] {
+    if (!this.groupRoutes) {
+      this.groupRoutes = this.filterService.availableRoutesGroup$$();
+    }
     return Object.keys(this.groupRoutes).sort();
   }
 

@@ -11,8 +11,8 @@ export interface Segment {
 export interface Schedule {
   rideId: number;
   segments: Segment[];
-  time: string[];
-  occupiedSeats: number[];
+  time?: string[];
+  occupiedSeats?: number[];
 }
 
 export interface Route {
