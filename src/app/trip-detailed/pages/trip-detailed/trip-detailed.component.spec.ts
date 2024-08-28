@@ -73,24 +73,16 @@ describe('TripDetailedComponent', () => {
 
   it('should open modal when tripItem is present', () => {
     component.tripItem = mockCurrentRide;
-    const mockEvent = new MouseEvent('click');
-    jest.spyOn(mockEvent, 'stopPropagation');
-
     component.modalContent = {} as TemplateRef<unknown>;
     component.openModal();
 
-    expect(mockEvent.stopPropagation).toHaveBeenCalled();
     expect(modalService.openModal).toHaveBeenCalledWith(component.modalContent, 'Route 1');
   });
 
   it('should not open modal when tripItem is null', () => {
-    const mockEvent = new MouseEvent('click');
-    jest.spyOn(mockEvent, 'stopPropagation');
-
     component.tripItem = null;
     component.openModal();
 
-    expect(mockEvent.stopPropagation).toHaveBeenCalled();
     expect(modalService.openModal).not.toHaveBeenCalled();
   });
 
