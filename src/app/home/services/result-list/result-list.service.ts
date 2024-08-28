@@ -47,19 +47,17 @@ export class ResultListService {
   private createCurrentRide(routeInfo: GroupedRoute, schedule: Schedule, tripPoints: TripPoints): CurrentRide {
     const routeStations = this.getRouteStations(routeInfo.path);
     const tripStations = this.getTripStations(tripPoints);
-
     const tripStationIds = this.getTripStationIds(tripStations);
     const routeStationIds = this.getRouteStationIds(routeInfo.path);
-
     const tripStationIndices = this.getTripStationIndices(routeInfo.path, tripStationIds);
     const tripDates = this.getTripDates(schedule, tripStationIndices);
-
     const aggregatedPriceMap = this.aggregatePrices(
       schedule.segments,
       tripStationIndices.start,
       tripStationIndices.end,
     );
-    const carriageInfo = this.createCarriageInfo(routeInfo.carriages, aggregatedPriceMap);
+    const occupiedSeats = this.calculateOccupiedSeats(routeInfo.carriages, schedule.segments, tripStationIndices);
+    const carriageInfo = this.createCarriageInfo(routeInfo.carriages, occupiedSeats, aggregatedPriceMap);
     const stationsInfo = this.createStationsInfo(
       routeInfo.path,
       schedule,
@@ -210,27 +208,38 @@ export class ResultListService {
     return stationsInfo;
   }
 
-  private createCarriageInfo(carriages: string[], priceMap: { [key: string]: number }): CarriageInfo[] {
-    const carriageCountMap = this.countCarriages(carriages);
+  private createCarriageInfo(
+    carriages: string[],
+    occupiedSeats: { [key: string]: number[] },
+    priceMap: { [key: string]: number },
+  ): CarriageInfo[] {
+    const carriageCountMap = this.countCarriages(carriages, occupiedSeats);
     const freeSeatsMap = this.calculateFreeSeats(carriageCountMap);
 
     return this.generateCarriageInfo(carriageCountMap, freeSeatsMap, priceMap);
   }
 
-  private countCarriages(carriages: string[]): { [key: string]: number } {
-    const carriageCountMap: { [key: string]: number } = {};
+  private countCarriages(
+    carriages: string[],
+    occupiedSeats: { [key: string]: number[] },
+  ): { [key: string]: { count: number; occupiedSeats: number[] } } {
+    const carriageCountMap: { [key: string]: { count: number; occupiedSeats: number[] } } = {};
     carriages.forEach((carriage) => {
-      if (carriageCountMap[carriage]) {
-        carriageCountMap[carriage] += 1;
-      } else {
-        carriageCountMap[carriage] = 1;
+      if (!carriageCountMap[carriage]) {
+        carriageCountMap[carriage] = { count: 0, occupiedSeats: [] };
       }
+      carriageCountMap[carriage].count += 1;
+      carriageCountMap[carriage].occupiedSeats = [
+        ...carriageCountMap[carriage].occupiedSeats,
+        ...occupiedSeats[carriage],
+      ];
     });
     return carriageCountMap;
   }
 
-  private calculateFreeSeats(carriageCountMap: { [key: string]: number }): { [key: string]: number } {
-    // TBD: account for occupied seats later when we have orders
+  private calculateFreeSeats(carriageCountMap: { [key: string]: { count: number; occupiedSeats: number[] } }): {
+    [key: string]: number;
+  } {
     const allCarriages = this.carriagesService.allCarriages();
     const freeSeatsMap: { [key: string]: number } = {};
 
@@ -238,15 +247,40 @@ export class ResultListService {
       const { code, leftSeats, rightSeats, rows } = carriage;
       const totalSeatsPerCarriage = rows * (leftSeats + rightSeats);
       if (carriageCountMap[code]) {
-        freeSeatsMap[code] = totalSeatsPerCarriage * carriageCountMap[code];
+        const occupiedSeats = carriageCountMap[code].occupiedSeats.length;
+        freeSeatsMap[code] = totalSeatsPerCarriage * carriageCountMap[code].count - occupiedSeats;
       }
     });
 
     return freeSeatsMap;
   }
 
+  private calculateOccupiedSeats(
+    carriages: string[],
+    segments: { occupiedSeats: number[] }[],
+    tripStationIndices: { start: number; end: number },
+  ): { [key: string]: number[] } {
+    const occupiedSeats: { [key: string]: number[] } = {};
+
+    carriages.forEach((carriage) => {
+      occupiedSeats[carriage] = [];
+    });
+
+    segments.slice(tripStationIndices.start, tripStationIndices.end).forEach((segment) => {
+      segment.occupiedSeats.forEach((seat) => {
+        const carriageIndex = Math.floor(seat / carriages.length);
+        const seatNumber = seat % carriages.length;
+        const carriage = carriages[carriageIndex];
+        if (carriage) {
+          occupiedSeats[carriage].push(seatNumber);
+        }
+      });
+    });
+    return occupiedSeats;
+  }
+
   private generateCarriageInfo(
-    carriageCountMap: { [key: string]: number },
+    carriageCountMap: { [key: string]: { count: number; occupiedSeats: number[] } },
     freeSeatsMap: { [key: string]: number },
     priceMap: { [key: string]: number },
   ): CarriageInfo[] {
@@ -254,6 +288,10 @@ export class ResultListService {
       type: carriage,
       freeSeats: freeSeatsMap[carriage] ?? 0,
       price: priceMap[carriage] ?? 0,
+      seats: carriageCountMap[carriage].occupiedSeats.map((seatNumber) => ({
+        seatNumber,
+        occupied: true,
+      })),
     }));
   }
 }
