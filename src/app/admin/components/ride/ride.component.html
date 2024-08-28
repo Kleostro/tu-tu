@@ -1,9 +1,16 @@
 <div class="wrapper">
   <div class="top">
     <h2>Ride {{ ride()?.rideId }}</h2>
+    <p-button
+      [icon]="!isRideDeleted() ? 'pi pi-spin pi-cog' : 'pi pi-trash'"
+      severity="danger"
+      (onClick)="deleteRide(ride()?.rideId ?? 0)"
+      [label]="!isRideDeleted() ? 'Deleting...' : 'Delete'"
+      [disabled]="!isRideDeleted()"
+    ></p-button>
   </div>
   <div class="bottom">
-    <div class="rides">
+    <div class="rides" [class.pending]="!isRideDeleted()">
       @if (ride(); as ride) {
         @for (ride of fullRideData(); let i = $index; track i) {
           <div class="ride">

@@ -24,4 +24,5 @@ export const USER_MESSAGE = {
   RIDE_DATA_UPDATED_SUCCESSFULLY: 'Ride data updated successfully!',
   RIDE_PRICE_UPDATED_SUCCESSFULLY: 'Ride price updated successfully!',
   RIDE_CREATED_SUCCESSFULLY: 'Ride created successfully!',
+  RIDE_DELETED_SUCCESSFULLY: 'Ride deleted successfully!',
 };

@@ -41,6 +41,7 @@ export class RideComponent implements OnDestroy {
   public fullRideData = computed(() => collectAllRideData(this.stations(), this.ride()?.segments ?? []));
   public isTimeEdited = signal(true);
   public isPriceEdited = signal(true);
+  public isRideDeleted = signal(true);
   private subscription = new Subscription();
 
   public handleTimeChanged(event: RidePath, index: number): void {
@@ -85,6 +86,18 @@ export class RideComponent implements OnDestroy {
           }),
       );
     }
+  }
+
+  public deleteRide(rideId: number): void {
+    this.isRideDeleted.set(false);
+    this.subscription.add(
+      this.rideService.deleteRide(this.rideService.currentRouteId(), rideId).subscribe(() =>
+        this.rideService.getRouteById(this.rideService.currentRouteId()).subscribe(() => {
+          this.userMessageService.showSuccessMessage(USER_MESSAGE.RIDE_DELETED_SUCCESSFULLY);
+          this.isRideDeleted.set(true);
+        }),
+      ),
+    );
   }
 
   public ngOnDestroy(): void {
