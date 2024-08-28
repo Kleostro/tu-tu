@@ -61,4 +61,8 @@ export class CarriageService {
   public collectedCarriageCodes(carriages: Carriage[]): string[] {
     return carriages.map((carriage) => carriage.code);
   }
+
+  public deleteCarriage(code: string): Observable<object> {
+    return this.httpClient.delete<object>(`${ENDPOINTS.CARRIAGE}/${code}`);
+  }
 }

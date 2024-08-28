@@ -18,6 +18,8 @@
   </div>
   <button
     class="p-button-danger delete"
+    [label]="isStationDeleted() ? 'Deleting...' : 'Delete'"
+    [rounded]="true"
     [disabled]="isStationDeleted()"
     pButton
     pRipple

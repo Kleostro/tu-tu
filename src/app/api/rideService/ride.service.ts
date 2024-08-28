@@ -31,4 +31,8 @@ export class RideService {
   public updateRide(routeId: number, rideId: number, rideData: RideBody): Observable<object> {
     return this.httpClient.put<object>(`${ENDPOINTS.ROUTE}/${routeId}/${ENDPOINTS.RIDE}/${rideId}`, rideData);
   }
+
+  public deleteRide(routeId: number, rideId: number): Observable<object> {
+    return this.httpClient.delete<object>(`${ENDPOINTS.ROUTE}/${routeId}/${ENDPOINTS.RIDE}/${rideId}`);
+  }
 }

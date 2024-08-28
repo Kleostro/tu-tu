@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { City } from '../../models/groupedRoutes';
+import { Station } from '@/app/api/models/stations';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +11,9 @@ import { City } from '../../models/groupedRoutes';
 export class CitiesService {
   private httpClient = inject(HttpClient);
 
-  public getCities(): Observable<City[]> {
-    const url = 'https://raw.githubusercontent.com/ki8vi/cities-json/main/cities.json';
+  public getCities(): Observable<Station[]> {
+    const url = 'https://raw.githubusercontent.com/ki8vi/cities-json/main/fixed';
     const headers = new HttpHeaders().set('stop-interceptor', 'true');
-    return this.httpClient.get<City[]>(url, { headers });
+    return this.httpClient.get<Station[]>(url, { headers });
   }
 }
