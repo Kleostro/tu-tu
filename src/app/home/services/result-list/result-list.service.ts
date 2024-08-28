@@ -51,19 +51,10 @@ export class ResultListService {
     const routeStationIds = this.getRouteStationIds(routeInfo.path);
     const tripStationIndices = this.getTripStationIndices(routeInfo.path, tripStationIds);
     const tripDates = this.getTripDates(schedule, tripStationIndices);
-    const aggregatedPriceMap = this.aggregatePrices(
-      schedule.segments,
-      tripStationIndices.start,
-      tripStationIndices.end,
-    );
+    const aggregatedPriceMap = this.aggregatePrices(schedule.segments, tripStationIndices);
     const occupiedSeats = this.calculateOccupiedSeats(routeInfo.carriages, schedule.segments, tripStationIndices);
     const carriageInfo = this.createCarriageInfo(routeInfo.carriages, occupiedSeats, aggregatedPriceMap);
-    const stationsInfo = this.createStationsInfo(
-      routeInfo.path,
-      schedule,
-      tripStationIndices.start,
-      tripStationIndices.end,
-    );
+    const stationsInfo = this.createStationsInfo(routeInfo.path, schedule, tripStationIndices);
 
     return {
       rideId: schedule.rideId,
@@ -141,11 +132,10 @@ export class ResultListService {
 
   private aggregatePrices(
     segments: { price: { [key: string]: number } }[],
-    startIndex: number,
-    endIndex: number,
+    indices: { start: number; end: number },
   ): { [key: string]: number } {
     const priceMap: { [key: string]: number } = {};
-    segments.slice(startIndex, endIndex).forEach((segment) => {
+    segments.slice(indices.start, indices.end).forEach((segment) => {
       Object.keys(segment.price).forEach((carriage) => {
         if (priceMap[carriage]) {
           priceMap[carriage] += segment.price[carriage];
@@ -178,7 +168,11 @@ export class ResultListService {
     return { arrivalDate, departureDate };
   }
 
-  private createStationsInfo(paths: number[], schedule: Schedule, start: number, end: number): StationInfo[] {
+  private createStationsInfo(
+    paths: number[],
+    schedule: Schedule,
+    indices: { start: number; end: number },
+  ): StationInfo[] {
     const pathsLength = paths.length;
     const stations = this.stationsService.allStations();
     const stationMap = new Map<number, string>();
@@ -199,9 +193,9 @@ export class ResultListService {
         stopDuration: calculateDuration(arrivalDate, departureDate),
         firstStation: index === 0,
         lastStation: index === pathsLength - 1,
-        firstUserStation: index === start,
-        lastUserStation: index === end,
-        userStation: index >= start && index <= end,
+        firstUserStation: index === indices.start,
+        lastUserStation: index === indices.end,
+        userStation: index >= indices.start && index <= indices.end,
       };
     });
 
