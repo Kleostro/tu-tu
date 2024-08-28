@@ -7,6 +7,12 @@
   padding: $offset-m;
 }
 
+.title {
+  font-size: $font-size-l;
+  color: $gray-700;
+  text-align: center;
+}
+
 .item-wrapper {
   display: flex;
   flex-direction: row;
