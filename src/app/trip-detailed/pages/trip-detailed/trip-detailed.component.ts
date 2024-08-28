@@ -30,8 +30,7 @@ export class TripDetailedComponent implements OnInit {
 
   @ViewChild('modalContent') public modalContent!: TemplateRef<unknown>;
 
-  public openModal(event: MouseEvent): void {
-    event.stopPropagation();
+  public openModal(): void {
     if (this.tripItem) {
       this.modalService.openModal(
         this.modalContent,

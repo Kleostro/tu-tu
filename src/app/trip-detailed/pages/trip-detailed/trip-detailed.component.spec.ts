@@ -77,7 +77,7 @@ describe('TripDetailedComponent', () => {
     jest.spyOn(mockEvent, 'stopPropagation');
 
     component.modalContent = {} as TemplateRef<unknown>;
-    component.openModal(mockEvent);
+    component.openModal();
 
     expect(mockEvent.stopPropagation).toHaveBeenCalled();
     expect(modalService.openModal).toHaveBeenCalledWith(component.modalContent, 'Route 1');
@@ -88,7 +88,7 @@ describe('TripDetailedComponent', () => {
     jest.spyOn(mockEvent, 'stopPropagation');
 
     component.tripItem = null;
-    component.openModal(mockEvent);
+    component.openModal();
 
     expect(mockEvent.stopPropagation).toHaveBeenCalled();
     expect(modalService.openModal).not.toHaveBeenCalled();
