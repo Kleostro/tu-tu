@@ -1,1 +1,14 @@
-<p>trip-detailed works!</p>
+<div class="page-wrapper">
+  @if (tripItem) {
+    <div class="item-wrapper">
+      <div class="item">
+        <app-trip-timeline
+          [departureDate]="tripItem.tripDepartureDate"
+          [arrivalDate]="tripItem.tripArrivalDate"
+          [startStation]="tripItem.routeStartStation"
+          [endStation]="tripItem.routeEndStation"
+        ></app-trip-timeline>
+      </div>
+    </div>
+  }
+</div>

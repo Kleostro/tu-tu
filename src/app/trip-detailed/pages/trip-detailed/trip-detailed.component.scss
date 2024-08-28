@@ -1,0 +1,25 @@
+@import 'variables';
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $offset-s;
+  padding: $offset-m;
+}
+
+.item-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  width: 100%;
+  padding: $offset-xs;
+
+  background: $gray-100;
+  border: $three solid $gray-400;
+  border-radius: $border-radius-s;
+}
+
+.item {
+  width: 50%;
+}
