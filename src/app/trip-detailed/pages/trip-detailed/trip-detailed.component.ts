@@ -26,4 +26,8 @@ export class TripDetailedComponent implements OnInit {
     const rides = this.resultListService.currentResultList$$();
     this.tripItem = rides.find((ride) => ride.rideId === +this.routingService.currentRideId$$());
   }
+
+  public goBack(): void {
+    this.routingService.goBack();
+  }
 }
