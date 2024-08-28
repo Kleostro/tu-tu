@@ -28,6 +28,7 @@ export class FilterService implements OnDestroy {
       ...searchPrms,
       time: targetDate,
     };
+    // console.log(searchPrms.time, targetDate)
     this.subscription = this.searchService.search(modifiedSearchPrms).subscribe({
       next: (res) => {
         const tripIds = {
@@ -41,6 +42,7 @@ export class FilterService implements OnDestroy {
           date: targetDate,
         });
         this.setCurrentRides(targetDate);
+        // console.log(this.availableRoutesGroup$$())
       },
       error: (err: OverriddenHttpErrorResponse) => {
         this.userMessageServise.showErrorMessage(err.error.message);
@@ -56,6 +58,7 @@ export class FilterService implements OnDestroy {
     );
   }
 
+  // eslint-disable-next-line max-lines-per-function
   private generateAvailableRoutesGroup(routes: Route[], tripIds: TripIds, targetDate: string): GroupedRoutes {
     const groupedRoutes: GroupedRoutes = {};
     for (let route = 0; route < routes.length; route += 1) {
@@ -66,8 +69,13 @@ export class FilterService implements OnDestroy {
         const filteredSchedule = [];
         const { segments, rideId } = schedule[ride];
         const targetSegment = segments[fromStationIdIndex];
-        if (targetSegment.time[0] >= targetDate) {
-          const departureDate = targetSegment.time[0].split('T')[0];
+
+        const nextDay = new Date(targetDate);
+        nextDay.setDate(nextDay.getDate() + 1);
+        nextDay.setHours(0, 0, 0, 0);
+
+        if (targetSegment.time[0] > targetDate && new Date(targetDate).getTime() < nextDay.getTime()) {
+          const departureDate = this.formatDate(new Date(targetSegment.time[0]));
           filteredSchedule.push({
             rideId,
             segments,
@@ -87,7 +95,9 @@ export class FilterService implements OnDestroy {
 
     Object.keys(groupedRoutes).forEach((keyDate) => {
       groupedRoutes[keyDate] = groupedRoutes[keyDate].filter((route) =>
-        route.schedule.some((ride) => ride.segments.some((segment) => segment.time[0].split('T')[0] === keyDate)),
+        route.schedule.some((ride) =>
+          ride.segments.some((segment) => this.formatDate(new Date(segment.time[0])) === keyDate),
+        ),
       );
     });
     return this.generateMissingKeyDates(groupedRoutes, targetDate);
