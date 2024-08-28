@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { ButtonModule } from 'primeng/button';
@@ -16,7 +16,7 @@ import { Event } from '../../models/timeline-data.model';
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [ButtonModule, RippleModule, DatePipe, TimelineModule],
+  imports: [ButtonModule, RippleModule, DatePipe, TimelineModule, CurrencyPipe],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,6 +29,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   private subsciption = new Subscription();
   public carriageName = '';
   public events: Event[] = [];
+  public currentPrice = 0;
 
   public ngOnInit(): void {
     this.setData();
@@ -47,9 +48,9 @@ export class OrderComponent implements OnInit, OnDestroy {
     this.subsciption.add(
       this.carriageService.getCarriages().subscribe((carriages) => {
         const matchingCarriage = carriages.find((carriage) => this.order.carriages.includes(carriage.code));
-
         if (matchingCarriage) {
           this.carriageName = matchingCarriage.name;
+          this.currentPrice = this.order.schedule.segments.reduce((acc, val) => acc + val.price[this.carriageName], 0);
           this.cdr.detectChanges();
         }
       }),
