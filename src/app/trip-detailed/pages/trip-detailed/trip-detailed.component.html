@@ -1,14 +1,14 @@
 <div class="page-wrapper">
   @if (tripItem) {
-    <h1 class="title">Book your trip from {{ tripItem.routeStartStation }} to {{ tripItem.routeEndStation }}</h1>
+    <h1 class="title">Book your trip from {{ tripItem.tripStartStation }} to {{ tripItem.tripEndStation }}</h1>
     <h2 class="ride-id">Ride {{ tripItem.rideId }}</h2>
     <div class="item-wrapper">
       <div class="item">
         <app-trip-timeline
           [departureDate]="tripItem.tripDepartureDate"
           [arrivalDate]="tripItem.tripArrivalDate"
-          [startStation]="tripItem.routeStartStation"
-          [endStation]="tripItem.routeEndStation"
+          [startStation]="tripItem.tripStartStation"
+          [endStation]="tripItem.tripEndStation"
         ></app-trip-timeline>
       </div>
     </div>

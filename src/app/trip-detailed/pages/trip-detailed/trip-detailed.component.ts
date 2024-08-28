@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+
 import { RoutingService } from '@/app/core/services/routing/routing.service';
 import { CurrentRide } from '@/app/home/models/currentRide.model';
 import { ResultListService } from '@/app/home/services/result-list/result-list.service';
@@ -9,7 +12,7 @@ import { TripTimelineComponent } from '../../../home/components/trip-timeline/tr
 @Component({
   selector: 'app-trip-detailed',
   standalone: true,
-  imports: [TripTimelineComponent],
+  imports: [TripTimelineComponent, ButtonModule, RippleModule],
   templateUrl: './trip-detailed.component.html',
   styleUrl: './trip-detailed.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
