@@ -29,11 +29,15 @@ export class FilterComponent {
     });
   }
 
+  public countRidesNumbers(targetDate: string): number {
+    return this.filterService.availableRoutesGroup$$()[targetDate].length;
+  }
+
   public takeTabsDates(): string[] {
     if (!this.groupRoutes) {
       this.groupRoutes = this.filterService.availableRoutesGroup$$();
     }
-    return Object.keys(this.groupRoutes).sort();
+    return Object.keys(this.groupRoutes).sort((a, b) => a.localeCompare(b));
   }
 
   public setCurrentRides(targetDate: string): void {

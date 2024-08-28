@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, inject, Input } from '@angular/core';
+import { AfterViewInit, Directive, inject, Input } from '@angular/core';
 
 import { AutoComplete } from 'primeng/autocomplete';
 
@@ -11,17 +11,19 @@ export class AutocompleteIconDirective implements AfterViewInit {
   @Input() public icon = '';
 
   public ngAfterViewInit(): void {
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    const inputWrapper = (this.autoComplete.el as ElementRef<HTMLElement>).nativeElement.firstChild;
-    if (!(inputWrapper instanceof HTMLDivElement)) {
-      return;
+    const element = this.autoComplete.el;
+    if (element.nativeElement instanceof HTMLElement) {
+      const inputWrapper = element.nativeElement.firstChild;
+      if (!(inputWrapper instanceof HTMLDivElement)) {
+        return;
+      }
+      const searchIcon = document.createElement('i');
+      searchIcon.classList.add('pi', this.icon);
+      searchIcon.style.left = '.75rem';
+      searchIcon.style.color = '#0046b8';
+      searchIcon.style.textShadow = '0 0 0.5rem #0046b8';
+      inputWrapper.appendChild(searchIcon);
+      inputWrapper.classList.add('p-input-icon-left');
     }
-    const searchIcon = document.createElement('i');
-    searchIcon.classList.add('pi', this.icon);
-    searchIcon.style.left = '.75rem';
-    searchIcon.style.color = '#0046b8';
-    searchIcon.style.textShadow = '0 0 0.5rem #0046b8';
-    inputWrapper.appendChild(searchIcon);
-    inputWrapper.classList.add('p-input-icon-left');
   }
 }

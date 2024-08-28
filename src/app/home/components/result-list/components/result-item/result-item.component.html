@@ -12,7 +12,6 @@
           <ng-container>
             <div class="event-details">
               <div>{{ event.city }}</div>
-              <div>{{ event.date | date: 'hh:mm a' }}</div>
               <div>{{ event.date | date: 'dd-MMM-yyyy' }}</div>
             </div>
           </ng-container>
@@ -38,7 +37,7 @@
       <div class="carriage-info">
         <div class="carriage-type">{{ carriage.type }}</div>
         <div class="carriage-free-seats">{{ carriage.freeSeats }} free seats</div>
-        <div class="carriage-price">{{ carriage.price | currency: 'USD' : 'symbol' : '1.0-0' }}</div>
+        <div class="carriage-price">{{ carriage.price | currency: 'USD' }}</div>
       </div>
     } @empty {
       <div class="no-carriage-info">Sold out</div>
