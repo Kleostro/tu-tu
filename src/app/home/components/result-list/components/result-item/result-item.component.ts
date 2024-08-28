@@ -54,7 +54,7 @@ export class ResultItemComponent implements OnInit {
 
     this.modalService.openModal(
       this.modalContent,
-      stringTemplate(template.ROUTE_TITLE, { id: this.resultItem.rideId }),
+      stringTemplate(template.ROUTE_TITLE, { id: this.resultItem.routeId }),
     );
   }
 

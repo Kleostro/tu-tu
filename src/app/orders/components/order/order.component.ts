@@ -1,11 +1,12 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { TimelineModule } from 'primeng/timeline';
 import { Subscription } from 'rxjs';
 
+import { CarriageService } from '@/app/api/carriagesService/carriage.service';
 import { Order } from '@/app/api/models/order';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 import { calculateDuration } from '@/app/shared/utils/calculateDuration';
@@ -22,8 +23,11 @@ import { Event } from '../../models/timeline-data.model';
 })
 export class OrderComponent implements OnInit, OnDestroy {
   @Input() public order!: Order;
+  private cdr = inject(ChangeDetectorRef);
+  public carriageService = inject(CarriageService);
   public stationsService = inject(StationsService);
   private subsciption = new Subscription();
+  public carriageName = '';
   public events: Event[] = [];
 
   public ngOnInit(): void {
@@ -40,6 +44,16 @@ export class OrderComponent implements OnInit, OnDestroy {
       { duration: calculateDuration(departureDate, arrivalDate) },
       { date: new Date(arrivalDate), stationID: arrivalStationId },
     ];
+    this.subsciption.add(
+      this.carriageService.getCarriages().subscribe((carriages) => {
+        const matchingCarriage = carriages.find((carriage) => this.order.carriages.includes(carriage.code));
+
+        if (matchingCarriage) {
+          this.carriageName = matchingCarriage.name;
+          this.cdr.detectChanges();
+        }
+      }),
+    );
   }
 
   public ngOnDestroy(): void {

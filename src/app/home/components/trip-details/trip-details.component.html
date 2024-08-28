@@ -9,7 +9,7 @@
 
       <p-timeline [value]="events">
         <ng-template pTemplate="marker" let-event>
-          <span class="marker" [class]="event.userStation ? 'selected' : ''">
+          <span #userMarker class="marker" [class]="event.userStation ? 'selected' : ''">
             <i class="material-icons">location_on</i>
           </span>
         </ng-template>

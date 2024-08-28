@@ -1,3 +1,20 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
 .top {
   margin-bottom: 1rem;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+::ng-deep .p-progress-spinner.spinner {
+  width: 8rem;
+  height: 8rem;
 }

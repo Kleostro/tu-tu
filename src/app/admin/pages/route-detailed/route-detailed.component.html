@@ -6,18 +6,16 @@
         pRipple
         label="Back to routes"
         icon="pi pi-arrow-left"
-        [rounded]="true"
         [style.color]="'white'"
         class="back-link p-button"
         routerLink="/admin/routes"
       ></a>
-      <h1>Route {{ id() }}</h1>
+      <h1 class="title">Route {{ id() }}</h1>
     </div>
     <div class="new-ride">
       <p-button
         [label]="isOpenCreateRideForm() ? 'Close' : 'Create new ride'"
         [icon]="isOpenCreateRideForm() ? 'pi pi-times' : 'pi pi-plus'"
-        [rounded]="true"
         [severity]="isOpenCreateRideForm() ? 'danger' : 'success'"
         (click)="isOpenCreateRideForm.set(!isOpenCreateRideForm())"
       ></p-button>
@@ -27,12 +25,17 @@
       }
     </div>
   </div>
-
-  @let path = this.routeService.currentRouteInfo()?.path;
-  @let schedule = this.routeService.currentRouteInfo()?.schedule;
-  @if (schedule && schedule.length && path && path.length) {
-    <app-rides-list [schedule]="schedule" [path]="path"></app-rides-list>
-  } @else {
-    <h1>No rides</h1>
-  }
+  <div class="bottom">
+    @let path = this.routeService.currentRouteInfo()?.path;
+    @let schedule = this.routeService.currentRouteInfo()?.schedule;
+    @if (schedule && schedule.length && path && path.length) {
+      <app-rides-list [schedule]="schedule" [path]="path"></app-rides-list>
+    } @else {
+      @if (isDataLoaded()) {
+        <h1 class="empty">No rides found</h1>
+      } @else {
+        <p-progressSpinner styleClass="spinner" animationDuration="2.5s" ariaLabel="loading" />
+      }
+    }
+  </div>
 </div>

@@ -5,13 +5,9 @@
     <p>Longitude: {{ station.longitude }}</p>
     <p>Connections: {{ station.connectedTo.length }}</p>
     <div class="connections">
-      @for (connection of station.connectedTo; track connection.id) {
+      @for (connection of station.connectedTo; track connection.id; let i = $index) {
         @if (stationsService.findStationById(connection.id); as connection) {
-          @if (station.connectedTo.length > 1) {
-            <span>{{ connection.city }}, </span>
-          } @else {
-            <span>{{ connection.city }}</span>
-          }
+          <span> {{ i < station.connectedTo.length - 1 ? connection.city + ', ' : connection.city }} </span>
         }
       }
     </div>

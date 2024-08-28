@@ -45,7 +45,7 @@ export class SearchComponent implements OnInit {
   private filterService = inject(FilterService);
   private citiesService = inject(CitiesService);
   private stationsService = inject(StationsService);
-  private fb: FormBuilder = inject(FormBuilder);
+  private fb = inject(FormBuilder);
   private userMessageService = inject(UserMessageService);
   public stations: Station[] = [];
   public filteredCities: string[] = [];

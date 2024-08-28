@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 
 import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RippleModule } from 'primeng/ripple';
 import { Subscription } from 'rxjs';
 
@@ -14,7 +15,7 @@ import { RoutesListComponent } from '../../components/routes-list/routes-list.co
 @Component({
   selector: 'app-routes',
   standalone: true,
-  imports: [RoutesListComponent, ButtonModule, RippleModule, RouteFormComponent],
+  imports: [RoutesListComponent, ButtonModule, RippleModule, RouteFormComponent, ProgressSpinnerModule],
   templateUrl: './routes.component.html',
   styleUrl: './routes.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

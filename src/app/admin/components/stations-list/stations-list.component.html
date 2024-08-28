@@ -1,3 +1,5 @@
 @for (station of allStations; track station.id) {
   <app-station [station]="station"></app-station>
+} @empty {
+  <h1 class="empty">No stations found</h1>
 }

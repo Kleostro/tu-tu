@@ -5,7 +5,6 @@
       <span class="seats-count">{{ (carriage.leftSeats + carriage.rightSeats) * carriage.rows }} seats</span>
       @if (isEditable()) {
         <p-button
-          [rounded]="true"
           class="edit-btn"
           label="Edit"
           severity="success"
