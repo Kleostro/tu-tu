@@ -75,3 +75,9 @@
   border-bottom-right-radius: $border-radius-s;
   border-bottom-left-radius: $border-radius-s;
 }
+
+.ride-count {
+  font-size: $font-size-xxs;
+  font-style: italic;
+  color: $gray-500;
+}

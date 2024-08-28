@@ -22,52 +22,26 @@ export class ResultListService {
   public currentResultList$$ = signal<CurrentRide[]>([]);
   public routesInfo$$ = signal<Record<string, RouteInfo> | null>(null);
 
-  public createCurrentRides(date: Date, data: GroupedRoute[], tripPoints: TripPoints): void {
-    this.currentResultList$$.set([]);
-
+  public createCurrentRides(data: GroupedRoute[], tripPoints: TripPoints): void {
     if (data === undefined) {
       this.currentResultList$$.set([]);
       return;
     }
 
-    const startOfNextDay = this.getStartOfNextDay(date);
     let currentRides: CurrentRide[] = [];
 
     data.forEach((routeInfo) => {
-      const rides = this.filterValidRides(routeInfo, tripPoints, date, startOfNextDay, currentRides);
-
+      const rides = routeInfo.schedule.map((schedule) => this.createCurrentRide(routeInfo, schedule, tripPoints));
       currentRides = [...currentRides, ...rides];
-      this.updateResultList(currentRides);
     });
+
+    this.updateResultList(currentRides);
   }
 
   private updateResultList(currentRides: CurrentRide[]): void {
     const updatedResultList = [...currentRides];
     updatedResultList.sort((a, b) => new Date(a.tripDepartureDate).getTime() - new Date(b.tripDepartureDate).getTime());
     this.currentResultList$$.set(updatedResultList);
-  }
-
-  private getStartOfNextDay(date: Date): Date {
-    const startOfNextDay = new Date(date);
-    startOfNextDay.setDate(startOfNextDay.getDate() + 1);
-    startOfNextDay.setHours(0, 0, 0, 0);
-    return startOfNextDay;
-  }
-
-  private filterValidRides(
-    routeInfo: GroupedRoute,
-    tripPoints: TripPoints,
-    date: Date,
-    startOfNextDay: Date,
-    currentRides: CurrentRide[],
-  ): CurrentRide[] {
-    return routeInfo.schedule
-      .map((schedule) => this.createCurrentRide(routeInfo, schedule, tripPoints))
-      .filter((ride): ride is CurrentRide => {
-        const rideDate = new Date(ride.tripDepartureDate);
-        return rideDate > date && rideDate < startOfNextDay;
-      })
-      .filter((ride) => !currentRides.some((existingRide) => existingRide.rideId === ride.rideId));
   }
 
   private createCurrentRide(routeInfo: GroupedRoute, schedule: Schedule, tripPoints: TripPoints): CurrentRide {
@@ -173,9 +147,7 @@ export class ResultListService {
     endIndex: number,
   ): { [key: string]: number } {
     const priceMap: { [key: string]: number } = {};
-
-    // TBD: check manually if it's supposed to be +1 or not
-    segments.slice(startIndex, endIndex + 1).forEach((segment) => {
+    segments.slice(startIndex, endIndex).forEach((segment) => {
       Object.keys(segment.price).forEach((carriage) => {
         if (priceMap[carriage]) {
           priceMap[carriage] += segment.price[carriage];
