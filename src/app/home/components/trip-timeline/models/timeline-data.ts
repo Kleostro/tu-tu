@@ -1,6 +1,7 @@
 interface EventDetails {
   date: Date;
   city: string;
+  dateFormat: string;
 }
 
 interface Duration {

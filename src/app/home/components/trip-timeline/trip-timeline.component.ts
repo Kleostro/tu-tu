@@ -20,6 +20,7 @@ export class TripTimelineComponent implements OnInit {
   @Input() public arrivalDate = '';
   @Input() public startStation = '';
   @Input() public endStation = '';
+  @Input() public dateFormat = 'dd-MMM-yyyy';
 
   public events: TimelineEvent[] = [];
 
@@ -29,9 +30,9 @@ export class TripTimelineComponent implements OnInit {
 
   private setData(): void {
     this.events = [
-      { date: new Date(this.departureDate), city: this.startStation },
+      { date: new Date(this.departureDate), city: this.startStation, dateFormat: this.dateFormat },
       { duration: '' },
-      { date: new Date(this.arrivalDate), city: this.endStation },
+      { date: new Date(this.arrivalDate), city: this.endStation, dateFormat: this.dateFormat },
     ];
 
     this.events[1].duration = calculateDuration(this.events[0].date, this.events[2].date);

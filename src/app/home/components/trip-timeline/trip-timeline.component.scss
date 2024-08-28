@@ -40,5 +40,10 @@
 }
 
 .city {
+  width: $offset-xxxl * 2;
   font-weight: bold;
+}
+
+.p-timeline-event-content {
+  width: $offset-xxxl * 2;
 }
