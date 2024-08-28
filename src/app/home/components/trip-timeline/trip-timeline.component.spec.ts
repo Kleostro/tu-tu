@@ -29,6 +29,7 @@ describe('TripTimelineComponent', () => {
     component.arrivalDate = '2023-01-01T12:00:00';
     component.startStation = 'Station A';
     component.endStation = 'Station B';
+    component.dateFormat = 'MMMM dd hh:mm';
   });
 
   it('should create', () => {
@@ -41,15 +42,16 @@ describe('TripTimelineComponent', () => {
     component.arrivalDate = '2023-01-01T12:00:00';
     component.startStation = 'Station A';
     component.endStation = 'Station B';
+    component.dateFormat = 'MMMM dd hh:mm';
     const mockDuration = '2 hours';
     (calculateDuration as jest.Mock).mockReturnValue(mockDuration);
 
     fixture.detectChanges();
 
     expect(component.events).toEqual([
-      { date: new Date('2023-01-01T10:00:00'), city: 'Station A' },
+      { date: new Date('2023-01-01T10:00:00'), city: 'Station A', dateFormat: 'MMMM dd hh:mm' },
       { duration: mockDuration },
-      { date: new Date('2023-01-01T12:00:00'), city: 'Station B' },
+      { date: new Date('2023-01-01T12:00:00'), city: 'Station B', dateFormat: 'MMMM dd hh:mm' },
     ]);
 
     expect(calculateDuration).toHaveBeenCalledWith(new Date('2023-01-01T10:00:00'), new Date('2023-01-01T12:00:00'));
