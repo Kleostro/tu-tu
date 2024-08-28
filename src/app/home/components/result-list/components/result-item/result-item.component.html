@@ -1,6 +1,11 @@
 <div class="item-wrapper" (click)="redirectToDetailed()">
   <div class="item">
-    <app-trip-timeline [tripItem]="resultItem"></app-trip-timeline>
+    <app-trip-timeline
+      [departureDate]="resultItem.tripDepartureDate"
+      [arrivalDate]="resultItem.tripArrivalDate"
+      [startStation]="resultItem.routeStartStation"
+      [endStation]="resultItem.routeEndStation"
+    ></app-trip-timeline>
 
     <div class="route-wrapper">
       <div class="from-to-stations">

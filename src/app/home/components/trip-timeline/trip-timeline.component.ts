@@ -5,7 +5,6 @@ import { TimelineModule } from 'primeng/timeline';
 
 import { calculateDuration } from '@/app/shared/utils/calculateDuration';
 
-import { CurrentRide } from '../../models/currentRide.model';
 import { TimelineEvent } from './models/timeline-data';
 
 @Component({
@@ -17,7 +16,10 @@ import { TimelineEvent } from './models/timeline-data';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TripTimelineComponent implements OnInit {
-  @Input() public tripItem!: CurrentRide;
+  @Input() public departureDate = '';
+  @Input() public arrivalDate = '';
+  @Input() public startStation = '';
+  @Input() public endStation = '';
 
   public events: TimelineEvent[] = [];
 
@@ -26,12 +28,10 @@ export class TripTimelineComponent implements OnInit {
   }
 
   private setData(): void {
-    const { tripDepartureDate, tripArrivalDate, tripStartStation, tripEndStation } = this.tripItem;
-
     this.events = [
-      { date: new Date(tripDepartureDate), city: tripStartStation },
+      { date: new Date(this.departureDate), city: this.startStation },
       { duration: '' },
-      { date: new Date(tripArrivalDate), city: tripEndStation },
+      { date: new Date(this.arrivalDate), city: this.endStation },
     ];
 
     this.events[1].duration = calculateDuration(this.events[0].date, this.events[2].date);
