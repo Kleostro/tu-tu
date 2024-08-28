@@ -29,7 +29,7 @@ import { STATION_DETAIL } from './constants/constants';
 export class TripDetailsComponent implements OnInit, AfterViewInit {
   @ViewChildren('userMarker') private markers!: QueryList<ElementRef<HTMLSpanElement>>;
 
-  @Input() public trip: CurrentRide | null = null;
+  @Input() public trip: CurrentRide | null | undefined = null;
 
   public events: StationInfo[] = [];
 
