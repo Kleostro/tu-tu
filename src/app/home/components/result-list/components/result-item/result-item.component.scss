@@ -19,45 +19,6 @@
   width: 50%;
 }
 
-::ng-deep .p-timeline {
-  align-items: flex-start;
-}
-
-.marker {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-
-  width: fit-content;
-  height: $offset-ms;
-  margin: $offset-xxs;
-
-  line-height: 0;
-}
-
-.custom-marker {
-  margin: $offset-xxs 0 $offset-xxs -0.7rem;
-  padding: $offset-xxs;
-
-  color: $white-100;
-
-  background-color: $main-color;
-  border-radius: $border-radius-s;
-}
-
-.time-marker {
-  font-size: $font-size-ms;
-  font-weight: bold;
-  color: $main-color;
-}
-
-.event-details {
-  display: flex;
-  flex-direction: column;
-  gap: $offset-xxs;
-}
-
 .carriages-info {
   display: flex;
   flex-flow: row wrap;

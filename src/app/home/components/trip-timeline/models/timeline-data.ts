@@ -7,4 +7,4 @@ interface Duration {
   duration: string;
 }
 
-export type Event = Partial<EventDetails> & Partial<Duration>;
+export type TimelineEvent = Partial<EventDetails> & Partial<Duration>;

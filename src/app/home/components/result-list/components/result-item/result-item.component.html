@@ -1,23 +1,6 @@
 <div class="item-wrapper" (click)="redirectToDetailed()">
   <div class="item">
-    <p-timeline [value]="events" layout="horizontal" align="top" class="timeline">
-      <ng-template pTemplate="marker" let-event>
-        <span class="marker" [class]="event.duration ? 'custom-marker' : 'time-marker'">{{
-          event.duration ? event.duration : (event.date | date: 'HH:mm')
-        }}</span>
-      </ng-template>
-
-      <ng-template pTemplate="content" let-event>
-        <div class="p-timeline-event-content timeline-content">
-          <ng-container>
-            <div class="event-details">
-              <div>{{ event.city }}</div>
-              <div>{{ event.date | date: 'dd-MMM-yyyy' }}</div>
-            </div>
-          </ng-container>
-        </div>
-      </ng-template>
-    </p-timeline>
+    <app-trip-timeline [tripItem]="resultItem"></app-trip-timeline>
 
     <div class="route-wrapper">
       <div class="from-to-stations">
