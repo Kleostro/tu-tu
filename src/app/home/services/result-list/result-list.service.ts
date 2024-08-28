@@ -174,6 +174,7 @@ export class ResultListService {
   ): { [key: string]: number } {
     const priceMap: { [key: string]: number } = {};
 
+    // TBD: check manually if it's supposed to be +1 or not
     segments.slice(startIndex, endIndex + 1).forEach((segment) => {
       Object.keys(segment.price).forEach((carriage) => {
         if (priceMap[carriage]) {
@@ -196,11 +197,9 @@ export class ResultListService {
     let departureDate = '';
 
     if (index === 0) {
-      arrivalDate = '';
       [departureDate] = schedule.segments[index].time;
     } else if (index === pathsLength - 1) {
       [, arrivalDate] = schedule.segments[index - 1].time;
-      departureDate = '';
     } else if (index > 0 && index < pathsLength - 1) {
       [, arrivalDate] = schedule.segments[index - 1].time;
       [departureDate] = schedule.segments[index].time;

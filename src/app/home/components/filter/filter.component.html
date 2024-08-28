@@ -1,9 +1,9 @@
 <div class="filter-container">
   @let tripPoints = filterService.tripPoints$$();
-  @if (tripPoints && takeTabsDates().length) {
-    <strong class="from-to-title"> From: {{ tripPoints.from }} - To: {{ tripPoints.to }} </strong>
+  @if (tripPoints) {
+    <strong class="from-to-title"> From: {{ tripPoints?.from }} - To: {{ tripPoints?.to }} </strong>
     <p-tabView [scrollable]="true" (onChange)="onTabChange($event)">
-      @for (tab of takeTabsDates(); track $index) {
+      @for (tab of takeTabsDates(); track tab) {
         <p-tabPanel>
           <ng-template pTemplate="header">
             <div class="tab-container">
@@ -13,6 +13,13 @@
               <div class="tab-title-day">
                 {{ tab | date: 'EEEE' }}
               </div>
+
+              @let ridesNumber = countRidesNumbers(tab);
+              @if (!ridesNumber) {
+                <div class="ride-count">(no rides)</div>
+              } @else {
+                <div class="ride-count">({{ ridesNumber }} {{ ridesNumber === 1 ? 'ride' : 'rides' }})</div>
+              }
             </div>
           </ng-template>
           <strong>{{ tab | date: 'MMMM d EEEE' }}</strong>

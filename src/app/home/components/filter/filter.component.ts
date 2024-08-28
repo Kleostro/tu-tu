@@ -29,6 +29,10 @@ export class FilterComponent {
     });
   }
 
+  public countRidesNumbers(targetDate: string): number {
+    return this.filterService.availableRoutesGroup$$()[targetDate].length;
+  }
+
   public takeTabsDates(): string[] {
     if (!this.groupRoutes) {
       this.groupRoutes = this.filterService.availableRoutesGroup$$();
