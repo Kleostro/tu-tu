@@ -2,6 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 
 import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RippleModule } from 'primeng/ripple';
 import { Subscription } from 'rxjs';
 
@@ -14,7 +15,14 @@ import { CreateCarriageFormComponent } from '../../components/create-carriage-fo
 @Component({
   selector: 'app-carriages',
   standalone: true,
-  imports: [CarriagesListComponent, ButtonModule, RippleModule, AsyncPipe, CreateCarriageFormComponent],
+  imports: [
+    CarriagesListComponent,
+    ButtonModule,
+    RippleModule,
+    AsyncPipe,
+    CreateCarriageFormComponent,
+    ProgressSpinnerModule,
+  ],
   templateUrl: './carriages.component.html',
   styleUrl: './carriages.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

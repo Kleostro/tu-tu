@@ -1,13 +1,13 @@
 <div class="wrapper">
-  @if (allCarriages().length) {
-    @for (carriage of allCarriages(); track carriage.code) {
-      <app-carriage
-        [carriage]="carriage"
-        [isInteractive]="!routingService.isAdminCarriagesPage$$()"
-        [isEditable]="true"
-        (openEditModal)="handleOpenEditModal($event)"
-      ></app-carriage>
-    }
+  @for (carriage of allCarriages(); track carriage.code) {
+    <app-carriage
+      [carriage]="carriage"
+      [isInteractive]="!routingService.isAdminCarriagesPage$$()"
+      [isEditable]="true"
+      (openEditModal)="handleOpenEditModal($event)"
+    ></app-carriage>
+  } @empty {
+    <h1 class="empty">No carriages found</h1>
   }
 </div>
 

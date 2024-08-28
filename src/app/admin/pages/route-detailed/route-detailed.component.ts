@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, OnInit, s
 import { RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RippleModule } from 'primeng/ripple';
 import { Subscription } from 'rxjs';
 
@@ -14,7 +15,7 @@ import { RidesListComponent } from '../../components/rides-list/rides-list.compo
 @Component({
   selector: 'app-route-detailed',
   standalone: true,
-  imports: [ButtonModule, RippleModule, RouterLink, RidesListComponent, CreateRideFormComponent],
+  imports: [ButtonModule, RippleModule, RouterLink, RidesListComponent, CreateRideFormComponent, ProgressSpinnerModule],
   templateUrl: './route-detailed.component.html',
   styleUrl: './route-detailed.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,17 +25,17 @@ export class RouteDetailedComponent implements OnInit, OnDestroy {
   public stationsService = inject(StationsService);
   public id = input<string>('');
   public isOpenCreateRideForm = signal(false);
+  public isDataLoaded = signal(false);
   private subscribtion = new Subscription();
 
   public ngOnInit(): void {
     this.routeService.currentRouteInfo.set(null);
     this.subscribtion.add(
       this.stationsService.getStations().subscribe(() => {
-        this.routeService
-          .getRouteById(+this.id())
-          .subscribe
+        this.routeService.getRouteById(+this.id()).subscribe(
           // TBD: redirect to 404 if there is no route
-          ();
+          () => this.isDataLoaded.set(true),
+        );
       }),
     );
   }

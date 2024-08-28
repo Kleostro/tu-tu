@@ -1,7 +1,21 @@
+@import 'variables';
+@import 'mixins';
+
 .top {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .route-info {
@@ -15,4 +29,13 @@
   flex-direction: column;
   gap: 1rem;
   margin-bottom: 1rem;
+}
+
+.empty {
+  @include empty;
+}
+
+::ng-deep .p-progress-spinner.spinner {
+  width: 8rem;
+  height: 8rem;
 }
