@@ -13,6 +13,10 @@
     }
 
     <div class="route-wrapper">
+      <div class="carriage-type">
+        Carriage type:<b>{{ carriageName }}</b>
+      </div>
+      <div class="price">Price: {{ currentPrice | currency: 'USD' }}</div>
       <span>Order ID: {{ order.id }}</span>
     </div>
   </div>
