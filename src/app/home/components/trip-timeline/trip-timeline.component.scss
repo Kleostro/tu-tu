@@ -1,8 +1,10 @@
 @import 'variables';
 
 ::ng-deep .p-timeline {
+  align-items: flex-start;
+
   @media (width <=768px) {
-    align-items: flex-start;
+    align-items: center;
     align-self: center;
 
     width: max-content;
