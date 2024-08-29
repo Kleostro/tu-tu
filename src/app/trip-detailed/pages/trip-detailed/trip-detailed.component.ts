@@ -48,6 +48,11 @@ export class TripDetailedComponent implements OnInit {
 
   @ViewChild('modalContent') public modalContent!: TemplateRef<unknown>;
 
+  public ngOnInit(): void {
+    this.tripItem = this.findRideById() ?? this.getCurrentRideFromLocalStorage();
+    this.updateCarriagesList(this.takeTabsCarriageType()[0] ?? '');
+  }
+
   public openModal(): void {
     if (this.tripItem) {
       this.modalService.openModal(
@@ -55,11 +60,6 @@ export class TripDetailedComponent implements OnInit {
         stringTemplate(template.ROUTE_TITLE, { id: this.tripItem.routeId }),
       );
     }
-  }
-
-  public ngOnInit(): void {
-    this.tripItem = this.findRideById() ?? this.getCurrentRideFromLocalStorage();
-    this.updateCarriagesList(this.takeTabsCarriageType()[0] ?? '');
   }
 
   private getCurrentRideFromLocalStorage(): CurrentRide | null {

@@ -37,6 +37,8 @@ describe('TripDetailsComponent', () => {
       tripDepartureDate: '2023-10-01T08:14:00',
       tripArrivalDate: '2023-10-01T08:14:00',
 
+      trainCarriages: {},
+
       carriages: [],
       carriageInfo: [],
       stationsInfo: [],

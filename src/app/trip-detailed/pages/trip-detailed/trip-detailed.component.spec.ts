@@ -32,6 +32,7 @@ describe('TripDetailedComponent', () => {
     tripEndStationId: 104,
     tripDepartureDate: '2023-01-01T10:00:00Z',
     tripArrivalDate: '2023-01-01T12:00:00Z',
+    trainCarriages: {},
     carriages: [],
     carriageInfo: [],
     stationsInfo: [],

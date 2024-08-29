@@ -1,5 +1,6 @@
 import { CarriageInfo } from './carriageInfo.model';
 import { StationInfo } from './stationInfo.model';
+import { TrainCarriages } from './trainCarriages';
 
 export interface CurrentRide {
   rideId: number;
@@ -19,7 +20,7 @@ export interface CurrentRide {
 
   tripDepartureDate: string;
   tripArrivalDate: string;
-  // TBD: add ainfo about carriages with all seats for a train ??
+  trainCarriages: TrainCarriages;
   carriages: string[];
   carriageInfo: CarriageInfo[];
   stationsInfo: StationInfo[];

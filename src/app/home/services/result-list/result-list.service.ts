@@ -10,6 +10,7 @@ import { CarriageInfo } from '../../models/carriageInfo.model';
 import { CurrentRide } from '../../models/currentRide.model';
 import { GroupedRoute, TripPoints } from '../../models/groupedRoutes';
 import { StationInfo } from '../../models/stationInfo.model';
+import { TrainCarriages } from '../../models/trainCarriages';
 import { PLACEHOLDER } from './constants/constants';
 
 @Injectable({
@@ -53,9 +54,10 @@ export class ResultListService {
     const tripDates = this.getTripDates(schedule, tripStationIndices);
     const { carriages } = routeInfo;
     const aggregatedPriceMap = this.aggregatePrices(schedule.segments, tripStationIndices);
-    const occupiedSeats = this.calculateOccupiedSeats(routeInfo.carriages, schedule.segments, tripStationIndices);
-    const carriageInfo = this.createCarriageInfo(routeInfo.carriages, occupiedSeats, aggregatedPriceMap);
     const stationsInfo = this.createStationsInfo(routeInfo.path, schedule, tripStationIndices);
+    const trainCarriages = this.countTrainCarriages(carriages, schedule.segments, tripStationIndices);
+    const freeSeatsMap = this.calculateFreeSeats(trainCarriages);
+    const carriageInfo = this.createCarriageInfo(routeInfo.carriages, aggregatedPriceMap, freeSeatsMap);
 
     return {
       rideId: schedule.rideId,
@@ -70,6 +72,7 @@ export class ResultListService {
       tripEndStationId: tripStationIds.end,
       tripDepartureDate: tripDates.departure,
       tripArrivalDate: tripDates.arrival,
+      trainCarriages,
       carriages,
       carriageInfo,
       stationsInfo,
@@ -204,75 +207,94 @@ export class ResultListService {
     return stationsInfo;
   }
 
+  private countTrainCarriages(
+    carriages: string[],
+    segments: { occupiedSeats: number[] }[],
+    tripStationIndices: { start: number; end: number },
+  ): TrainCarriages {
+    const allCarriages = this.carriagesService.allCarriages();
+    const trainCarriages: TrainCarriages = {};
+    let currentFirstSeat = 1;
+
+    carriages.forEach((carriageType, index) => {
+      const info = allCarriages.find((crg) => crg.code === carriageType);
+      if (info) {
+        const { rows, leftSeats, rightSeats } = info;
+        const totalSeats = this.calculateTotalSeats(rows, leftSeats, rightSeats);
+        const firstSeat = currentFirstSeat;
+        const lastSeat = firstSeat + totalSeats - 1;
+        const occupiedSeats = this.findOccupiedSeats(segments, tripStationIndices, firstSeat, lastSeat);
+
+        const key = (index + 1).toString();
+        trainCarriages[key] = {
+          carriageType,
+          firstSeat,
+          lastSeat,
+          occupiedSeats,
+          totalSeats,
+          freeSeats: totalSeats - occupiedSeats.length,
+        };
+
+        currentFirstSeat = lastSeat + 1;
+      }
+    });
+
+    return trainCarriages;
+  }
+
+  private calculateTotalSeats(rows: number, leftSeats: number, rightSeats: number): number {
+    return rows * (leftSeats + rightSeats);
+  }
+
+  private findOccupiedSeats(
+    segments: { occupiedSeats: number[] }[],
+    tripStationIndices: { start: number; end: number },
+    firstSeat: number,
+    lastSeat: number,
+  ): number[] {
+    const occupiedSeats: number[] = [];
+    segments.slice(tripStationIndices.start, tripStationIndices.end).forEach((segment) => {
+      segment.occupiedSeats.forEach((seat) => {
+        if (seat >= firstSeat && seat <= lastSeat) {
+          occupiedSeats.push(seat);
+        }
+      });
+    });
+    return occupiedSeats;
+  }
+
   private createCarriageInfo(
     carriages: string[],
-    occupiedSeats: { [key: string]: number[] },
     priceMap: { [key: string]: number },
+    freeSeatsMap: { [key: string]: number },
   ): CarriageInfo[] {
-    const carriageCountMap = this.countCarriages(carriages, occupiedSeats);
-    const freeSeatsMap = this.calculateFreeSeats(carriageCountMap);
-
+    const carriageCountMap = this.countCarriages(carriages);
     return this.generateCarriageInfo(carriageCountMap, freeSeatsMap, priceMap);
   }
 
-  private countCarriages(
-    carriages: string[],
-    occupiedSeats: { [key: string]: number[] },
-  ): { [key: string]: { count: number; occupiedSeats: number[] } } {
+  private countCarriages(carriages: string[]): { [key: string]: { count: number; occupiedSeats: number[] } } {
     const carriageCountMap: { [key: string]: { count: number; occupiedSeats: number[] } } = {};
     carriages.forEach((carriage) => {
       if (!carriageCountMap[carriage]) {
         carriageCountMap[carriage] = { count: 0, occupiedSeats: [] };
       }
       carriageCountMap[carriage].count += 1;
-      carriageCountMap[carriage].occupiedSeats = [
-        ...carriageCountMap[carriage].occupiedSeats,
-        ...occupiedSeats[carriage],
-      ];
     });
     return carriageCountMap;
   }
 
-  private calculateFreeSeats(carriageCountMap: { [key: string]: { count: number; occupiedSeats: number[] } }): {
-    [key: string]: number;
-  } {
-    const allCarriages = this.carriagesService.allCarriages();
+  private calculateFreeSeats(trainCarriages: TrainCarriages): { [key: string]: number } {
     const freeSeatsMap: { [key: string]: number } = {};
 
-    allCarriages.forEach((carriage) => {
-      const { code, leftSeats, rightSeats, rows } = carriage;
-      const totalSeatsPerCarriage = rows * (leftSeats + rightSeats);
-      if (carriageCountMap[code]) {
-        const occupiedSeats = carriageCountMap[code].occupiedSeats.length;
-        freeSeatsMap[code] = totalSeatsPerCarriage * carriageCountMap[code].count - occupiedSeats;
+    Object.entries(trainCarriages).forEach(([, carriage]) => {
+      const { freeSeats, carriageType } = carriage;
+      if (freeSeatsMap[carriageType]) {
+        freeSeatsMap[carriageType] += freeSeats;
+      } else {
+        freeSeatsMap[carriageType] = freeSeats;
       }
     });
-
     return freeSeatsMap;
-  }
-
-  private calculateOccupiedSeats(
-    carriages: string[],
-    segments: { occupiedSeats: number[] }[],
-    tripStationIndices: { start: number; end: number },
-  ): { [key: string]: number[] } {
-    const occupiedSeats: { [key: string]: number[] } = {};
-
-    carriages.forEach((carriage) => {
-      occupiedSeats[carriage] = [];
-    });
-
-    segments.slice(tripStationIndices.start, tripStationIndices.end).forEach((segment) => {
-      segment.occupiedSeats.forEach((seat) => {
-        const carriageIndex = Math.floor(seat / carriages.length);
-        const seatNumber = seat % carriages.length;
-        const carriage = carriages[carriageIndex];
-        if (carriage) {
-          occupiedSeats[carriage].push(seatNumber);
-        }
-      });
-    });
-    return occupiedSeats;
   }
 
   private generateCarriageInfo(
@@ -284,10 +306,6 @@ export class ResultListService {
       type: carriage,
       freeSeats: freeSeatsMap[carriage] ?? 0,
       price: priceMap[carriage] ?? 0,
-      seats: carriageCountMap[carriage].occupiedSeats.map((seatNumber) => ({
-        seatNumber,
-        occupied: true,
-      })),
     }));
   }
 }

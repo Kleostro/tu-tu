@@ -2,6 +2,8 @@ import { Carriage } from '@/app/api/models/carriage';
 import { CarriageInfo } from '@/app/home/models/carriageInfo.model';
 import { CurrentRide } from '@/app/home/models/currentRide.model';
 import { StationInfo } from '@/app/home/models/stationInfo.model';
+import { TrainCarriage } from '@/app/home/models/trainCarriage';
+import { TrainCarriages } from '@/app/home/models/trainCarriages';
 
 const isCarriageInfoArray = (data: unknown): data is CarriageInfo[] =>
   Array.isArray(data) && data.every((item) => typeof item === 'object' && item !== null);
@@ -11,6 +13,33 @@ const isStationInfoArray = (data: unknown): data is StationInfo[] =>
 
 const isCarriages = (data: unknown): data is Carriage[] =>
   Array.isArray(data) && data.every((item) => typeof item === 'string' && item !== null);
+
+const isCarriage = (item: unknown): item is TrainCarriage => {
+  if (typeof item !== 'object' || item === null) {
+    return false;
+  }
+
+  const obj = item;
+
+  return (
+    'carriageType' in obj &&
+    typeof obj['carriageType'] === 'string' &&
+    'firstSeat' in obj &&
+    typeof obj['firstSeat'] === 'number' &&
+    'lastSeat' in obj &&
+    typeof obj['lastSeat'] === 'number' &&
+    'totalSeats' in obj &&
+    typeof obj['totalSeats'] === 'number' &&
+    'occupiedSeats' in obj &&
+    Array.isArray(obj['occupiedSeats']) &&
+    obj['occupiedSeats'].every((seat) => typeof seat === 'number') &&
+    'freeSeats' in obj &&
+    typeof obj['freeSeats'] === 'number'
+  );
+};
+
+const isTrainCarriages = (data: unknown): data is TrainCarriages =>
+  typeof data === 'object' && data !== null && Object.values(data).every(isCarriage);
 
 export const isCurrentRide = (data: unknown): data is CurrentRide =>
   typeof data === 'object' &&
@@ -44,4 +73,6 @@ export const isCurrentRide = (data: unknown): data is CurrentRide =>
   'carriageInfo' in data &&
   isCarriageInfoArray(data['carriageInfo']) &&
   'stationsInfo' in data &&
-  isStationInfoArray(data['stationsInfo']);
+  isStationInfoArray(data['stationsInfo']) &&
+  'trainCarriages' in data &&
+  isTrainCarriages(data['trainCarriages']);
