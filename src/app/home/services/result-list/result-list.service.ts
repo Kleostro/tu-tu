@@ -51,6 +51,7 @@ export class ResultListService {
     const routeStationIds = this.getRouteStationIds(routeInfo.path);
     const tripStationIndices = this.getTripStationIndices(routeInfo.path, tripStationIds);
     const tripDates = this.getTripDates(schedule, tripStationIndices);
+    const { carriages } = routeInfo;
     const aggregatedPriceMap = this.aggregatePrices(schedule.segments, tripStationIndices);
     const occupiedSeats = this.calculateOccupiedSeats(routeInfo.carriages, schedule.segments, tripStationIndices);
     const carriageInfo = this.createCarriageInfo(routeInfo.carriages, occupiedSeats, aggregatedPriceMap);
@@ -69,6 +70,7 @@ export class ResultListService {
       tripEndStationId: tripStationIds.end,
       tripDepartureDate: tripDates.departure,
       tripArrivalDate: tripDates.arrival,
+      carriages,
       carriageInfo,
       stationsInfo,
     };

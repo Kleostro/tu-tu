@@ -26,4 +26,6 @@ export class CarriageComponent {
   public modalService = inject(ModalService);
 
   @Output() public openEditModal: EventEmitter<Carriage> = new EventEmitter<Carriage>();
+
+  // TBD: add seat start index for each carriage
 }

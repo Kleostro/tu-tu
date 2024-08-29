@@ -1,0 +1,5 @@
+<div class="train-carriages-list">
+  @for (carriage of trainCarriagesListService.currentTrainCarriages$$(); track $index) {
+    <app-carriage [carriage]="carriage"></app-carriage>
+  }
+</div>

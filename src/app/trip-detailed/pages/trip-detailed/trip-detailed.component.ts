@@ -17,12 +17,22 @@ import { stringTemplate } from '@/app/shared/utils/string-template';
 
 import { TripDetailsComponent } from '../../../home/components/trip-details/trip-details.component';
 import { TripTimelineComponent } from '../../../home/components/trip-timeline/trip-timeline.component';
+import { TrainCarriagesListComponent } from '../../components/train-carriages-list/train-carriages-list.component';
+import { TrainCarriagesListService } from '../../services/train-carriages-list/train-carriages-list.service';
 import { isCurrentRide } from './helpers/helper';
 
 @Component({
   selector: 'app-trip-detailed',
   standalone: true,
-  imports: [TripTimelineComponent, CurrencyPipe, ButtonModule, RippleModule, TripDetailsComponent, TabViewModule],
+  imports: [
+    TripTimelineComponent,
+    CurrencyPipe,
+    ButtonModule,
+    RippleModule,
+    TripDetailsComponent,
+    TabViewModule,
+    TrainCarriagesListComponent,
+  ],
   templateUrl: './trip-detailed.component.html',
   styleUrl: './trip-detailed.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,6 +42,7 @@ export class TripDetailedComponent implements OnInit {
   private routingService = inject(RoutingService);
   private modalService = inject(ModalService);
   private localStorageService = inject(LocalStorageService);
+  private trainCarriagesListService = inject(TrainCarriagesListService);
 
   public tripItem!: CurrentRide | null;
 
@@ -48,6 +59,7 @@ export class TripDetailedComponent implements OnInit {
 
   public ngOnInit(): void {
     this.tripItem = this.findRideById() ?? this.getCurrentRideFromLocalStorage();
+    this.updateCarriagesList(this.tripItem?.carriages[0] ?? ''); // TBD: not [0]
   }
 
   private getCurrentRideFromLocalStorage(): CurrentRide | null {
@@ -87,9 +99,14 @@ export class TripDetailedComponent implements OnInit {
   }
 
   public onTabChange(event: TabViewChangeEvent): void {
-    const selectedCarriage = this.takeTabsCarriageType()[event.index];
-    // TBD: remove for select action
-    // eslint-disable-next-line no-console
-    console.log(selectedCarriage);
+    const selectedCarriageType = this.takeTabsCarriageType()[event.index];
+    this.updateCarriagesList(selectedCarriageType);
+    this.trainCarriagesListService.setCurrentCarriages();
+  }
+
+  private updateCarriagesList(carriageType: string): void {
+    this.trainCarriagesListService.currentCarriages$$.set(
+      this.tripItem?.carriages.filter((carriage) => carriage === carriageType) ?? [],
+    );
   }
 }

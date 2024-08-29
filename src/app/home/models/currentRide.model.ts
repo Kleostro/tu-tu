@@ -19,6 +19,8 @@ export interface CurrentRide {
 
   tripDepartureDate: string;
   tripArrivalDate: string;
+  // TBD: add ainfo about carriages with all seats for a train ??
+  carriages: string[];
   carriageInfo: CarriageInfo[];
   stationsInfo: StationInfo[];
 }
