@@ -17,6 +17,7 @@ export class RoutingService {
   public queryParams$$ = signal<Record<string, string>>({});
   public isAdminPage$$ = signal<boolean>(false);
   public isAdminCarriagesPage$$ = signal<boolean>(false);
+  public currentRideId$$ = signal<string>('');
 
   constructor() {
     this.activatedRoute.queryParams.subscribe((params) => {
@@ -24,9 +25,21 @@ export class RoutingService {
     });
 
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
-      this.isAdminPage$$.set(this.router.url.startsWith(APP_ROUTE.ADMIN));
-      this.isAdminCarriagesPage$$.set(this.router.url.startsWith(`${APP_ROUTE.ADMIN}/carriages`));
+      const { url } = this.router;
+      this.isAdminPage$$.set(url.startsWith(APP_ROUTE.ADMIN));
+      this.isAdminCarriagesPage$$.set(url.startsWith(`${APP_ROUTE.ADMIN}/carriages`));
+
+      const rideId = this.extractRideIdFromUrl(url);
+      this.currentRideId$$.set(rideId?.toString() ?? '');
     });
+  }
+
+  private extractRideIdFromUrl(url: string): number | null {
+    const match = /\/trip\/:(\d+)/.exec(url);
+    if (match?.[1]) {
+      return parseInt(match[1], 10);
+    }
+    return null;
   }
 
   public goBack(): void {

@@ -1,1 +1,24 @@
-<p>trip-detailed works!</p>
+<div class="page-wrapper">
+  @if (tripItem) {
+    <p-button icon="pi pi-chevron-left" [rounded]="true" [text]="true" (onClick)="goBack()" />
+    <h1 class="title">Book your trip from {{ tripItem.tripStartStation }} to {{ tripItem.tripEndStation }}</h1>
+    <h2 class="ride-id">Ride {{ tripItem.rideId }}</h2>
+    <div class="item-wrapper">
+      <div class="item">
+        <app-trip-timeline
+          [departureDate]="tripItem.tripDepartureDate"
+          [arrivalDate]="tripItem.tripArrivalDate"
+          [startStation]="tripItem.tripStartStation"
+          [endStation]="tripItem.tripEndStation"
+        ></app-trip-timeline>
+      </div>
+      <p-button #buttonElement class="route-button" label="Route" text (click)="openModal()">
+        <i class="material-icons">route</i>
+      </p-button>
+    </div>
+  }
+</div>
+
+<ng-template #modalContent>
+  <app-trip-details [trip]="tripItem"></app-trip-details>
+</ng-template>

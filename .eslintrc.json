@@ -26,6 +26,7 @@
           "files": ["*.spec.ts"],
           "rules": {
             "max-lines-per-function": "off",
+            "@typescript-eslint/unbound-method": "off",
             "@typescript-eslint/consistent-type-assertions": "off"
           }
         }
