@@ -59,7 +59,7 @@ export class TripDetailedComponent implements OnInit {
 
   public ngOnInit(): void {
     this.tripItem = this.findRideById() ?? this.getCurrentRideFromLocalStorage();
-    this.updateCarriagesList(this.tripItem?.carriages[0] ?? ''); // TBD: not [0]
+    this.updateCarriagesList(this.takeTabsCarriageType()[0] ?? '');
   }
 
   private getCurrentRideFromLocalStorage(): CurrentRide | null {
