@@ -1,4 +1,4 @@
-<p-timeline [value]="events" layout="horizontal" align="top" class="timeline">
+<p-timeline [value]="events" [layout]="windowWidth <= 768 ? 'vertical' : 'horizontal'" align="top" class="timeline">
   <ng-template pTemplate="marker" let-event>
     <span class="marker" [class]="event.duration ? 'custom-marker' : 'time-marker'">{{
       event.duration ? event.duration : (event.date | date: 'HH:mm')

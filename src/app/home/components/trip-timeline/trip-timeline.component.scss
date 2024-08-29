@@ -1,7 +1,21 @@
 @import 'variables';
 
 ::ng-deep .p-timeline {
-  align-items: flex-start;
+  @media (width <=768px) {
+    align-items: flex-start;
+    align-self: center;
+
+    width: max-content;
+    margin-right: auto;
+    margin-bottom: 1rem;
+  }
+}
+
+::ng-deep .p-timeline-event-opposite,
+.p-timeline-event-content {
+  @media (width <=768px) {
+    display: none;
+  }
 }
 
 .marker {

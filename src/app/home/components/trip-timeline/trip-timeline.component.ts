@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit } from '@angular/core';
 
 import { TimelineModule } from 'primeng/timeline';
 
@@ -21,6 +21,14 @@ export class TripTimelineComponent implements OnInit {
   @Input() public startStation = '';
   @Input() public endStation = '';
   @Input() public dateFormat = 'dd-MMM-yyyy';
+  public windowWidth = window.innerWidth;
+
+  @HostListener('window:resize', ['$event'])
+  public onResize(event: Event): void {
+    if (event.target instanceof Window) {
+      this.windowWidth = event.target.innerWidth;
+    }
+  }
 
   public events: TimelineEvent[] = [];
 
