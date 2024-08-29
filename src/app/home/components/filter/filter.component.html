@@ -1,6 +1,6 @@
 <div class="filter-container">
   @let tripPoints = filterService.tripPoints$$();
-  @if (tripPoints) {
+  @if (tripPoints && takeTabsDates().length > 0) {
     <strong class="from-to-title"> From: {{ tripPoints.from }} - To: {{ tripPoints.to }} </strong>
     <p-tabView [scrollable]="true" (onChange)="onTabChange($event)">
       @for (tab of takeTabsDates(); track $index) {

@@ -40,7 +40,8 @@ export class FilterService implements OnDestroy {
           to: res.to.city,
           date: targetDate,
         });
-        this.setCurrentRides(targetDate);
+        const localDate = this.formatDate(new Date(searchPrms.time!));
+        this.setCurrentRides(localDate);
       },
       error: (err: OverriddenHttpErrorResponse) => {
         this.userMessageServise.showErrorMessage(err.error.message);
