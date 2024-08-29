@@ -1,3 +1,4 @@
+import { Carriage } from '@/app/api/models/carriage';
 import { CarriageInfo } from '@/app/home/models/carriageInfo.model';
 import { CurrentRide } from '@/app/home/models/currentRide.model';
 import { StationInfo } from '@/app/home/models/stationInfo.model';
@@ -7,6 +8,9 @@ const isCarriageInfoArray = (data: unknown): data is CarriageInfo[] =>
 
 const isStationInfoArray = (data: unknown): data is StationInfo[] =>
   Array.isArray(data) && data.every((item) => typeof item === 'object' && item !== null);
+
+const isCarriages = (data: unknown): data is Carriage[] =>
+  Array.isArray(data) && data.every((item) => typeof item === 'string' && item !== null);
 
 export const isCurrentRide = (data: unknown): data is CurrentRide =>
   typeof data === 'object' &&
@@ -35,6 +39,8 @@ export const isCurrentRide = (data: unknown): data is CurrentRide =>
   typeof data['tripDepartureDate'] === 'string' &&
   'tripArrivalDate' in data &&
   typeof data['tripArrivalDate'] === 'string' &&
+  'carriages' in data &&
+  isCarriages(data['carriages']) &&
   'carriageInfo' in data &&
   isCarriageInfoArray(data['carriageInfo']) &&
   'stationsInfo' in data &&
