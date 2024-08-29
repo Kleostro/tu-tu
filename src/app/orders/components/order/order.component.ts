@@ -2,7 +2,6 @@ import { CurrencyPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 
-import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
@@ -23,7 +22,6 @@ import { TripTimelineComponent } from '../../../home/components/trip-timeline/tr
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [MessageService],
 })
 export class OrderComponent implements OnInit, OnDestroy {
   @Input() public order!: Order;
