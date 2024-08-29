@@ -12,6 +12,7 @@ import { CarriageService } from '@/app/api/carriagesService/carriage.service';
 import { Order } from '@/app/api/models/order';
 import { OrdersService } from '@/app/api/ordersService/orders.service';
 import { StationsService } from '@/app/api/stationsService/stations.service';
+import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
 import { TripTimelineComponent } from '../../../home/components/trip-timeline/trip-timeline.component';
 
@@ -33,7 +34,7 @@ export class OrderComponent implements OnInit, OnDestroy {
   private subsciption = new Subscription();
   public carriageName = '';
   public currentPrice = 0;
-  private messageService = inject(MessageService);
+  private userMessageService = inject(UserMessageService);
   public displayCancelDialog = false;
 
   public ngOnInit(): void {
@@ -61,15 +62,11 @@ export class OrderComponent implements OnInit, OnDestroy {
     // Since no order on server, using mocked data
     firstValueFrom(this.ordersService.cancelOrder(this.order.id))
       .then(() => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Order canceled successfully.' });
+        this.userMessageService.showSuccessMessage('Order canceled successfully.');
       })
       .catch((err: HttpErrorResponse) => {
         const errorMessage = this.getErrorMessage(err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: `Failed to cancel order. ${errorMessage}`,
-        });
+        this.userMessageService.showErrorMessage(`Failed to cancel order. ${errorMessage}`);
       });
   }
 
