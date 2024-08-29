@@ -2,7 +2,6 @@
   @let orders = ordersService.allOrders();
   @let users = ordersService.allUsers();
   @if (isManager) {
-    <div>Manager view availble!</div>
     <app-orders-list [orders]="orders" [users]="users"></app-orders-list>
   } @else {
     <app-orders-list [orders]="orders"></app-orders-list>
