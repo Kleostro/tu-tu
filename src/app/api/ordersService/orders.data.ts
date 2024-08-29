@@ -2,6 +2,38 @@ import { Order } from '@/app/api/models/order';
 
 export const ordersDummyData: Order[] = [
   {
+    id: 63,
+    rideId: 45,
+    routeId: 18,
+    seatId: 31,
+    userId: 2,
+    status: 'active',
+    path: [33, 5, 62, 11, 48, 34],
+    carriages: ['carriage1'],
+    schedule: {
+      segments: [
+        {
+          time: ['2021-08-10T08:00:00', '2021-08-10T08:30:00'],
+          price: {
+            carriage1: 1000,
+            carriage2: 500,
+            carriage3: 700,
+          },
+          occupiedSeats: [31],
+        },
+        {
+          time: ['2021-08-10T08:30:00', '2021-08-10T09:07:00'],
+          price: {
+            carriage1: 1000,
+            carriage2: 500,
+            carriage3: 700,
+          },
+          occupiedSeats: [33],
+        },
+      ],
+    },
+  },
+  {
     id: 64,
     rideId: 45,
     routeId: 18,

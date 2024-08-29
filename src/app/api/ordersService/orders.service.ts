@@ -20,7 +20,7 @@ export class OrdersService {
       shareReplay(1),
       // Temporar solution with hardcoded data
       // tap((orders) => this.allOrders.set(orders)),
-      tap(() => this.allOrders.set(ordersDummyData)),
+      tap(() => this.allOrders.set(ordersDummyData.filter((order) => order.userId === 3))),
     );
   }
 
