@@ -26,9 +26,25 @@
 
   @if (order.status === 'active') {
     <div class="cancel-button-wrapper">
-      <p-button class="cancel-button" (click)="cancelOrder()">Cancel</p-button>
+      <p-button class="cancel-button" (click)="showCancelDialog()">Cancel</p-button>
     </div>
   } @else {
     <span>Order status: {{ order.status }}</span>
   }
 </div>
+
+<p-dialog header="Cancel Order" [(visible)]="displayCancelDialog" [modal]="true" [closable]="false" [resizable]="false">
+  <p>Are you sure you want to cancel this order?</p>
+  <ng-template pTemplate="footer">
+    <button pButton label="Yes" icon="pi pi-check" (click)="cancelOrder()" class="p-button-danger"></button>
+    <button
+      pButton
+      label="No"
+      icon="pi pi-times"
+      (click)="displayCancelDialog = false"
+      class="p-button-secondary"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+<p-toast></p-toast>
