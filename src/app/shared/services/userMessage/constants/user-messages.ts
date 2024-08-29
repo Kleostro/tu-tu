@@ -25,4 +25,7 @@ export const USER_MESSAGE = {
   RIDE_PRICE_UPDATED_SUCCESSFULLY: 'Ride price updated successfully!',
   RIDE_CREATED_SUCCESSFULLY: 'Ride created successfully!',
   RIDE_DELETED_SUCCESSFULLY: 'Ride deleted successfully!',
+  CONNECTION_LOST_ERROR: 'Connection is lost! Please check your internet connection and try again.',
+  NO_STATIONS_FOUND_ERROR:
+    "Sorry, we couldn't find any stations in the cities you're looking for. Please try searching for another city.",
 };

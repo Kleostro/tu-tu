@@ -98,7 +98,7 @@ export class FilterService implements OnDestroy {
 
   private generateMissingKeyDates(groupedRoutes: GroupedRoutes, targetDate: string): GroupedRoutes {
     const updatedGroupedRoutes = { ...groupedRoutes };
-    const dateKeys = Object.keys(updatedGroupedRoutes).sort();
+    const dateKeys = Object.keys(updatedGroupedRoutes).sort((a, b) => a.localeCompare(b));
     const startDate = new Date(targetDate);
     const endDate = new Date(dateKeys[dateKeys.length - 1]);
 
