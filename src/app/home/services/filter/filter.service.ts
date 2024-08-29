@@ -50,7 +50,7 @@ export class FilterService implements OnDestroy {
 
   public setCurrentRides(targetDate: string): void {
     this.resultListService.createCurrentRides(
-      this.availableRoutesGroup$$()[targetDate.split('T')[0]],
+      this.availableRoutesGroup$$()[new Date(targetDate).toLocaleDateString('en-CA')],
       this.tripPoints$$()!,
     );
   }
