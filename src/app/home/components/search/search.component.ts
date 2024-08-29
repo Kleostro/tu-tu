@@ -14,6 +14,7 @@ import { firstValueFrom } from 'rxjs';
 import { Station } from '@/app/api/models/stations';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 import { AutocompleteIconDirective } from '@/app/shared/directives/autocompleteIcon/autocomplete-icon.directive';
+import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
 import { TripData } from '../../models/tripData';
@@ -49,7 +50,7 @@ export class SearchComponent implements OnInit {
   private userMessageService = inject(UserMessageService);
   public stations: Station[] = [];
   public filteredCities: string[] = [];
-
+  private fakeCities: Station[] = [];
   public minDate: Date = new Date();
   public timeSelected = false;
 
@@ -77,45 +78,52 @@ export class SearchComponent implements OnInit {
       this.tripForm.controls.tripDate.markAsTouched();
     }
     try {
-      const stations = await firstValueFrom(this.stationsService.getStations());
-      const newCities = await firstValueFrom(this.citiesService.getCities());
-      this.stations = [...stations, ...newCities];
+      this.stations = await firstValueFrom(this.stationsService.getStations());
+      this.fakeCities = await firstValueFrom(this.citiesService.getCities());
     } catch {
-      this.userMessageService.showErrorMessage('Connection is lost!');
+      this.userMessageService.showErrorMessage(USER_MESSAGE.CONNECTION_LOST_ERROR);
     }
   }
 
   public filterCity(event: AutoCompleteCompleteEvent): void {
     const query = event.query.toLowerCase();
-    this.filteredCities = this.stations
-      .filter(({ city }) => city.toLowerCase().includes(query))
-      .map(({ city }) => city);
-  }
+    const filteredCitiesSet = new Set(
+      this.stations.filter(({ city }) => city.toLowerCase().includes(query)).map(({ city }) => city),
+    );
 
-  public onDateSelect(event: Date): void {
-    this.timeSelected = !!event;
+    const fakeCities = this.fakeCities.filter(({ city }) => city.toLowerCase().includes(query));
+    if (fakeCities.length) {
+      const fakeCityNames = fakeCities.map(({ city }) => city);
+      fakeCityNames.forEach((city) => filteredCitiesSet.add(city));
+      this.stations = [...this.stations, ...fakeCities];
+    }
+
+    this.filteredCities = Array.from(filteredCitiesSet);
   }
 
   public onSubmit(): void {
     if (this.tripForm.valid) {
       const startCityData = this.stations.find((station) => station.city === this.tripForm.value.startCity)!;
       const endCityData = this.stations.find((station) => station.city === this.tripForm.value.endCity)!;
-      const tripData: TripData = {
-        startCity: startCityData,
-        endCity: endCityData,
-        tripDate: new Date(this.tripForm.controls['tripDate'].value ?? ''),
-      };
+      if (startCityData && endCityData) {
+        const tripData: TripData = {
+          startCity: startCityData,
+          endCity: endCityData,
+          tripDate: new Date(this.tripForm.controls['tripDate'].value ?? ''),
+        };
 
-      this.tripData$$.set(tripData);
-      const searchPrms = {
-        fromLatitude: startCityData.latitude,
-        toLatitude: endCityData.latitude,
-        fromLongitude: startCityData.longitude,
-        toLongitude: endCityData.longitude,
-        time: this.tripForm.value.tripDate!,
-      };
-
-      this.filterService.startSearch(searchPrms);
+        this.tripData$$.set(tripData);
+        const searchPrms = {
+          fromLatitude: startCityData.latitude,
+          toLatitude: endCityData.latitude,
+          fromLongitude: startCityData.longitude,
+          toLongitude: endCityData.longitude,
+          time: this.tripForm.value.tripDate!,
+        };
+        this.filterService.startSearch(searchPrms);
+      } else {
+        this.userMessageService.showErrorMessage(USER_MESSAGE.NO_STATIONS_FOUND_ERROR);
+      }
     }
   }
 }

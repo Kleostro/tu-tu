@@ -50,7 +50,7 @@ export class FilterService implements OnDestroy {
 
   public setCurrentRides(targetDate: string): void {
     this.resultListService.createCurrentRides(
-      this.availableRoutesGroup$$()[targetDate.split('T')[0]],
+      this.availableRoutesGroup$$()[this.formatDate(new Date(targetDate))],
       this.tripPoints$$()!,
     );
   }
@@ -98,7 +98,7 @@ export class FilterService implements OnDestroy {
 
   private generateMissingKeyDates(groupedRoutes: GroupedRoutes, targetDate: string): GroupedRoutes {
     const updatedGroupedRoutes = { ...groupedRoutes };
-    const dateKeys = Object.keys(updatedGroupedRoutes).sort();
+    const dateKeys = Object.keys(updatedGroupedRoutes).sort((a, b) => a.localeCompare(b));
     const startDate = new Date(targetDate);
     const endDate = new Date(dateKeys[dateKeys.length - 1]);
 
