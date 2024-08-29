@@ -40,8 +40,7 @@ export class FilterService implements OnDestroy {
           to: res.to.city,
           date: targetDate,
         });
-        const localDate = this.formatDate(new Date(searchPrms.time!));
-        this.setCurrentRides(localDate.split('T')[0]);
+        this.setCurrentRides(targetDate);
       },
       error: (err: OverriddenHttpErrorResponse) => {
         this.userMessageServise.showErrorMessage(err.error.message);
@@ -50,7 +49,10 @@ export class FilterService implements OnDestroy {
   }
 
   public setCurrentRides(targetDate: string): void {
-    this.resultListService.createCurrentRides(this.availableRoutesGroup$$()[targetDate], this.tripPoints$$()!);
+    this.resultListService.createCurrentRides(
+      this.availableRoutesGroup$$()[this.formatDate(new Date(targetDate))],
+      this.tripPoints$$()!,
+    );
   }
 
   private generateAvailableRoutesGroup(routes: Route[], tripIds: TripIds, targetDate: string): GroupedRoutes {

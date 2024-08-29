@@ -33,13 +33,12 @@
         <p-calendar
           formControlName="tripDate"
           [minDate]="minDate"
-          [showTime]="timeSelected"
+          [showTime]="true"
           placeholder="Date/Time"
           dateFormat="D MM d"
           [iconDisplay]="'input'"
           [showIcon]="true"
           inputId="icondisplay"
-          (onSelect)="onDateSelect($event)"
         ></p-calendar>
       </div>
 
