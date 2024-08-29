@@ -4,7 +4,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, O
 
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { ToastModule } from 'primeng/toast';
 import { firstValueFrom, Subscription } from 'rxjs';
 
 import { CarriageService } from '@/app/api/carriagesService/carriage.service';
@@ -18,7 +17,7 @@ import { TripTimelineComponent } from '../../../home/components/trip-timeline/tr
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [TripTimelineComponent, CurrencyPipe, ButtonModule, DialogModule, ToastModule],
+  imports: [TripTimelineComponent, CurrencyPipe, ButtonModule, DialogModule],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
