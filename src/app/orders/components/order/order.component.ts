@@ -7,8 +7,9 @@ import { DialogModule } from 'primeng/dialog';
 import { firstValueFrom, Subscription } from 'rxjs';
 
 import { CarriageService } from '@/app/api/carriagesService/carriage.service';
-import { Order } from '@/app/api/models/order';
+import { Order, User } from '@/app/api/models/order';
 import { OrdersService } from '@/app/api/ordersService/orders.service';
+import { ProfileService } from '@/app/api/profileService/profile.service';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
@@ -24,10 +25,12 @@ import { TripTimelineComponent } from '../../../home/components/trip-timeline/tr
 })
 export class OrderComponent implements OnInit, OnDestroy {
   @Input() public order!: Order;
+  @Input() public user!: User | null;
   private cdr = inject(ChangeDetectorRef);
   public carriageService = inject(CarriageService);
   public stationsService = inject(StationsService);
   public ordersService = inject(OrdersService);
+  public profileService = inject(ProfileService);
   private subsciption = new Subscription();
   public carriageName = '';
   public currentPrice = 0;

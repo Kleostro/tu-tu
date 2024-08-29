@@ -1,7 +1,8 @@
 <div>
   <div>
     @for (order of orders; track order.id) {
-      <app-order [order]="order"></app-order>
+      @let user = ordersService.findUserById(order.userId) ?? null;
+      <app-order [order]="order" [user]="user"></app-order>
     }
   </div>
 </div>
