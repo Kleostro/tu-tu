@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 
 import STORE_KEYS from '@/app/core/constants/store';
 import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
+import { CarriageInfo } from '@/app/home/models/carriageInfo.model';
 import { CurrentRide } from '@/app/home/models/currentRide.model';
 import { APP_ROUTE } from '@/app/shared/constants/routes';
 import { template } from '@/app/shared/constants/string-templates';
@@ -52,5 +53,12 @@ export class ResultItemComponent {
 
   private saveCurrentRide(): void {
     this.localStorageService.addValueByKey(STORE_KEYS.CURRENT_RIDE, this.resultItem);
+  }
+
+  public getSortedCarriageInfo(): CarriageInfo[] {
+    if (!this.resultItem) {
+      return [];
+    }
+    return this.resultItem.carriageInfo.slice().sort((a, b) => a.type.localeCompare(b.type));
   }
 }
