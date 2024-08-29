@@ -8,6 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 
 import { User } from '@/app/api/models/user';
+import { APP_PATH } from '@/app/shared/constants/routes';
 import { PASSWORD_MIN_LENGTH, REGEX } from '@/app/shared/validators/constants/constants';
 import { minTrimmedLengthValidator } from '@/app/shared/validators/validators';
 
@@ -37,6 +38,7 @@ export class LoginComponent {
       minTrimmedLengthValidator(PASSWORD_MIN_LENGTH).bind(this),
     ]),
   });
+  public signUpPath = `/${APP_PATH.SIGN_UP.toLowerCase()}`;
 
   public submitForm(): void {
     if (this.loginForm.valid) {

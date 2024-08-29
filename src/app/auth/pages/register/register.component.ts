@@ -10,6 +10,7 @@ import { MessagesModule } from 'primeng/messages';
 import { PasswordModule } from 'primeng/password';
 
 import { User } from '@/app/api/models/user';
+import { APP_PATH } from '@/app/shared/constants/routes';
 import { PASSWORD_MIN_LENGTH } from '@/app/shared/validators/constants/constants';
 
 import { passwordMatchValidator } from '../../../shared/validators/validators';
@@ -55,6 +56,7 @@ export class RegisterComponent {
       validators: passwordMatchValidator,
     },
   );
+  public signInPath = `/${APP_PATH.SIGN_IN.toLowerCase()}`;
 
   constructor() {
     effect(() => {
