@@ -41,7 +41,7 @@ export class FilterService implements OnDestroy {
           date: targetDate,
         });
         const localDate = this.formatDate(new Date(searchPrms.time!));
-        this.setCurrentRides(localDate);
+        this.setCurrentRides(localDate.split('T')[0]);
       },
       error: (err: OverriddenHttpErrorResponse) => {
         this.userMessageServise.showErrorMessage(err.error.message);
@@ -50,10 +50,7 @@ export class FilterService implements OnDestroy {
   }
 
   public setCurrentRides(targetDate: string): void {
-    this.resultListService.createCurrentRides(
-      this.availableRoutesGroup$$()[targetDate.split('T')[0]],
-      this.tripPoints$$()!,
-    );
+    this.resultListService.createCurrentRides(this.availableRoutesGroup$$()[targetDate], this.tripPoints$$()!);
   }
 
   private generateAvailableRoutesGroup(routes: Route[], tripIds: TripIds, targetDate: string): GroupedRoutes {
@@ -99,7 +96,7 @@ export class FilterService implements OnDestroy {
 
   private generateMissingKeyDates(groupedRoutes: GroupedRoutes, targetDate: string): GroupedRoutes {
     const updatedGroupedRoutes = { ...groupedRoutes };
-    const dateKeys = Object.keys(updatedGroupedRoutes).sort();
+    const dateKeys = Object.keys(updatedGroupedRoutes).sort((a, b) => a.localeCompare(b));
     const startDate = new Date(targetDate);
     const endDate = new Date(dateKeys[dateKeys.length - 1]);
 

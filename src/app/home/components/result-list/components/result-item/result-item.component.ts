@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 
+import STORE_KEYS from '@/app/core/constants/store';
+import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
 import { CurrentRide } from '@/app/home/models/currentRide.model';
 import { APP_ROUTE } from '@/app/shared/constants/routes';
 import { template } from '@/app/shared/constants/string-templates';
@@ -24,6 +26,7 @@ import { TripTimelineComponent } from '../../../trip-timeline/trip-timeline.comp
 export class ResultItemComponent {
   private router = inject(Router);
   private modalService = inject(ModalService);
+  private localStorageService = inject(LocalStorageService);
 
   @Input() public resultItem!: CurrentRide;
 
@@ -39,10 +42,15 @@ export class ResultItemComponent {
   }
 
   public redirectToDetailed(): void {
+    this.saveCurrentRide();
     const { rideId, tripStartStationId, tripEndStationId } = this.resultItem;
 
     this.router.navigate([stringTemplate(template.DETAILED_PAGE_PATH, { route: APP_ROUTE.TRIP, id: rideId })], {
       queryParams: { from: tripStartStationId, to: tripEndStationId },
     });
+  }
+
+  private saveCurrentRide(): void {
+    this.localStorageService.addValueByKey(STORE_KEYS.CURRENT_RIDE, this.resultItem);
   }
 }
