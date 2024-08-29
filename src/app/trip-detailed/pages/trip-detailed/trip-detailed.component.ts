@@ -1,11 +1,14 @@
+import { CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
+import { TabViewChangeEvent, TabViewModule } from 'primeng/tabview';
 
 import STORE_KEYS from '@/app/core/constants/store';
 import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
 import { RoutingService } from '@/app/core/services/routing/routing.service';
+import { CarriageInfo } from '@/app/home/models/carriageInfo.model';
 import { CurrentRide } from '@/app/home/models/currentRide.model';
 import { ResultListService } from '@/app/home/services/result-list/result-list.service';
 import { template } from '@/app/shared/constants/string-templates';
@@ -19,7 +22,7 @@ import { isCurrentRide } from './helpers/helper';
 @Component({
   selector: 'app-trip-detailed',
   standalone: true,
-  imports: [TripTimelineComponent, ButtonModule, RippleModule, TripDetailsComponent],
+  imports: [TripTimelineComponent, CurrencyPipe, ButtonModule, RippleModule, TripDetailsComponent, TabViewModule],
   templateUrl: './trip-detailed.component.html',
   styleUrl: './trip-detailed.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -62,5 +65,31 @@ export class TripDetailedComponent implements OnInit {
 
   public goBack(): void {
     this.routingService.goBack();
+  }
+
+  public takeTabsCarriageType(): string[] {
+    if (!this.tripItem) {
+      return [];
+    }
+    return this.tripItem.carriageInfo.map((carriage) => carriage.type).sort((a, b) => a.localeCompare(b));
+  }
+
+  public getPrice(carriageType: string): number {
+    return this.findCarriage(carriageType)?.price ?? 0;
+  }
+
+  public getFreeSeatsNumber(carriageType: string): number {
+    return this.findCarriage(carriageType)?.freeSeats ?? 0;
+  }
+
+  private findCarriage(carriageType: string): CarriageInfo | null {
+    return this.tripItem?.carriageInfo.find((carriage) => carriage.type === carriageType) ?? null;
+  }
+
+  public onTabChange(event: TabViewChangeEvent): void {
+    const selectedCarriage = this.takeTabsCarriageType()[event.index];
+    // TBD: remove for select action
+    // eslint-disable-next-line no-console
+    console.log(selectedCarriage);
   }
 }
