@@ -1,3 +1,4 @@
+import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Carriage } from '@/app/api/models/carriage';
@@ -13,6 +14,7 @@ describe('TrainCarriagesListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TrainCarriagesListComponent],
       providers: [
+        provideHttpClient(),
         {
           provide: TrainCarriagesListService,
           useValue: {
