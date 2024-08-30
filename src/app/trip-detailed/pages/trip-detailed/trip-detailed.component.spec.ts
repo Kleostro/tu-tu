@@ -64,6 +64,8 @@ describe('TripDetailedComponent', () => {
     component = fixture.componentInstance;
     routingService = TestBed.inject(RoutingService) as jest.Mocked<RoutingService>;
     modalService = TestBed.inject(ModalService) as jest.Mocked<ModalService>;
+
+    jest.spyOn(component, 'takeTabsCarriageType').mockReturnValue([{ name: 'Carriage 1', type: 'mockType' }]);
   });
 
   it('should create', () => {

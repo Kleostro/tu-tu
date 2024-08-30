@@ -19,6 +19,7 @@ describe('TrainCarriagesListComponent', () => {
           provide: TrainCarriagesListService,
           useValue: {
             currentTrainCarriages$$: (): Carriage[] => [],
+            currentCarriageType$$: (): string => '',
           },
         },
       ],
