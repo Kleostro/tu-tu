@@ -22,8 +22,12 @@ const isCarriage = (item: unknown): item is TrainCarriage => {
   const obj = item;
 
   return (
-    'carriageType' in obj &&
-    typeof obj['carriageType'] === 'string' &&
+    'carriageTypeCode' in obj &&
+    typeof obj['carriageTypeCode'] === 'string' &&
+    'carriageName' in obj &&
+    typeof obj['carriageName'] === 'string' &&
+    'carriageOrder' in obj &&
+    typeof obj['carriageOrder'] === 'number' &&
     'firstSeat' in obj &&
     typeof obj['firstSeat'] === 'number' &&
     'lastSeat' in obj &&

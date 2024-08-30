@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 
 import { ResultListService } from '@/app/home/services/result-list/result-list.service';
 
@@ -13,7 +13,16 @@ import { TrainCarriagesListService } from '../../services/train-carriages-list/t
   styleUrl: './train-carriages-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TrainCarriagesListComponent {
+export class TrainCarriagesListComponent implements OnInit {
   public resultListService = inject(ResultListService);
   public trainCarriagesListService = inject(TrainCarriagesListService);
+
+  public ngOnInit(): void {
+    // eslint-disable-next-line no-console
+    console.log(
+      this.resultListService.currentResultList$$(),
+      this.resultListService.currentResultList$$()[0].trainCarriages[1].firstSeat,
+      this.trainCarriagesListService.currentTrainCarriages$$(),
+    );
+  }
 }

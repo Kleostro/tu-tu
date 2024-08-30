@@ -1,5 +1,6 @@
 <div class="page-wrapper">
   @if (tripItem) {
+    <div>{{ tripItem.carriages }}</div>
     <p-button icon="pi pi-chevron-left" [rounded]="true" [text]="true" (onClick)="goBack()" />
     <h1 class="title">Book your trip from {{ tripItem.tripStartStation }} to {{ tripItem.tripEndStation }}</h1>
     <h2 class="ride-id">Ride {{ tripItem.rideId }}</h2>
@@ -23,13 +24,13 @@
           <ng-template pTemplate="header">
             <div class="tab-container">
               <div class="tab-title-carriage-type">
-                {{ tab }}
+                {{ tab.name }}
               </div>
               <div class="tab-title-price">
-                {{ getPrice(tab) | currency: 'USD' }}
+                {{ getPrice(tab.type) | currency: 'USD' : 'symbol' : '1.0-0' }}
               </div>
 
-              @let seatsNumber = getFreeSeatsNumber(tab);
+              @let seatsNumber = getFreeSeatsNumber(tab.type);
               @if (!seatsNumber) {
                 <div class="seat-count">(no seats)</div>
               } @else {
@@ -37,7 +38,7 @@
               }
             </div>
           </ng-template>
-          <strong>{{ tab }}</strong>
+          <strong>{{ tab.name }}</strong>
           <app-train-carriages-list></app-train-carriages-list>
         </p-tabPanel>
       }

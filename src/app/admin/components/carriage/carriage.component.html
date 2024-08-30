@@ -2,7 +2,12 @@
   <div class="car-wrapper">
     <div class="car-top">
       <strong class="title">{{ carriage.name | uppercase }}</strong>
-      <span class="seats-count">{{ (carriage.leftSeats + carriage.rightSeats) * carriage.rows }} seats</span>
+      <span class="seats-count">
+        @let seatsNumber = (carriage.leftSeats + carriage.rightSeats) * carriage.rows;
+        @let freeSeatsNumber = freeSeats();
+        {{ freeSeatsNumber ?? seatsNumber }}
+        {{ freeSeatsNumber ? 'free seats' : 'seats' }}
+      </span>
       @if (isEditable()) {
         <p-button
           class="edit-btn"

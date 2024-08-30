@@ -216,10 +216,10 @@ export class ResultListService {
     const trainCarriages: TrainCarriages = {};
     let currentFirstSeat = 1;
 
-    carriages.forEach((carriageType, index) => {
-      const info = allCarriages.find((crg) => crg.code === carriageType);
+    carriages.forEach((carriageTypeCode, index) => {
+      const info = allCarriages.find((crg) => crg.code === carriageTypeCode);
       if (info) {
-        const { rows, leftSeats, rightSeats } = info;
+        const { rows, leftSeats, rightSeats, name } = info;
         const totalSeats = this.calculateTotalSeats(rows, leftSeats, rightSeats);
         const firstSeat = currentFirstSeat;
         const lastSeat = firstSeat + totalSeats - 1;
@@ -227,7 +227,9 @@ export class ResultListService {
 
         const key = (index + 1).toString();
         trainCarriages[key] = {
-          carriageType,
+          carriageTypeCode,
+          carriageOrder: index + 1,
+          carriageName: name,
           firstSeat,
           lastSeat,
           occupiedSeats,
@@ -240,6 +242,24 @@ export class ResultListService {
     });
 
     return trainCarriages;
+  }
+
+  private createCarriageNameMap(carriages: string[]): { [key: string]: string } {
+    const allCarriages = this.carriagesService.allCarriages();
+    const carriageMap: { [key: string]: string } = {};
+
+    allCarriages.forEach(({ code, name }) => {
+      carriageMap[code] = `name_${name}`;
+    });
+
+    const result: { [key: string]: string } = {};
+    carriages.forEach((carriageTypeCode) => {
+      if (carriageMap[carriageTypeCode]) {
+        result[carriageTypeCode] = carriageMap[carriageTypeCode];
+      }
+    });
+
+    return result;
   }
 
   private calculateTotalSeats(rows: number, leftSeats: number, rightSeats: number): number {
@@ -269,7 +289,8 @@ export class ResultListService {
     freeSeatsMap: { [key: string]: number },
   ): CarriageInfo[] {
     const carriageCountMap = this.countCarriages(carriages);
-    return this.generateCarriageInfo(carriageCountMap, freeSeatsMap, priceMap);
+    const carriageNameMap = this.createCarriageNameMap(carriages);
+    return this.generateCarriageInfo(carriageNameMap, carriageCountMap, freeSeatsMap, priceMap);
   }
 
   private countCarriages(carriages: string[]): { [key: string]: { count: number; occupiedSeats: number[] } } {
@@ -287,22 +308,24 @@ export class ResultListService {
     const freeSeatsMap: { [key: string]: number } = {};
 
     Object.entries(trainCarriages).forEach(([, carriage]) => {
-      const { freeSeats, carriageType } = carriage;
-      if (freeSeatsMap[carriageType]) {
-        freeSeatsMap[carriageType] += freeSeats;
+      const { freeSeats, carriageTypeCode } = carriage;
+      if (freeSeatsMap[carriageTypeCode]) {
+        freeSeatsMap[carriageTypeCode] += freeSeats;
       } else {
-        freeSeatsMap[carriageType] = freeSeats;
+        freeSeatsMap[carriageTypeCode] = freeSeats;
       }
     });
     return freeSeatsMap;
   }
 
   private generateCarriageInfo(
+    carriageNameMap: { [key: string]: string },
     carriageCountMap: { [key: string]: { count: number; occupiedSeats: number[] } },
     freeSeatsMap: { [key: string]: number },
     priceMap: { [key: string]: number },
   ): CarriageInfo[] {
     return Object.keys(carriageCountMap).map((carriage) => ({
+      name: carriageNameMap[carriage],
       type: carriage,
       freeSeats: freeSeatsMap[carriage] ?? 0,
       price: priceMap[carriage] ?? 0,

@@ -13,6 +13,7 @@ export class TrainCarriagesListService {
 
   public currentCarriages$$ = signal<string[]>([]);
   public currentTrainCarriages$$ = signal<Carriage[]>([]);
+  public currentCarriageType$$ = signal<string>('');
 
   public currentCarriages: Carriage[] = [];
 

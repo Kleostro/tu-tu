@@ -1,5 +1,7 @@
 export interface TrainCarriage {
-  carriageType: string;
+  carriageTypeCode: string;
+  carriageName: string;
+  carriageOrder: number;
   firstSeat: number;
   lastSeat: number;
   totalSeats: number;

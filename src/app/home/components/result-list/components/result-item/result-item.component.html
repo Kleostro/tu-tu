@@ -23,7 +23,7 @@
     @let sortedCarriageInfo = getSortedCarriageInfo();
     @for (carriage of sortedCarriageInfo; track carriage.type) {
       <div class="carriage-info">
-        <div class="carriage-type">{{ carriage.type }}</div>
+        <div class="carriage-type">{{ carriage.name }}</div>
         <div class="carriage-free-seats">{{ carriage.freeSeats }} free seats</div>
         <div class="carriage-price">{{ carriage.price | currency: 'USD' }}</div>
       </div>

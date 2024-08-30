@@ -25,12 +25,12 @@ import { isCurrentRide } from './helpers/helper';
   selector: 'app-trip-detailed',
   standalone: true,
   imports: [
-    TripTimelineComponent,
-    CurrencyPipe,
     ButtonModule,
+    CurrencyPipe,
     RippleModule,
-    TripDetailsComponent,
     TabViewModule,
+    TripTimelineComponent,
+    TripDetailsComponent,
     TrainCarriagesListComponent,
   ],
   templateUrl: './trip-detailed.component.html',
@@ -50,7 +50,9 @@ export class TripDetailedComponent implements OnInit {
 
   public ngOnInit(): void {
     this.tripItem = this.findRideById() ?? this.getCurrentRideFromLocalStorage();
-    this.updateCarriagesList(this.takeTabsCarriageType()[0] ?? '');
+
+    const firstCarriage = this.takeTabsCarriageType()[0].type;
+    this.updateCarriagesList(firstCarriage);
   }
 
   public openModal(): void {
@@ -64,6 +66,10 @@ export class TripDetailedComponent implements OnInit {
 
   private getCurrentRideFromLocalStorage(): CurrentRide | null {
     const currentRide = this.localStorageService.getValueByKey(STORE_KEYS.CURRENT_RIDE);
+    if (!isCurrentRide(currentRide)) {
+      return null;
+    }
+    this.resultListService.currentResultList$$.set([currentRide]);
     return isCurrentRide(currentRide) ? currentRide : null;
   }
 
@@ -79,11 +85,13 @@ export class TripDetailedComponent implements OnInit {
     this.routingService.goBack();
   }
 
-  public takeTabsCarriageType(): string[] {
+  public takeTabsCarriageType(): { name: string; type: string }[] {
     if (!this.tripItem) {
       return [];
     }
-    return this.tripItem.carriageInfo.map((carriage) => carriage.type).sort((a, b) => a.localeCompare(b));
+    return this.tripItem.carriageInfo
+      .map((carriage) => ({ name: carriage.name, type: carriage.type }))
+      .sort((a, b) => a.type.localeCompare(b.type));
   }
 
   public getPrice(carriageType: string): number {
@@ -100,13 +108,12 @@ export class TripDetailedComponent implements OnInit {
 
   public onTabChange(event: TabViewChangeEvent): void {
     const selectedCarriageType = this.takeTabsCarriageType()[event.index];
-    this.updateCarriagesList(selectedCarriageType);
+    this.updateCarriagesList(selectedCarriageType.type);
     this.trainCarriagesListService.setCurrentCarriages();
   }
 
   private updateCarriagesList(carriageType: string): void {
-    this.trainCarriagesListService.currentCarriages$$.set(
-      this.tripItem?.carriages.filter((carriage) => carriage === carriageType) ?? [],
-    );
+    this.trainCarriagesListService.currentCarriageType$$.set(carriageType);
+    this.trainCarriagesListService.currentCarriages$$.set(this.tripItem?.carriages ?? []);
   }
 }
