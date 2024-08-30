@@ -21,6 +21,9 @@
         Price: <b>{{ currentPrice | currency: 'USD' }}</b>
       </div>
       <span>Order ID: {{ order.id }}</span>
+      @if (user) {
+        <div>User: {{ user.email }}</div>
+      }
     </div>
   </div>
 

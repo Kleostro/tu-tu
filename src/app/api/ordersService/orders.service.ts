@@ -13,9 +13,19 @@ import { ordersDummyData } from './orders.data';
 export class OrdersService {
   private httpClient = inject(HttpClient);
   public allOrders = signal<Order[]>([]);
+  public allUsers = signal<User[]>([]);
 
   public getOrders(): Observable<Order[]> {
     return this.httpClient.get<Order[]>(ENDPOINTS.ORDER).pipe(
+      shareReplay(1),
+      // Temporar solution with hardcoded data
+      // tap((orders) => this.allOrders.set(orders)),
+      tap(() => this.allOrders.set(ordersDummyData.filter((order) => order.userId === 3))),
+    );
+  }
+
+  public getAllOrders(): Observable<Order[]> {
+    return this.httpClient.get<Order[]>(`${ENDPOINTS.ORDER}?all=true`).pipe(
       shareReplay(1),
       // Temporar solution with hardcoded data
       // tap((orders) => this.allOrders.set(orders)),
@@ -32,6 +42,13 @@ export class OrdersService {
   }
 
   public getAllUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(ENDPOINTS.USERS);
+    return this.httpClient.get<User[]>(ENDPOINTS.USERS).pipe(
+      shareReplay(1),
+      tap((users) => this.allUsers.set(users)),
+    );
+  }
+
+  public findUserById(id: number): User | null {
+    return this.allUsers()?.find((user) => user.id === id) ?? null;
   }
 }

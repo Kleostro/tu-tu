@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 
-import { Order } from '@/app/api/models/order';
+import { Order, User } from '@/app/api/models/order';
+import { OrdersService } from '@/app/api/ordersService/orders.service';
 
 import { OrderComponent } from '../order/order.component';
 
@@ -14,4 +15,6 @@ import { OrderComponent } from '../order/order.component';
 })
 export class OrdersListComponent {
   @Input() public orders!: Order[];
+  @Input() public users!: User[];
+  public ordersService = inject(OrdersService);
 }

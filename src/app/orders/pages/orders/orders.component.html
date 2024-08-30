@@ -1,6 +1,9 @@
 <div class="wrapper">
   @let orders = ordersService.allOrders();
-  @if (orders.length) {
+  @let users = ordersService.allUsers();
+  @if (isManager) {
+    <app-orders-list [orders]="orders" [users]="users"></app-orders-list>
+  } @else {
     <app-orders-list [orders]="orders"></app-orders-list>
   }
 </div>
