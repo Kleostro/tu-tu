@@ -249,7 +249,7 @@ export class ResultListService {
     const carriageMap: { [key: string]: string } = {};
 
     allCarriages.forEach(({ code, name }) => {
-      carriageMap[code] = `name_${name}`;
+      carriageMap[code] = name;
     });
 
     const result: { [key: string]: string } = {};
