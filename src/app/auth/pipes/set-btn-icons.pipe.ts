@@ -10,7 +10,6 @@ export class SetBtnIconsPipe implements PipeTransform {
       init: isSignUp ? 'pi pi-user-plus' : 'pi pi-user',
       load: 'pi pi-spin pi-spinner',
       success: 'pi pi-verified',
-      error: 'pi pi-ban',
     };
 
     return stateToIconMap[state];

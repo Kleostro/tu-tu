@@ -53,7 +53,7 @@ export class AuthService implements OnDestroy {
         this.isRegistrationSuccess$$.set(false);
         this.errorMessage$$.set(err.error.reason);
         this.userMessageService.showErrorMessage(USER_MESSAGE.REGISTRATION_ERROR);
-        this.signUpBtnState$$.set('error');
+        this.signUpBtnState$$.set('init');
       },
     });
   }
@@ -74,7 +74,7 @@ export class AuthService implements OnDestroy {
         loginForm.setErrors({ [err.error.reason]: true });
       }
       this.userMessageService.showErrorMessage(USER_MESSAGE.LOGIN_ERROR);
-      this.signInBtnState$$.set('error');
+      this.signInBtnState$$.set('init');
     }
   }
 
