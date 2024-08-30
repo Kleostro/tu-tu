@@ -1,3 +1,17 @@
-@for (ride of schedule(); track ride.rideId) {
+<ng-container *ngTemplateOutlet="paginator"></ng-container>
+@for (ride of schedule().slice(firstPage, firstPage + rowsCount); track ride.rideId) {
   <app-ride [ride]="ride" [path]="path()"></app-ride>
 }
+<ng-container *ngTemplateOutlet="paginator"></ng-container>
+
+<ng-template #paginator>
+  @if (schedule().length) {
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="firstPage"
+      [rows]="rowsCount"
+      [totalRecords]="schedule().length"
+      [rowsPerPageOptions]="[10, 20, 30, 40, 50, 100]"
+    />
+  }
+</ng-template>

@@ -1,5 +1,19 @@
-@for (station of allStations; track station.id) {
+<ng-container *ngTemplateOutlet="paginator"></ng-container>
+@for (station of allStations.slice(firstPage, firstPage + rowsCount); track station.id) {
   <app-station [station]="station"></app-station>
 } @empty {
   <h1 class="empty">No stations found</h1>
 }
+<ng-container *ngTemplateOutlet="paginator"></ng-container>
+
+<ng-template #paginator>
+  @if (allStations.length) {
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="firstPage"
+      [rows]="rowsCount"
+      [totalRecords]="allStations.length"
+      [rowsPerPageOptions]="[10, 20, 30, 40, 50, 100]"
+    />
+  }
+</ng-template>
