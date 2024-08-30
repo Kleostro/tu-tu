@@ -1,13 +1,15 @@
 <div class="train-carriages-list">
+  @let currentType = trainCarriagesListService.currentCarriageType$$();
   @let currentRide = resultListService.currentResultList$$()[0];
   @let trainCarriagesList = trainCarriagesListService.currentTrainCarriages$$();
   @for (carriage of trainCarriagesList; track $index) {
-    <h2>№{{ currentRide.trainCarriages[$index + 1].carriageOrder }}</h2>
-    <app-carriage
-      [carriage]="carriage"
-      [firstSeat]="currentRide.trainCarriages[$index + 1].firstSeat - 1"
-      [freeSeats]="currentRide.trainCarriages[$index + 1].freeSeats"
-    ></app-carriage>
+    @if (carriage.code === currentType) {
+      <h2>№{{ currentRide.trainCarriages[$index + 1].carriageOrder }}</h2>
+      <app-carriage
+        [carriage]="carriage"
+        [firstSeat]="currentRide.trainCarriages[$index + 1].firstSeat - 1"
+        [freeSeats]="currentRide.trainCarriages[$index + 1].freeSeats"
+      ></app-carriage>
+    }
   }
 </div>
-<!-- TBD: implement numbers for the train structure not only category -->
