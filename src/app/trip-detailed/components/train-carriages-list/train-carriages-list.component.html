@@ -1,5 +1,11 @@
 <div class="train-carriages-list">
-  @for (carriage of trainCarriagesListService.currentTrainCarriages$$(); track $index) {
-    <app-carriage [carriage]="carriage"></app-carriage>
+  @let currentRide = resultListService.currentResultList$$()[0];
+  @let trainCarriagesList = trainCarriagesListService.currentTrainCarriages$$();
+  @for (carriage of trainCarriagesList; track $index) {
+    <app-carriage
+      [carriage]="carriage"
+      [firstSeat]="currentRide.trainCarriages[$index + 1].firstSeat - 1"
+    ></app-carriage>
   }
 </div>
+<!-- TBD: implement numbers for the train structure not only category -->

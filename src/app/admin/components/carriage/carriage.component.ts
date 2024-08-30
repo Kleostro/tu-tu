@@ -22,10 +22,9 @@ export class CarriageComponent {
   public carriage = input<Carriage | null>(null);
   public isEditable = input(false);
   public isInteractive = input(true);
+  public firstSeat = input<number>(0);
   public seatsSchema = computed(() => createSeatsSchema(this.carriage()));
   public modalService = inject(ModalService);
 
   @Output() public openEditModal: EventEmitter<Carriage> = new EventEmitter<Carriage>();
-
-  // TBD: add seat start index for each carriage
 }
