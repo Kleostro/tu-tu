@@ -14,6 +14,7 @@ import { APP_PATH } from '@/app/shared/constants/routes';
 import { PASSWORD_MIN_LENGTH } from '@/app/shared/validators/constants/constants';
 
 import { passwordMatchValidator } from '../../../shared/validators/validators';
+import { SetBtnIconsPipe } from '../../pipes/set-btn-icons.pipe';
 import { AuthService } from '../../services/auth-service/auth.service';
 
 export interface RegisterForm {
@@ -34,6 +35,7 @@ export interface RegisterForm {
     MessageModule,
     PasswordModule,
     RouterLink,
+    SetBtnIconsPipe,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
@@ -59,6 +61,7 @@ export class RegisterComponent {
   public signInPath = `/${APP_PATH.SIGN_IN.toLowerCase()}`;
 
   constructor() {
+    this.authService.signUpBtnState$$.set('init');
     effect(() => {
       if (!this.authService.isRegistrationSuccess$$()) {
         this.registrationForm.setErrors({ [this.authService.errorMessage$$()]: true });

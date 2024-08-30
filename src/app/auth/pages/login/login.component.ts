@@ -12,12 +12,21 @@ import { APP_PATH } from '@/app/shared/constants/routes';
 import { PASSWORD_MIN_LENGTH, REGEX } from '@/app/shared/validators/constants/constants';
 import { minTrimmedLengthValidator } from '@/app/shared/validators/validators';
 
+import { SetBtnIconsPipe } from '../../pipes/set-btn-icons.pipe';
 import { AuthService } from '../../services/auth-service/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, PasswordModule, RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    ButtonModule,
+    PasswordModule,
+    RouterLink,
+    SetBtnIconsPipe,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
