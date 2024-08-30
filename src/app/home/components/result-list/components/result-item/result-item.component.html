@@ -25,7 +25,7 @@
       <div class="carriage-info">
         <div class="carriage-type">{{ carriage.type }}</div>
         <div class="carriage-free-seats">{{ carriage.freeSeats }} free seats</div>
-        <div class="carriage-price">{{ carriage.price | currency: 'USD' }}</div>
+        <div class="carriage-price">{{ carriage.price | currency: 'USD' : 'symbol' : '1.0-0' }}</div>
       </div>
     } @empty {
       <div class="no-carriage-info">Sold out</div>

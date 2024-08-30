@@ -18,7 +18,7 @@
         Carriage type: <b>{{ carriageName }}</b>
       </div>
       <div class="price">
-        Price: <b>{{ currentPrice | currency: 'USD' }}</b>
+        Price: <b>{{ currentPrice | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
       </div>
       <span>Order ID: {{ order.id }}</span>
       @if (user) {

@@ -82,7 +82,7 @@ export class CreateRideFormComponent implements OnInit, OnDestroy {
 
   public addCarriageTypesGroup(): CarriageTypesFGType {
     const controls = this.carriageTypes()!.map(() =>
-      this.fb.nonNullable.control(0, [Validators.required.bind(this), Validators.min(0.01)]),
+      this.fb.nonNullable.control(1, [Validators.required.bind(this), Validators.min(1)]),
     );
     const carriageTypesGroup = this.fb.nonNullable.group(
       this.carriageTypes()!.reduce((acc: CarriageTypeControls, carriageType, i) => {
