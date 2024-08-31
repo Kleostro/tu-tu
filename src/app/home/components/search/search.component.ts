@@ -118,7 +118,7 @@ export class SearchComponent implements OnInit {
           toLatitude: endCityData.latitude,
           fromLongitude: startCityData.longitude,
           toLongitude: endCityData.longitude,
-          time: this.tripForm.value.tripDate!,
+          time: new Date(this.tripForm.value.tripDate!).getTime(),
         };
         this.filterService.startSearch(searchPrms);
       } else {

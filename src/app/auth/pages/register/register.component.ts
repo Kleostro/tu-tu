@@ -72,7 +72,7 @@ export class RegisterComponent {
 
   public submitForm(): void {
     if (this.registrationForm.valid) {
-      this.authService.isRegistrationSuccess$$.set(null)
+      this.authService.isRegistrationSuccess$$.set(null);
       this.authService.registerUser(this.userData);
     } else {
       Object.values(this.registrationForm.controls).forEach((control) => {

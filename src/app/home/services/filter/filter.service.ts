@@ -26,11 +26,8 @@ export class FilterService implements OnDestroy {
   public startSearch(searchPrms: SearchParams): void {
     this.isSearchLoading$$.set(true);
     const targetDate = new Date(searchPrms.time!).toISOString();
-    const modifiedSearchPrms = {
-      ...searchPrms,
-      time: targetDate,
-    };
-    this.subscription = this.searchService.search(modifiedSearchPrms).subscribe({
+
+    this.subscription = this.searchService.search(searchPrms).subscribe({
       next: (res) => {
         const tripIds = {
           from: res.from.stationId,
@@ -69,32 +66,33 @@ export class FilterService implements OnDestroy {
         const filteredSchedule = [];
         const { segments, rideId } = schedule[ride];
         const targetSegment = segments[fromStationIdIndex];
-        const nextDay = new Date(targetDate);
-        nextDay.setDate(nextDay.getDate() + 1);
-        nextDay.setHours(0, 0, 0, 0);
-        if (targetSegment.time[0] > targetDate && new Date(targetDate).getTime() < nextDay.getTime()) {
-          const departureDate = this.formatDate(new Date(targetSegment.time[0]));
-          filteredSchedule.push({
-            rideId,
-            segments: segments.map((currSegment) => {
-              const departureLocalDate = new Date(currSegment.time[0]).toString();
-              const arrivalLocalDate = new Date(currSegment.time[1]).toString();
-              return {
-                ...currSegment,
-                time: [departureLocalDate, arrivalLocalDate],
-              };
-            }),
-          });
-          if (!groupedRoutes[departureDate]) {
-            groupedRoutes[departureDate] = [];
-          }
-          groupedRoutes[departureDate].push({
-            routeId,
-            schedule: filteredSchedule,
-            path,
-            carriages,
-          });
+        // NOTE: This code is temporarily commented out and will be removed soon
+        // const nextDay = new Date(targetDate);
+        // nextDay.setDate(nextDay.getDate() + 1);
+        // nextDay.setHours(0, 0, 0, 0);
+        // if (targetSegment.time[0] > targetDate && new Date(targetDate).getTime() < nextDay.getTime()) {
+        const departureDate = this.formatDate(new Date(targetSegment.time[0]));
+        filteredSchedule.push({
+          rideId,
+          segments: segments.map((currSegment) => {
+            const departureLocalDate = new Date(currSegment.time[0]).toString();
+            const arrivalLocalDate = new Date(currSegment.time[1]).toString();
+            return {
+              ...currSegment,
+              time: [departureLocalDate, arrivalLocalDate],
+            };
+          }),
+        });
+        if (!groupedRoutes[departureDate]) {
+          groupedRoutes[departureDate] = [];
         }
+        groupedRoutes[departureDate].push({
+          routeId,
+          schedule: filteredSchedule,
+          path,
+          carriages,
+        });
+        // }
       }
     }
     return this.generateMissingKeyDates(this.filterRoutesByKeyDate(groupedRoutes), targetDate);
