@@ -29,5 +29,5 @@ export interface OrderRequest {
 }
 
 export interface OrderId {
-  id: string;
+  id: number;
 }

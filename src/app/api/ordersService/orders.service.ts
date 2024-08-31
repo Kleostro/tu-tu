@@ -33,7 +33,7 @@ export class OrdersService {
     );
   }
 
-  public makeOrder(order: OrderRequest): Observable<OrderId> {
+  public createOrder(order: OrderRequest): Observable<OrderId> {
     return this.httpClient.post<OrderId>(ENDPOINTS.ORDER, order);
   }
 

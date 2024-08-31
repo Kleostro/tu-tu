@@ -88,7 +88,7 @@
           severity="danger"
           (onClick)="seatService.selectedSeat$$.set(null)"
         ></p-button>
-        <p-button label="Book a seat" class="book-button"></p-button>
+        <p-button label="Book a seat" class="book-button" (click)="bookSeat()"></p-button>
       </p-fieldset>
     }
   }

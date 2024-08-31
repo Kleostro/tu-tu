@@ -134,4 +134,8 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.seatService.setDefaultValues();
   }
+
+  public bookSeat(): void {
+    this.seatService.bookSelectedSeat(this.tripItem!);
+  }
 }
