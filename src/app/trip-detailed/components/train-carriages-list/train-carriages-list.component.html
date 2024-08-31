@@ -9,6 +9,7 @@
         [carriage]="carriage"
         [firstSeat]="currentRide.trainCarriages[$index + 1].firstSeat - 1"
         [freeSeats]="currentRide.trainCarriages[$index + 1].freeSeats"
+        [occupiedSeats]="currentRide.trainCarriages[$index + 1].occupiedSeats"
       ></app-carriage>
     }
   }
