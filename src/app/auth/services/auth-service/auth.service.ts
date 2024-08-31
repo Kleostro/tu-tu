@@ -33,7 +33,7 @@ export class AuthService implements OnDestroy {
   public isSignInLoading$$ = signal(false);
   public isSignUpLoading$$ = signal(false);
 
-  public isRegistrationSuccess$$ = signal(false);
+  public isRegistrationSuccess$$ = signal<boolean | null>(null);
   public errorMessage$$ = signal<string>('');
   public isLoggedIn$$ = signal(this.localStorageService.getValueByKey(STORE_KEYS.TOKEN) !== null);
   public isAdmin$$ = signal(this.localStorageService.getValueByKey(STORE_KEYS.EMAIL) === ADMIN_CREDENTIALS.email);

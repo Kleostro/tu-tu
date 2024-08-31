@@ -61,9 +61,10 @@ export class RegisterComponent {
   constructor() {
     this.authService.isSignUpLoading$$.set(false);
     effect(() => {
-      if (!this.authService.isRegistrationSuccess$$()) {
+      const isSuccess = this.authService.isRegistrationSuccess$$();
+      if (isSuccess === false) {
         this.registrationForm.setErrors({ [this.authService.errorMessage$$()]: true });
-      } else {
+      } else if (isSuccess === true) {
         this.registrationForm.reset();
       }
     });
@@ -71,6 +72,7 @@ export class RegisterComponent {
 
   public submitForm(): void {
     if (this.registrationForm.valid) {
+      this.authService.isRegistrationSuccess$$.set(null)
       this.authService.registerUser(this.userData);
     } else {
       Object.values(this.registrationForm.controls).forEach((control) => {
