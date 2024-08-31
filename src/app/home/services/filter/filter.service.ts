@@ -19,10 +19,12 @@ export class FilterService implements OnDestroy {
   private userMessageServise = inject(UserMessageService);
   public availableRoutesGroup$$ = signal<GroupedRoutes>({});
   public tripPoints$$ = signal<TripPoints | null>(null);
+  public isSearchLoading$$ = signal(false);
 
   private subscription: Subscription | null = null;
 
   public startSearch(searchPrms: SearchParams): void {
+    this.isSearchLoading$$.set(true);
     const targetDate = new Date(searchPrms.time!).toISOString();
     const modifiedSearchPrms = {
       ...searchPrms,
@@ -41,9 +43,11 @@ export class FilterService implements OnDestroy {
           date: targetDate,
         });
         this.setCurrentRides(targetDate);
+        this.isSearchLoading$$.set(false);
       },
       error: (err: OverriddenHttpErrorResponse) => {
         this.userMessageServise.showErrorMessage(err.error.message);
+        this.isSearchLoading$$.set(false);
       },
     });
   }

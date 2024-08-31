@@ -15,6 +15,15 @@
   }
 }
 
+::ng-deep .p-button {
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .p-button .p-button-label {
+  flex: none;
+}
+
 @media screen and (width <= 1024px) {
   .search-container {
     max-width: $offset-xxxl * 9;

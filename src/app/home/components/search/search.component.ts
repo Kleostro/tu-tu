@@ -43,7 +43,7 @@ import { FilterComponent } from '../filter/filter.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit {
-  private filterService = inject(FilterService);
+  public filterService = inject(FilterService);
   private citiesService = inject(CitiesService);
   private stationsService = inject(StationsService);
   private fb = inject(FormBuilder);
