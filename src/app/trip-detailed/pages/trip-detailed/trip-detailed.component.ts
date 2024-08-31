@@ -1,10 +1,12 @@
-import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
 import { ButtonModule } from 'primeng/button';
+import { FieldsetModule } from 'primeng/fieldset';
 import { RippleModule } from 'primeng/ripple';
 import { TabViewChangeEvent, TabViewModule } from 'primeng/tabview';
 
+import { SeatService } from '@/app/admin/services/seat/seat.service';
 import STORE_KEYS from '@/app/core/constants/store';
 import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
 import { RoutingService } from '@/app/core/services/routing/routing.service';
@@ -29,6 +31,8 @@ import { isCurrentRide } from './helpers/helper';
     CurrencyPipe,
     RippleModule,
     TabViewModule,
+    FieldsetModule,
+    DatePipe,
     TripTimelineComponent,
     TripDetailsComponent,
     TrainCarriagesListComponent,
@@ -37,12 +41,14 @@ import { isCurrentRide } from './helpers/helper';
   styleUrl: './trip-detailed.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TripDetailedComponent implements OnInit {
+export class TripDetailedComponent implements OnInit, OnDestroy {
   private resultListService = inject(ResultListService);
   private routingService = inject(RoutingService);
   private modalService = inject(ModalService);
   private localStorageService = inject(LocalStorageService);
   private trainCarriagesListService = inject(TrainCarriagesListService);
+
+  public seatService = inject(SeatService);
 
   public tripItem!: CurrentRide | null;
 
@@ -53,6 +59,12 @@ export class TripDetailedComponent implements OnInit {
 
     const firstCarriage = this.takeTabsCarriageType()[0].type;
     this.updateCarriagesList(firstCarriage);
+    this.setInitialPrice(firstCarriage);
+  }
+
+  private setInitialPrice(firstCarriage: string): void {
+    const firstCarriagePrice = this.getPrice(firstCarriage);
+    this.seatService.seatPrice$$.set(firstCarriagePrice);
   }
 
   public openModal(): void {
@@ -106,8 +118,10 @@ export class TripDetailedComponent implements OnInit {
     return this.tripItem?.carriageInfo.find((carriage) => carriage.type === carriageType) ?? null;
   }
 
-  public onTabChange(event: TabViewChangeEvent): void {
+  public onTabChange(event: TabViewChangeEvent, price: number): void {
     const selectedCarriageType = this.takeTabsCarriageType()[event.index];
+    this.seatService.seatPrice$$.set(price);
+    this.seatService.selectedSeat$$.set(null);
     this.updateCarriagesList(selectedCarriageType.type);
     this.trainCarriagesListService.setCurrentCarriages();
   }
@@ -115,5 +129,9 @@ export class TripDetailedComponent implements OnInit {
   private updateCarriagesList(carriageType: string): void {
     this.trainCarriagesListService.currentCarriageType$$.set(carriageType);
     this.trainCarriagesListService.currentCarriages$$.set(this.tripItem?.carriages ?? []);
+  }
+
+  public ngOnDestroy(): void {
+    this.seatService.setDefaultValues();
   }
 }

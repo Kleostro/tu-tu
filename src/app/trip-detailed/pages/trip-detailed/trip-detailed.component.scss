@@ -108,3 +108,68 @@
 }
 
 // TBD: up to here
+
+.seat-info-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  width: $offset-xxxl * 5;
+  max-height: fit-content;
+  padding: $offset-s;
+
+  background: $gray-300-tr;
+
+  // border: $three solid $gray-400;
+
+  border-radius: $border-radius-s;
+}
+
+.heading {
+  display: flex;
+  gap: $offset-xxs;
+  align-items: center;
+
+  font-size: $font-size-s;
+  color: $gray-700;
+}
+
+.material-icons {
+  color: $main-color;
+}
+
+.seat-info {
+  display: flex;
+  flex-direction: column;
+  gap: $offset-xxs;
+
+  font-size: $font-size-xs;
+  font-style: italic;
+  color: $gray-700;
+}
+
+.variable {
+  font-weight: bold;
+  color: $dark-color;
+}
+
+.close {
+  cursor: pointer;
+
+  position: absolute;
+  top: 0.5rem;
+  right: 1.8rem;
+
+  width: 2.3rem;
+  height: 2.3rem;
+
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.book-button {
+  ::ng-deep button {
+    width: 100%;
+    margin-top: $offset-s;
+  }
+}
