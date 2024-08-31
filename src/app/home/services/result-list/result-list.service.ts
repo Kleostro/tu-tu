@@ -2,16 +2,24 @@ import { inject, Injectable, signal } from '@angular/core';
 
 import { CarriageService } from '@/app/api/carriagesService/carriage.service';
 import { RouteInfo } from '@/app/api/models/schedule';
-import { Schedule, SegmentOccupiedSeats } from '@/app/api/models/search';
+import { Schedule, SegmentOccupiedSeats, SegmentPrice } from '@/app/api/models/search';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 import { calculateDuration } from '@/app/shared/utils/calculateDuration';
 
+import { CarriageCountMap } from '../../models/carriageCountMap.model';
 import { CarriageInfo } from '../../models/carriageInfo.model';
+import { CarriageNameMap } from '../../models/carriageNameMap.model';
 import { CurrentRide } from '../../models/currentRide.model';
-import { GroupedRoute, TripPoints } from '../../models/groupedRoutes';
-import { TripIndices } from '../../models/indices';
+import { FreeSeatsMap } from '../../models/freeSeatsMap.model';
+import { GroupedRoute, TripPoints } from '../../models/groupedRoutes.model';
+import { PriceMap } from '../../models/priceMap.model';
+import { RouteDates } from '../../models/routeDates.model';
 import { StationInfo } from '../../models/stationInfo.model';
-import { TrainCarriages } from '../../models/trainCarriages';
+import { TrainCarriages } from '../../models/trainCarriages.model';
+import { TripDates } from '../../models/tripDates.model';
+import { TripIds } from '../../models/tripIds.model';
+import { TripIndices } from '../../models/tripIndices.model';
+import { TripStations } from '../../models/tripStations.model';
 import { PLACEHOLDER } from './constants/constants';
 
 @Injectable({
@@ -80,48 +88,42 @@ export class ResultListService {
     };
   }
 
-  private getRouteStations(path: number[]): { start: string; end: string } {
+  private getRouteStations(path: number[]): TripStations {
     return {
       start: this.getStationCityById(path[0]),
       end: this.getStationCityById(path[path.length - 1]),
     };
   }
 
-  private getTripStations(tripPoints: TripPoints): { start: string; end: string } {
+  private getTripStations(tripPoints: TripPoints): TripStations {
     return {
       start: tripPoints.from,
       end: tripPoints.to,
     };
   }
 
-  private getTripStationIds(tripStations: { start: string; end: string }): { start: number; end: number } {
+  private getTripStationIds(tripStations: TripStations): TripIds {
     return {
       start: this.getStationIdByCity(tripStations.start),
       end: this.getStationIdByCity(tripStations.end),
     };
   }
 
-  private getRouteStationIds(path: number[]): { start: number; end: number } {
+  private getRouteStationIds(path: number[]): TripIds {
     return {
       start: path[0],
       end: path[path.length - 1],
     };
   }
 
-  private getTripStationIndices(
-    path: number[],
-    tripStationIds: { start: number; end: number },
-  ): { start: number; end: number } {
+  private getTripStationIndices(path: number[], tripStationIds: TripIds): TripIndices {
     return {
       start: path.indexOf(tripStationIds.start),
       end: path.indexOf(tripStationIds.end),
     };
   }
 
-  private getTripDates(
-    schedule: Schedule,
-    indices: { start: number; end: number },
-  ): { departure: string; arrival: string } {
+  private getTripDates(schedule: Schedule, indices: TripIndices): TripDates {
     return {
       departure: schedule.segments[indices.start].time[0],
       arrival: schedule.segments[indices.end - 1].time[1],
@@ -136,11 +138,8 @@ export class ResultListService {
     return this.stationsService.findStationByCity(city)!.id;
   }
 
-  private aggregatePrices(
-    segments: { price: { [key: string]: number } }[],
-    indices: { start: number; end: number },
-  ): { [key: string]: number } {
-    const priceMap: { [key: string]: number } = {};
+  private aggregatePrices(segments: SegmentPrice[], indices: TripIndices): PriceMap {
+    const priceMap: PriceMap = {};
     segments.slice(indices.start, indices.end).forEach((segment) => {
       Object.keys(segment.price).forEach((carriage) => {
         if (priceMap[carriage]) {
@@ -154,11 +153,7 @@ export class ResultListService {
     return priceMap;
   }
 
-  private getArrivalAndDepartureDates(
-    index: number,
-    pathsLength: number,
-    schedule: Schedule,
-  ): { arrivalDate: string; departureDate: string } {
+  private getArrivalAndDepartureDates(index: number, pathsLength: number, schedule: Schedule): RouteDates {
     let arrivalDate = '';
     let departureDate = '';
 
@@ -174,11 +169,7 @@ export class ResultListService {
     return { arrivalDate, departureDate };
   }
 
-  private createStationsInfo(
-    paths: number[],
-    schedule: Schedule,
-    indices: { start: number; end: number },
-  ): StationInfo[] {
+  private createStationsInfo(paths: number[], schedule: Schedule, indices: TripIndices): StationInfo[] {
     const pathsLength = paths.length;
     const stations = this.stationsService.allStations();
     const stationMap = new Map<number, string>();
@@ -210,8 +201,8 @@ export class ResultListService {
 
   private countTrainCarriages(
     carriages: string[],
-    segments: { occupiedSeats: number[] }[],
-    tripStationIndices: { start: number; end: number },
+    segments: SegmentOccupiedSeats[],
+    tripStationIndices: TripIndices,
   ): TrainCarriages {
     const allCarriages = this.carriagesService.allCarriages();
     const trainCarriages: TrainCarriages = {};
@@ -245,9 +236,9 @@ export class ResultListService {
     return trainCarriages;
   }
 
-  private createCarriageNameMap(carriages: string[]): { [key: string]: string } {
+  private createCarriageNameMap(carriages: string[]): CarriageNameMap {
     const allCarriages = this.carriagesService.allCarriages();
-    const carriageMap: { [key: string]: string } = {};
+    const carriageMap: CarriageNameMap = {};
 
     allCarriages.forEach(({ code, name }) => {
       carriageMap[code] = name;
@@ -283,18 +274,14 @@ export class ResultListService {
     );
   }
 
-  private createCarriageInfo(
-    carriages: string[],
-    priceMap: { [key: string]: number },
-    freeSeatsMap: { [key: string]: number },
-  ): CarriageInfo[] {
+  private createCarriageInfo(carriages: string[], priceMap: PriceMap, freeSeatsMap: FreeSeatsMap): CarriageInfo[] {
     const carriageCountMap = this.countCarriages(carriages);
     const carriageNameMap = this.createCarriageNameMap(carriages);
     return this.generateCarriageInfo(carriageNameMap, carriageCountMap, freeSeatsMap, priceMap);
   }
 
-  private countCarriages(carriages: string[]): { [key: string]: { count: number; occupiedSeats: number[] } } {
-    const carriageCountMap: { [key: string]: { count: number; occupiedSeats: number[] } } = {};
+  private countCarriages(carriages: string[]): CarriageCountMap {
+    const carriageCountMap: CarriageCountMap = {};
     carriages.forEach((carriage) => {
       if (!carriageCountMap[carriage]) {
         carriageCountMap[carriage] = { count: 0, occupiedSeats: [] };
@@ -304,8 +291,8 @@ export class ResultListService {
     return carriageCountMap;
   }
 
-  private calculateFreeSeats(trainCarriages: TrainCarriages): { [key: string]: number } {
-    const freeSeatsMap: { [key: string]: number } = {};
+  private calculateFreeSeats(trainCarriages: TrainCarriages): FreeSeatsMap {
+    const freeSeatsMap: FreeSeatsMap = {};
 
     Object.entries(trainCarriages).forEach(([, carriage]) => {
       const { freeSeats, carriageTypeCode } = carriage;
@@ -319,10 +306,10 @@ export class ResultListService {
   }
 
   private generateCarriageInfo(
-    carriageNameMap: { [key: string]: string },
-    carriageCountMap: { [key: string]: { count: number; occupiedSeats: number[] } },
-    freeSeatsMap: { [key: string]: number },
-    priceMap: { [key: string]: number },
+    carriageNameMap: CarriageNameMap,
+    carriageCountMap: CarriageCountMap,
+    freeSeatsMap: FreeSeatsMap,
+    priceMap: PriceMap,
   ): CarriageInfo[] {
     return Object.keys(carriageCountMap).map((carriage) => ({
       name: carriageNameMap[carriage],

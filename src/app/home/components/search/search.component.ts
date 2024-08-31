@@ -17,7 +17,7 @@ import { AutocompleteIconDirective } from '@/app/shared/directives/autocompleteI
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
-import { TripData } from '../../models/tripData';
+import { TripData } from '../../models/tripData.model';
 import { CitiesService } from '../../services/cities/cities.service';
 import { FilterService } from '../../services/filter/filter.service';
 import { FilterComponent } from '../filter/filter.component';

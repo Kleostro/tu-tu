@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, effect, inject, Input } from '@angu
 
 import { TabViewChangeEvent, TabViewModule } from 'primeng/tabview';
 
-import { GroupedRoutes } from '../../models/groupedRoutes';
-import { TripData } from '../../models/tripData';
+import { GroupedRoutes } from '../../models/groupedRoutes.model';
+import { TripData } from '../../models/tripData.model';
 import { FilterService } from '../../services/filter/filter.service';
 import { ResultListComponent } from '../result-list/result-list.component';
 
