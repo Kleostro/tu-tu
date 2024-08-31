@@ -71,15 +71,15 @@
       }
     }
 
-    &.occupied-seat {
-      &::before {
-        border-color: $occupied-seat-color;
-      }
-    }
-
     &.selected-seat {
       &::before {
         border-color: $selected-seat-color;
+      }
+    }
+
+    &.occupied-seat {
+      &::before {
+        border-color: $occupied-seat-color;
       }
     }
   }
@@ -122,15 +122,15 @@
       }
     }
 
-    &.occupied-seat {
-      &::before {
-        border-color: $occupied-seat-color;
-      }
-    }
-
     &.selected-seat {
       &::before {
         border-color: $selected-seat-color;
+      }
+    }
+
+    &.occupied-seat {
+      &::before {
+        border-color: $occupied-seat-color;
       }
     }
   }
@@ -139,12 +139,6 @@
 .free-seat {
   color: $white-100;
   background-color: $free-seat-color;
-}
-
-.occupied-seat {
-  pointer-events: none;
-  color: $black-100;
-  background-color: $occupied-seat-color;
 }
 
 .selected-seat {
@@ -164,4 +158,10 @@
   &:active {
     scale: 0.9;
   }
+}
+
+.occupied-seat {
+  pointer-events: none;
+  color: $black-100;
+  background-color: $occupied-seat-color;
 }

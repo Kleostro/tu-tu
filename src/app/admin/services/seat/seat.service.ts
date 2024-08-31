@@ -6,7 +6,6 @@ import { catchError, EMPTY, of } from 'rxjs';
 import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { OrdersService } from '@/app/api/ordersService/orders.service';
 import { CurrentRide } from '@/app/home/models/currentRide.model';
-import { APP_ROUTE } from '@/app/shared/constants/routes';
 import { template } from '@/app/shared/constants/string-templates';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 import { stringTemplate } from '@/app/shared/utils/string-template';
@@ -25,12 +24,14 @@ export class SeatService {
   public seatPrice$$ = signal<number | null>(null);
   public seatCarriageNumber$$ = signal<number | null>(null);
   public seatCarriageName$$ = signal<string | null>(null);
+  public bookedSeatNumber$$ = signal<number | null>(null);
 
   public setDefaultValues(): void {
     this.selectedSeat$$.set(null);
     this.seatPrice$$.set(null);
     this.seatCarriageNumber$$.set(null);
     this.seatCarriageName$$.set(null);
+    this.bookedSeatNumber$$.set(null);
   }
 
   public bookSelectedSeat(tripItem: CurrentRide): void {
@@ -53,7 +54,7 @@ export class SeatService {
         .subscribe((response) => {
           if (isOrderId(response)) {
             this.userMessageService.showSuccessMessage(stringTemplate(template.BOOKED_ORDER, { id: response.id }));
-            this.router.navigate([APP_ROUTE.ORDERS]);
+            this.bookedSeatNumber$$.set(selectedSeat);
           }
         });
     }

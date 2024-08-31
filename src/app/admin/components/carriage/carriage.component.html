@@ -36,6 +36,7 @@
                       isInteractive() ? 'interactive' : '',
                       isOccupiedSeat(seatNumber) ? 'occupied-seat' : 'free-seat',
                       seatService.selectedSeat$$() === seatNumber ? 'selected-seat' : '',
+                      seatService.bookedSeatNumber$$() === seatNumber ? 'occupied-seat' : '',
                     ]"
                     (click)="
                       seatService.selectedSeat$$.set(seatNumber);
@@ -62,6 +63,7 @@
                       isInteractive() ? 'interactive' : '',
                       isOccupiedSeat(seatNumber) ? 'occupied-seat' : 'free-seat',
                       seatService.selectedSeat$$() === seatNumber ? 'selected-seat' : '',
+                      seatService.bookedSeatNumber$$() === seatNumber ? 'occupied-seat' : '',
                     ]"
                     (click)="seatService.selectedSeat$$.set(seatNumber)"
                   ></app-seat>
