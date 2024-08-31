@@ -26,6 +26,7 @@ export class CarriageComponent {
   public firstSeat = input<number>(0);
   public freeSeats = input<number | null>(null);
   public occupiedSeats = input<number[]>([]);
+  public carriageNumber = input<number | null>(null);
 
   public seatsSchema = computed(() => createSeatsSchema(this.carriage()));
 

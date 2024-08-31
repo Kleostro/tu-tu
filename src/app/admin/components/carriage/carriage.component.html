@@ -37,7 +37,11 @@
                       isOccupiedSeat(seatNumber) ? 'occupied-seat' : 'free-seat',
                       seatService.selectedSeat$$() === seatNumber ? 'selected-seat' : '',
                     ]"
-                    (click)="seatService.selectedSeat$$.set(seatNumber)"
+                    (click)="
+                      seatService.selectedSeat$$.set(seatNumber);
+                      seatService.seatCarriageName$$.set(carriage.name);
+                      seatService.seatCarriageNumber$$.set(carriageNumber())
+                    "
                   ></app-seat>
                 }
               </div>
