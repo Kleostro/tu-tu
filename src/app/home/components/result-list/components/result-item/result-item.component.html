@@ -20,10 +20,10 @@
     </div>
   </div>
   <div class="carriages-info">
-    @let carriageInfo = resultItem.carriageInfo;
-    @for (carriage of carriageInfo; track carriage.type) {
+    @let sortedCarriageInfo = getSortedCarriageInfo();
+    @for (carriage of sortedCarriageInfo; track carriage.type) {
       <div class="carriage-info">
-        <div class="carriage-type">{{ carriage.type }}</div>
+        <div class="carriage-type">{{ carriage.name }}</div>
         <div class="carriage-free-seats">{{ carriage.freeSeats }} free seats</div>
         <div class="carriage-price">{{ carriage.price | currency: 'USD' : 'symbol' : '1.0-0' }}</div>
       </div>

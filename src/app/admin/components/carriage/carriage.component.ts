@@ -22,6 +22,8 @@ export class CarriageComponent {
   public carriage = input<Carriage | null>(null);
   public isEditable = input(false);
   public isInteractive = input(true);
+  public firstSeat = input<number>(0);
+  public freeSeats = input<number | null>(null);
   public seatsSchema = computed(() => createSeatsSchema(this.carriage()));
   public modalService = inject(ModalService);
 

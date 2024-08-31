@@ -16,6 +16,31 @@
         <i class="material-icons">route</i>
       </p-button>
     </div>
+
+    <p-tabView [scrollable]="true" (onChange)="onTabChange($event)">
+      @for (tab of takeTabsCarriageType(); track $index) {
+        <p-tabPanel>
+          <ng-template pTemplate="header">
+            <div class="tab-container">
+              <div class="tab-title-carriage-type">
+                {{ tab.name }}
+              </div>
+              <div class="tab-title-price">
+                {{ getPrice(tab.type) | currency: 'USD' : 'symbol' : '1.0-0' }}
+              </div>
+
+              @let seatsNumber = getFreeSeatsNumber(tab.type);
+              @if (!seatsNumber) {
+                <div class="seat-count">(no seats)</div>
+              } @else {
+                <div class="seat-count">({{ seatsNumber }} {{ seatsNumber === 1 ? 'seat' : 'seats' }})</div>
+              }
+            </div>
+          </ng-template>
+          <app-train-carriages-list></app-train-carriages-list>
+        </p-tabPanel>
+      }
+    </p-tabView>
   }
 </div>
 

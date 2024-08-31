@@ -3,6 +3,7 @@ const STORE_KEYS = {
   TOKEN: 'token',
   EMAIL: 'email',
   NAME: 'name',
+  CURRENT_RIDE: 'current_ride',
 } as const;
 
 export default STORE_KEYS;
