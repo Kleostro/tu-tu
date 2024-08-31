@@ -2,13 +2,14 @@ import { inject, Injectable, signal } from '@angular/core';
 
 import { CarriageService } from '@/app/api/carriagesService/carriage.service';
 import { RouteInfo } from '@/app/api/models/schedule';
-import { Schedule } from '@/app/api/models/search';
+import { Schedule, SegmentOccupiedSeats } from '@/app/api/models/search';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 import { calculateDuration } from '@/app/shared/utils/calculateDuration';
 
 import { CarriageInfo } from '../../models/carriageInfo.model';
 import { CurrentRide } from '../../models/currentRide.model';
 import { GroupedRoute, TripPoints } from '../../models/groupedRoutes';
+import { TripIndices } from '../../models/indices';
 import { StationInfo } from '../../models/stationInfo.model';
 import { TrainCarriages } from '../../models/trainCarriages';
 import { PLACEHOLDER } from './constants/constants';
@@ -267,20 +268,19 @@ export class ResultListService {
   }
 
   private findOccupiedSeats(
-    segments: { occupiedSeats: number[] }[],
-    tripStationIndices: { start: number; end: number },
+    segments: SegmentOccupiedSeats[],
+    tripStationIndices: TripIndices,
     firstSeat: number,
     lastSeat: number,
   ): number[] {
-    const occupiedSeats: number[] = [];
-    segments.slice(tripStationIndices.start, tripStationIndices.end).forEach((segment) => {
-      segment.occupiedSeats.forEach((seat) => {
-        if (seat >= firstSeat && seat <= lastSeat) {
-          occupiedSeats.push(seat);
-        }
-      });
-    });
-    return occupiedSeats;
+    return Array.from(
+      new Set(
+        segments
+          .slice(tripStationIndices.start, tripStationIndices.end)
+          .flatMap((segment) => segment.occupiedSeats)
+          .filter((seat) => seat >= firstSeat && seat <= lastSeat),
+      ),
+    );
   }
 
   private createCarriageInfo(
