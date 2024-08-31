@@ -7,6 +7,7 @@ import { RippleModule } from 'primeng/ripple';
 import { TabViewChangeEvent, TabViewModule } from 'primeng/tabview';
 
 import { SeatService } from '@/app/admin/services/seat/seat.service';
+import { AuthService } from '@/app/auth/services/auth-service/auth.service';
 import STORE_KEYS from '@/app/core/constants/store';
 import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
 import { RoutingService } from '@/app/core/services/routing/routing.service';
@@ -17,6 +18,7 @@ import { template } from '@/app/shared/constants/string-templates';
 import { ModalService } from '@/app/shared/services/modal/modal.service';
 import { stringTemplate } from '@/app/shared/utils/string-template';
 
+import { LoginFormComponent } from '../../../auth/components/login-form/login-form.component';
 import { TripDetailsComponent } from '../../../home/components/trip-details/trip-details.component';
 import { TripTimelineComponent } from '../../../home/components/trip-timeline/trip-timeline.component';
 import { TrainCarriagesListComponent } from '../../components/train-carriages-list/train-carriages-list.component';
@@ -36,6 +38,7 @@ import { isCurrentRide } from './helpers/helper';
     TripTimelineComponent,
     TripDetailsComponent,
     TrainCarriagesListComponent,
+    LoginFormComponent,
   ],
   templateUrl: './trip-detailed.component.html',
   styleUrl: './trip-detailed.component.scss',
@@ -47,12 +50,14 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
   private localStorageService = inject(LocalStorageService);
   private trainCarriagesListService = inject(TrainCarriagesListService);
+  private authService = inject(AuthService);
 
   public seatService = inject(SeatService);
 
   public tripItem!: CurrentRide | null;
 
-  @ViewChild('modalContent') public modalContent!: TemplateRef<unknown>;
+  @ViewChild('tripModalContent') public tripModalContent!: TemplateRef<unknown>;
+  @ViewChild('loginModalContent') public loginModalContent!: TemplateRef<unknown>;
 
   public ngOnInit(): void {
     this.tripItem = this.findRideById() ?? this.getCurrentRideFromLocalStorage();
@@ -70,7 +75,7 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
   public openModal(): void {
     if (this.tripItem) {
       this.modalService.openModal(
-        this.modalContent,
+        this.tripModalContent,
         stringTemplate(template.ROUTE_TITLE, { id: this.tripItem.routeId }),
       );
     }
@@ -136,6 +141,10 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
   }
 
   public bookSeat(): void {
-    this.seatService.bookSelectedSeat(this.tripItem!);
+    if (this.authService.isLoggedIn$$()) {
+      this.seatService.bookSelectedSeat(this.tripItem!);
+    } else {
+      this.modalService.openModal(this.loginModalContent);
+    }
   }
 }

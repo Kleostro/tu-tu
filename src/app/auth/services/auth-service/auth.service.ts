@@ -11,8 +11,10 @@ import { User } from '@/app/api/models/user';
 import { SignInService } from '@/app/api/signInService/sign-in.service';
 import STORE_KEYS from '@/app/core/constants/store';
 import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
+import { RoutingService } from '@/app/core/services/routing/routing.service';
 import { PersonalInfoService } from '@/app/profile/services/personalInfo/personal-info.service';
 import { APP_PATH, APP_ROUTE } from '@/app/shared/constants/routes';
+import { ModalService } from '@/app/shared/services/modal/modal.service';
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
@@ -27,8 +29,10 @@ export class AuthService implements OnDestroy {
   private signInService = inject(SignInService);
   private personalInfoService = inject(PersonalInfoService);
   private router = inject(Router);
+  private routingService = inject(RoutingService);
   private userMessageService = inject(UserMessageService);
   private localStorageService = inject(LocalStorageService);
+  private modalService = inject(ModalService);
 
   public isRegistrationSuccess$$ = signal(false);
   public errorMessage$$ = signal<string>('');
@@ -60,7 +64,11 @@ export class AuthService implements OnDestroy {
       this.setLoginSignals(userData);
       this.personalInfoService.setUserInfo(email);
       this.localStorageService.saveCurrentUser(email, data.token);
-      this.router.navigate([APP_PATH.DEFAULT]);
+      if (!this.routingService.isDetailedPage$$()) {
+        this.router.navigate([APP_PATH.DEFAULT]);
+      } else {
+        this.modalService.closeModal();
+      }
       this.userMessageService.showSuccessMessage(USER_MESSAGE.LOGIN_SUCCESSFUL);
     } catch (err: unknown) {
       if (isOverriddenHttpErrorResponse(err)) {
