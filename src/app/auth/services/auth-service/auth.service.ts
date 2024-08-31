@@ -30,8 +30,9 @@ export class AuthService implements OnDestroy {
   private userMessageService = inject(UserMessageService);
   private localStorageService = inject(LocalStorageService);
 
-  public signInBtnState$$ = signal('init');
-  public signUpBtnState$$ = signal('init');
+  public isSignInLoading$$ = signal(false);
+  public isSignUpLoading$$ = signal(false);
+
   public isRegistrationSuccess$$ = signal(false);
   public errorMessage$$ = signal<string>('');
   public isLoggedIn$$ = signal(this.localStorageService.getValueByKey(STORE_KEYS.TOKEN) !== null);
@@ -40,26 +41,26 @@ export class AuthService implements OnDestroy {
   private subscription: Subscription | null = null;
 
   public registerUser(user: User): void {
-    this.signUpBtnState$$.set('load');
+    this.isSignUpLoading$$.set(true);
     this.subscription = this.signUpService.signUp(user).subscribe({
       next: () => {
         this.isRegistrationSuccess$$.set(true);
         this.errorMessage$$.set('');
         this.router.navigate([APP_ROUTE.SIGN_IN]);
         this.userMessageService.showSuccessMessage(USER_MESSAGE.REGISTRATION_SUCCESSFUL);
-        this.signUpBtnState$$.set('success');
+        this.isSignUpLoading$$.set(false);
       },
       error: (err: OverriddenHttpErrorResponse) => {
         this.isRegistrationSuccess$$.set(false);
         this.errorMessage$$.set(err.error.reason);
         this.userMessageService.showErrorMessage(USER_MESSAGE.REGISTRATION_ERROR);
-        this.signUpBtnState$$.set('init');
+        this.isSignUpLoading$$.set(false);
       },
     });
   }
 
   public async loginUser(userData: User, loginForm: FormGroup): Promise<void> {
-    this.signInBtnState$$.set('load');
+    this.isSignInLoading$$.set(true);
     try {
       const data: SignInResponse = await firstValueFrom(this.signInService.signIn(userData));
       const { email } = userData;
@@ -68,13 +69,13 @@ export class AuthService implements OnDestroy {
       this.localStorageService.saveCurrentUser(email, data.token);
       this.router.navigate([APP_PATH.DEFAULT]);
       this.userMessageService.showSuccessMessage(USER_MESSAGE.LOGIN_SUCCESSFUL);
-      this.signInBtnState$$.set('success');
+      this.isSignInLoading$$.set(false);
     } catch (err: unknown) {
       if (isOverriddenHttpErrorResponse(err)) {
         loginForm.setErrors({ [err.error.reason]: true });
       }
       this.userMessageService.showErrorMessage(USER_MESSAGE.LOGIN_ERROR);
-      this.signInBtnState$$.set('init');
+      this.isSignInLoading$$.set(false);
     }
   }
 
@@ -86,7 +87,7 @@ export class AuthService implements OnDestroy {
   }
 
   public setLogoutSignals(): void {
-    this.signInBtnState$$.set('init');
+    this.isSignInLoading$$.set(false);
     this.isLoggedIn$$.set(false);
     this.isAdmin$$.set(false);
   }

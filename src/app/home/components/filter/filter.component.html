@@ -1,7 +1,6 @@
 <div class="filter-container">
   @let tripPoints = filterService.tripPoints$$();
-  @let tabsNumber = takeTabsDates().length;
-  @if (tripPoints && tabsNumber) {
+  @if (tripPoints) {
     <strong class="from-to-title"> From: {{ tripPoints.from }} - To: {{ tripPoints.to }} </strong>
     <p-tabView [scrollable]="true" (onChange)="onTabChange($event)" [(activeIndex)]="activeIndex">
       @for (tab of takeTabsDates(); track $index) {
@@ -26,6 +25,8 @@
           <strong>{{ tab | date: 'MMMM d EEEE' }}</strong>
           <app-result-list></app-result-list>
         </p-tabPanel>
+      } @empty {
+        <div class="no-trips-title">Unfortunately, no rides were found for your search.</div>
       }
     </p-tabView>
   }

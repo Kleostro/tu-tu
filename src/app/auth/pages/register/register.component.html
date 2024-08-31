@@ -81,9 +81,9 @@
       <p-button
         type="submit"
         label="Register"
-        [disabled]="!registrationForm.valid"
+        [disabled]="!registrationForm.valid || authService.isSignUpLoading$$()"
         class="p-mt-2"
-        [icon]="authService.signUpBtnState$$() | setBtnIcons: true"
+        [icon]="authService.isSignUpLoading$$() ? 'pi pi-spin pi-spinner' : 'pi pi-user-plus'"
       ></p-button>
       <p-link pButton routerLink="{{ signInPath }}" label="Sign In" class="p-button-text p-mt-2"></p-link>
     </div>

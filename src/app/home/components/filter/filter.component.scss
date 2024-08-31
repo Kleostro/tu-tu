@@ -29,6 +29,13 @@
   color: $gray-700;
 }
 
+.no-trips-title {
+  text-align: center;
+  font-size: $font-size-ms;
+  font-style: italic;
+  color: $gray-500;
+}
+
 ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
   &:hover {
     background-color: $gray-100;
