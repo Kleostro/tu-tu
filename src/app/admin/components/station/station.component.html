@@ -1,16 +1,24 @@
 <div class="wrapper">
   <div class="info">
-    <h2>{{ station.city }}</h2>
-    <p>Latitude: {{ station.latitude }}</p>
-    <p>Longitude: {{ station.longitude }}</p>
-    <p>Connections: {{ station.connectedTo.length }}</p>
-    <div class="connections">
-      @for (connection of station.connectedTo; track connection.id; let i = $index) {
-        @if (stationsService.findStationById(connection.id); as connection) {
-          <span> {{ i < station.connectedTo.length - 1 ? connection.city + ', ' : connection.city }} </span>
-        }
-      }
-    </div>
+    <h2>{{ station.city[0].toUpperCase() + station.city.slice(1) }}</h2>
+    <p-accordion [multiple]="true">
+      <p-accordionTab header="Coordinates">
+        <p>Latitude: {{ station.latitude }}</p>
+        <p>Longitude: {{ station.longitude }}</p>
+      </p-accordionTab>
+      <p-accordionTab
+        [disabled]="!station.connectedTo.length"
+        [header]="station.connectedTo.length ? 'Connections: ' + station.connectedTo.length : 'No connections'"
+      >
+        <div class="connections">
+          @for (connection of station.connectedTo; track connection.id; let i = $index) {
+            @if (stationsService.findStationById(connection.id); as connection) {
+              <span> {{ i < station.connectedTo.length - 1 ? connection.city + ', ' : connection.city }} </span>
+            }
+          }
+        </div>
+      </p-accordionTab>
+    </p-accordion>
   </div>
   <button
     class="p-button-danger delete"

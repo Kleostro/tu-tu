@@ -17,6 +17,7 @@ export const USER_MESSAGE = {
   PASSWORD_CHANGED_SUCCESSFULLY: 'Password changed successfully!',
   PASSWORD_CHANGED_ERROR: "We couldn't change your password. Please try again.",
   ROUTE_DELETED_SUCCESSFULLY: 'Route deleted successfully!',
+  ROUTE_DELETED_ERROR: 'Route is already used!',
   ROUTE_UPDATED_SUCCESSFULLY: 'Route updated successfully!',
   ROUTE_UPDATED_ERROR: "We couldn't update your route. Please try again.",
   ROUTE_CREATED_SUCCESSFULLY: 'Route created successfully!',

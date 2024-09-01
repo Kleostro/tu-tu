@@ -58,14 +58,22 @@ export class RoutesListComponent implements OnDestroy {
   public deleteRoute(): void {
     this.isRouteDeleted.set(true);
     this.subscription.add(
-      this.routeService.deleteRoute(this.deletionRouteId()).subscribe(() =>
-        this.routeService.getAllRoutes().subscribe(() => {
+      this.routeService.deleteRoute(this.deletionRouteId()).subscribe({
+        next: () => {
+          this.routeService.getAllRoutes().subscribe(() => {
+            this.isRouteDeleted.set(false);
+            this.deletionRouteId.set(NaN);
+            this.modalService.closeModal();
+            this.userMessageService.showSuccessMessage(USER_MESSAGE.ROUTE_DELETED_SUCCESSFULLY);
+          });
+        },
+        error: () => {
           this.isRouteDeleted.set(false);
           this.deletionRouteId.set(NaN);
           this.modalService.closeModal();
-          this.userMessageService.showSuccessMessage(USER_MESSAGE.ROUTE_DELETED_SUCCESSFULLY);
-        }),
-      ),
+          this.userMessageService.showErrorMessage(USER_MESSAGE.ROUTE_DELETED_ERROR);
+        },
+      }),
     );
   }
 

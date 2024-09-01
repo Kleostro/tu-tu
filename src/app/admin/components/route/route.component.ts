@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 
@@ -11,7 +12,7 @@ import { StationsService } from '@/app/api/stationsService/stations.service';
 @Component({
   selector: 'app-route',
   standalone: true,
-  imports: [ButtonModule, RippleModule, RouterLink],
+  imports: [ButtonModule, RippleModule, RouterLink, AccordionModule],
   templateUrl: './route.component.html',
   styleUrl: './route.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

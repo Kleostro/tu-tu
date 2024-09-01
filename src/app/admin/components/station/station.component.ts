@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnDestroy, signal } from '@angular/core';
 
+import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { Subscription } from 'rxjs';
@@ -14,7 +15,7 @@ import { MapService } from '../../services/map/map.service';
 @Component({
   selector: 'app-station',
   standalone: true,
-  imports: [ButtonModule, RippleModule],
+  imports: [ButtonModule, RippleModule, AccordionModule],
   templateUrl: './station.component.html',
   styleUrl: './station.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
