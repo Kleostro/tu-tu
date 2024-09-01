@@ -13,9 +13,7 @@
   backdrop-filter: blur(2px);
 
   transition:
-    opacity 0.3s,
-    visibility 0.3s,
-    backdrop-filter 0.3s,
+    all 0.3s,
     -webkit-backdrop-filter 0.3s;
 }
 
@@ -26,8 +24,9 @@
 
 .modal-dialog {
   cursor: auto;
+  position: absolute;
   overflow-y: scroll;
-  margin: 0 auto;
+  transition: all 0.3s;
 }
 
 .modal-content {

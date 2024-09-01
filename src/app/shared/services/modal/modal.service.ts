@@ -1,5 +1,8 @@
 import { Injectable, signal, TemplateRef } from '@angular/core';
 
+import POSITION_DIRECTION from '../../directives/position/constants/position.constants';
+import ModalPositionType from '../../directives/position/models/position.model';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -8,7 +11,7 @@ export class ModalService {
   public content$$ = signal<TemplateRef<unknown> | null>(null);
   public modalTitle$$ = signal('');
   public contentWidth$$ = signal('80%');
-  public offsetTop$$ = signal('1rem');
+  public position$$ = signal<ModalPositionType>(POSITION_DIRECTION.CENTER);
 
   public openModal(content: TemplateRef<unknown>, title = ''): void {
     this.content$$.set(content);
@@ -22,7 +25,7 @@ export class ModalService {
     this.modalTitle$$.set('');
     this.isModalShow$$.set(false);
     this.contentWidth$$.set('80%');
-    this.offsetTop$$.set('1rem');
+    this.position$$.set(POSITION_DIRECTION.CENTER);
     document.body.style.overflowY = '';
   }
 }

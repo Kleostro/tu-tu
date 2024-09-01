@@ -24,8 +24,8 @@
       </div>
     </div>
     <div class="bottom">
-      @if (route.path.length; as length) {
-        <p-accordion [multiple]="true">
+      <p-accordion [multiple]="true">
+        @if (route.path.length; as length) {
           <p-accordionTab header="Cities">
             <p>
               @for (path of route.path; let i = $index; track i) {
@@ -39,10 +39,12 @@
               }
             </p>
           </p-accordionTab>
+        }
+        @if (route.carriages.length; as length) {
           <p-accordionTab header="Carriage Types">
             <p>
               @for (carriage of route.carriages; let i = $index; track i) {
-                @if (i < route.carriages.length - 1) {
+                @if (i < length - 1) {
                   {{ carriage }} -
                 } @else {
                   {{ carriage }}
@@ -50,8 +52,8 @@
               }
             </p>
           </p-accordionTab>
-        </p-accordion>
-      }
+        }
+      </p-accordion>
     </div>
   </div>
 }

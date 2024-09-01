@@ -20,6 +20,7 @@ import { Subscription } from 'rxjs';
 import { RouteResponse } from '@/app/api/models/route';
 import { Station } from '@/app/api/models/stations';
 import { RouteService } from '@/app/api/routeService/route.service';
+import POSITION_DIRECTION from '@/app/shared/directives/position/constants/position.constants';
 import { ModalService } from '@/app/shared/services/modal/modal.service';
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
@@ -52,6 +53,7 @@ export class RoutesListComponent implements OnDestroy {
   public handleOpenDeleteConfirm(id: number): void {
     this.deletionRouteId.set(id);
     this.modalService.contentWidth$$.set('40%');
+    this.modalService.position$$.set(POSITION_DIRECTION.CENTER_TOP);
     this.modalService.openModal(this.deleteRouteConfirm, `Delete route ${id}?`);
   }
 
