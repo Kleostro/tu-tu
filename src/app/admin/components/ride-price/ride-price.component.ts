@@ -34,7 +34,7 @@ export class RidePriceComponent implements OnInit {
     this.priceList()?.forEach((price) => {
       this.priceForm.controls.priceList.push(
         this.fb.nonNullable.group({
-          price: [price.price, [Validators.required.bind(this), Validators.min(0.01)]],
+          price: [price.price, [Validators.required.bind(this), Validators.min(1)]],
         }),
       );
     });

@@ -21,7 +21,9 @@
 
   transition:
     filter 0.1s ease-in,
-    scale 0.1s ease-in;
+    scale 0.1s ease-in,
+    background-color 0.1s ease-in,
+    border-color 0.1s ease-in;
 
   &::before {
     content: '';
@@ -30,7 +32,7 @@
 
     height: calc(100% + $offset-xxs);
 
-    border: $two solid #ddd;
+    border: $two solid $seat-border;
     border-radius: $offset-xxs;
   }
 }
@@ -55,7 +57,7 @@
 
         width: calc(50% + 0.2rem);
 
-        border: $two solid #ddd;
+        border: $two solid $seat-border;
         border-right: unset;
         border-radius: $offset-xxs;
         border-top-right-radius: 0;
@@ -65,19 +67,19 @@
 
     &.free-seat {
       &::before {
-        border-color: $main-color;
+        border-color: $free-seat-color;
       }
     }
 
-    &.busy-seat {
+    &.occupied-seat {
       &::before {
-        border-color: $gray-200;
+        border-color: $occupied-seat-color;
       }
     }
 
     &.selected-seat {
       &::before {
-        border-color: #f7e40b;
+        border-color: $selected-seat-color;
       }
     }
   }
@@ -91,7 +93,7 @@
 
       width: calc(50% + 0.2rem);
 
-      border: $two solid #ddd;
+      border: $two solid $seat-border;
       border-right: unset;
       border-radius: $offset-xxs;
       border-top-right-radius: 0;
@@ -106,7 +108,7 @@
 
         width: calc(50% + 0.2rem);
 
-        border: $two solid #ddd;
+        border: $two solid $seat-border;
         border-left: unset;
         border-radius: $offset-xxs;
         border-top-left-radius: 0;
@@ -116,19 +118,19 @@
 
     &.free-seat {
       &::before {
-        border-color: $main-color;
+        border-color: $free-seat-color;
       }
     }
 
-    &.busy-seat {
+    &.occupied-seat {
       &::before {
-        border-color: $gray-200;
+        border-color: $occupied-seat-color;
       }
     }
 
     &.selected-seat {
       &::before {
-        border-color: #f7e40b;
+        border-color: $selected-seat-color;
       }
     }
   }
@@ -136,18 +138,18 @@
 
 .free-seat {
   color: $white-100;
-  background-color: $main-color;
+  background-color: $free-seat-color;
 }
 
-.busy-seat {
+.occupied-seat {
   pointer-events: none;
   color: $black-100;
-  background-color: $gray-200;
+  background-color: $occupied-seat-color;
 }
 
 .selected-seat {
   color: $black-100;
-  background-color: #f7e40b;
+  background-color: $selected-seat-color;
 }
 
 .interactive {

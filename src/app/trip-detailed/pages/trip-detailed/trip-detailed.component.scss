@@ -35,3 +35,141 @@
 .item {
   width: 50%;
 }
+
+// TBD: move to a separate TABS component ??
+// Check when the component structure is ready
+.tab-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.tab-title-carriage-type {
+  font-size: $font-size-xs;
+  color: $gray-900;
+  text-wrap: nowrap;
+}
+
+.tab-title-price {
+  font-size: $font-size-xxs;
+  color: $gray-700;
+}
+
+::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  &:hover {
+    background-color: $gray-100;
+    border-bottom-color: transparent;
+  }
+}
+
+::ng-deep .p-tabview .p-tabview-nav-btn.p-link {
+  background-color: $gray-100;
+  border: $one solid $gray-200;
+  border-radius: $border-radius-xs;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: $main-color;
+    border-color: $main-color;
+
+    & path {
+      fill: $white-100;
+    }
+  }
+}
+
+::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background-color: $gray-100;
+  border-color: $gray-200;
+  border-bottom-color: transparent;
+
+  .tab-title-month {
+    color: $main-color;
+  }
+
+  .tab-title-day {
+    color: $gray-900;
+  }
+}
+
+::ng-deep .p-tabview .p-tabview-panels {
+  background: $gray-100;
+  border: $one solid $gray-200;
+  border-top: none;
+  border-bottom-right-radius: $border-radius-s;
+  border-bottom-left-radius: $border-radius-s;
+}
+
+.seat-count {
+  font-size: $font-size-xxs;
+  font-style: italic;
+  color: $gray-500;
+}
+
+// TBD: up to here
+
+.seat-info-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  width: $offset-xxxl * 5;
+  max-height: fit-content;
+  padding: $offset-s;
+
+  background: $gray-300-tr;
+
+  // border: $three solid $gray-400;
+
+  border-radius: $border-radius-s;
+}
+
+.heading {
+  display: flex;
+  gap: $offset-xxs;
+  align-items: center;
+
+  font-size: $font-size-s;
+  color: $gray-700;
+}
+
+.material-icons {
+  color: $main-color;
+}
+
+.seat-info {
+  display: flex;
+  flex-direction: column;
+  gap: $offset-xxs;
+
+  font-size: $font-size-xs;
+  font-style: italic;
+  color: $gray-700;
+}
+
+.variable {
+  font-weight: bold;
+  color: $dark-color;
+}
+
+.close {
+  cursor: pointer;
+
+  position: absolute;
+  top: 0.5rem;
+  right: 1.8rem;
+
+  width: 2.3rem;
+  height: 2.3rem;
+
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.book-button {
+  ::ng-deep button {
+    width: 100%;
+    margin-top: $offset-s;
+  }
+}

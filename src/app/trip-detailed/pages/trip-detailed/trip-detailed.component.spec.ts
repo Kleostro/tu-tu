@@ -1,3 +1,4 @@
+import { provideHttpClient } from '@angular/common/http';
 import { TemplateRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -31,6 +32,8 @@ describe('TripDetailedComponent', () => {
     tripEndStationId: 104,
     tripDepartureDate: '2023-01-01T10:00:00Z',
     tripArrivalDate: '2023-01-01T12:00:00Z',
+    trainCarriages: {},
+    carriages: [],
     carriageInfo: [],
     stationsInfo: [],
   };
@@ -45,6 +48,7 @@ describe('TripDetailedComponent', () => {
             currentResultList$$: jest.fn().mockReturnValue([mockCurrentRide]),
           },
         },
+        provideHttpClient(),
         {
           provide: RoutingService,
           useValue: {
@@ -60,6 +64,8 @@ describe('TripDetailedComponent', () => {
     component = fixture.componentInstance;
     routingService = TestBed.inject(RoutingService) as jest.Mocked<RoutingService>;
     modalService = TestBed.inject(ModalService) as jest.Mocked<ModalService>;
+
+    jest.spyOn(component, 'takeTabsCarriageType').mockReturnValue([{ name: 'Carriage 1', type: 'mockType' }]);
   });
 
   it('should create', () => {

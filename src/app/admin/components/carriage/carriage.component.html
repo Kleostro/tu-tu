@@ -2,7 +2,12 @@
   <div class="car-wrapper">
     <div class="car-top">
       <strong class="title">{{ carriage.name | uppercase }}</strong>
-      <span class="seats-count">{{ (carriage.leftSeats + carriage.rightSeats) * carriage.rows }} seats</span>
+      <span class="seats-count">
+        @let seatsNumber = (carriage.leftSeats + carriage.rightSeats) * carriage.rows;
+        @let freeSeatsNumber = freeSeats();
+        {{ freeSeatsNumber ?? seatsNumber }}
+        {{ freeSeatsNumber ? 'free seats' : 'seats' }}
+      </span>
       @if (isEditable()) {
         <p-button
           class="edit-btn"
@@ -22,17 +27,22 @@
             @for (rightRow of seatsSchema.rightSeats; let i = $index; track i) {
               <div class="right-seats-row">
                 @for (rightSeat of rightRow; let index = $index; track index) {
-                  @if (i === seatsSchema.rightSeats.length - 1) {
-                    <app-seat
-                      [numberSeat]="rightSeat"
-                      [classes]="['right', 'free-seat', 'first-seat', isInteractive() ? 'interactive' : '']"
-                    ></app-seat>
-                  } @else {
-                    <app-seat
-                      [numberSeat]="rightSeat"
-                      [classes]="['right', 'free-seat', isInteractive() ? 'interactive' : '']"
-                    ></app-seat>
-                  }
+                  @let seatNumber = firstSeat() + rightSeat;
+                  <app-seat
+                    [seatNumber]="seatNumber"
+                    [classes]="[
+                      'right',
+                      i === seatsSchema.rightSeats.length - 1 ? 'first-seat' : '',
+                      isInteractive() ? 'interactive' : '',
+                      isOccupiedSeat(seatNumber) ? 'occupied-seat' : 'free-seat',
+                      seatService.selectedSeat$$() === seatNumber ? 'selected-seat' : '',
+                    ]"
+                    (click)="
+                      seatService.selectedSeat$$.set(seatNumber);
+                      seatService.seatCarriageName$$.set(carriage.name);
+                      seatService.seatCarriageNumber$$.set(carriageNumber())
+                    "
+                  ></app-seat>
                 }
               </div>
             }
@@ -43,17 +53,18 @@
             @for (leftRow of seatsSchema.leftSeats; let i = $index; track i) {
               <div class="left-seats-row">
                 @for (leftSeat of leftRow; track leftSeat) {
-                  @if (i === 0) {
-                    <app-seat
-                      [numberSeat]="leftSeat"
-                      [classes]="['left', 'free-seat', 'first-seat', isInteractive() ? 'interactive' : '']"
-                    ></app-seat>
-                  } @else {
-                    <app-seat
-                      [numberSeat]="leftSeat"
-                      [classes]="['left', 'free-seat', isInteractive() ? 'interactive' : '']"
-                    ></app-seat>
-                  }
+                  @let seatNumber = firstSeat() + leftSeat;
+                  <app-seat
+                    [seatNumber]="seatNumber"
+                    [classes]="[
+                      'left',
+                      i === 0 ? 'first-seat' : '',
+                      isInteractive() ? 'interactive' : '',
+                      isOccupiedSeat(seatNumber) ? 'occupied-seat' : 'free-seat',
+                      seatService.selectedSeat$$() === seatNumber ? 'selected-seat' : '',
+                    ]"
+                    (click)="seatService.selectedSeat$$.set(seatNumber)"
+                  ></app-seat>
                 }
               </div>
             }

@@ -20,7 +20,7 @@ export class TripTimelineComponent implements OnInit {
   @Input() public arrivalDate = '';
   @Input() public startStation = '';
   @Input() public endStation = '';
-  @Input() public dateFormat = 'dd-MMM-yyyy';
+  @Input() public dateFormat = 'MMM-dd-yyyy';
   public windowWidth = window.innerWidth;
 
   @HostListener('window:resize', ['$event'])

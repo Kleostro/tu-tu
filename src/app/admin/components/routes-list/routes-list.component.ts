@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,6 +13,7 @@ import {
 } from '@angular/core';
 
 import { ButtonModule } from 'primeng/button';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { RippleModule } from 'primeng/ripple';
 import { Subscription } from 'rxjs';
 
@@ -27,7 +29,7 @@ import { RouteComponent } from '../route/route.component';
 @Component({
   selector: 'app-routes-list',
   standalone: true,
-  imports: [RouteComponent, ButtonModule, RippleModule],
+  imports: [RouteComponent, ButtonModule, RippleModule, PaginatorModule, NgTemplateOutlet],
   templateUrl: './routes-list.component.html',
   styleUrl: './routes-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,6 +43,8 @@ export class RoutesListComponent implements OnDestroy {
   public deletionRouteId = signal<number>(NaN);
   public isRouteDeleted = signal(false);
   private subscription = new Subscription();
+  public firstPage = 0;
+  public rowsCount = 10;
 
   @ViewChild('deleteRouteConfirm') public deleteRouteConfirm!: TemplateRef<unknown>;
   @Output() public openRouteForm: EventEmitter<void> = new EventEmitter<void>();
@@ -63,6 +67,11 @@ export class RoutesListComponent implements OnDestroy {
         }),
       ),
     );
+  }
+
+  public onPageChange(event: PaginatorState): void {
+    this.firstPage = event.first ?? 0;
+    this.rowsCount = event.rows ?? 10;
   }
 
   public ngOnDestroy(): void {

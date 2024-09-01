@@ -9,6 +9,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeatComponent {
-  public numberSeat = input<number>(NaN);
+  public seatNumber = input<number>(NaN);
   public classes = input<string[]>([]);
 }

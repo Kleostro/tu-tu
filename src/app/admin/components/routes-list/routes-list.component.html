@@ -1,4 +1,5 @@
-@for (route of routes(); track route.id) {
+<ng-container *ngTemplateOutlet="paginator"></ng-container>
+@for (route of routes().slice(firstPage, firstPage + rowsCount); track route.id) {
   <app-route
     [route]="route"
     (openDeleteConfirm)="handleOpenDeleteConfirm($event)"
@@ -7,6 +8,19 @@
 } @empty {
   <h1 class="empty">No routes found</h1>
 }
+<ng-container *ngTemplateOutlet="paginator"></ng-container>
+
+<ng-template #paginator>
+  @if (routes().length) {
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="firstPage"
+      [rows]="rowsCount"
+      [totalRecords]="routes().length"
+      [rowsPerPageOptions]="[10, 20, 30, 40, 50, 100]"
+    />
+  }
+</ng-template>
 
 <ng-template #deleteRouteConfirm>
   <div class="deleteRouteWrapper">

@@ -34,15 +34,9 @@
             <div class="control" [formGroupName]="i">
               {{ priceList[i].type }}
               @if (isEdit()) {
-                <p-inputNumber
-                  formControlName="price"
-                  [showButtons]="false"
-                  mode="currency"
-                  currency="USD"
-                  locale="en-US"
-                ></p-inputNumber>
+                <p-inputNumber formControlName="price" [showButtons]="false"></p-inputNumber>
               } @else {
-                <span> - {{ priceList[i].price | currency }}</span>
+                <span> - {{ priceList[i].price | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
               }
             </div>
           }

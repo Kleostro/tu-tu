@@ -1,0 +1,7 @@
+@import 'variables';
+
+.train-carriages-list {
+  display: flex;
+  flex-direction: column;
+  gap: $offset-ms;
+}
