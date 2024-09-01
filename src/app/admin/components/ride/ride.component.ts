@@ -91,12 +91,17 @@ export class RideComponent implements OnDestroy {
   public deleteRide(rideId: number): void {
     this.isRideDeleted.set(false);
     this.subscription.add(
-      this.rideService.deleteRide(this.rideService.currentRouteId(), rideId).subscribe(() =>
-        this.rideService.getRouteById(this.rideService.currentRouteId()).subscribe(() => {
-          this.userMessageService.showSuccessMessage(USER_MESSAGE.RIDE_DELETED_SUCCESSFULLY);
+      this.rideService.deleteRide(this.rideService.currentRouteId(), rideId).subscribe({
+        next: () =>
+          this.rideService.getRouteById(this.rideService.currentRouteId()).subscribe(() => {
+            this.userMessageService.showSuccessMessage(USER_MESSAGE.RIDE_DELETED_SUCCESSFULLY);
+            this.isRideDeleted.set(true);
+          }),
+        error: () => {
+          this.userMessageService.showErrorMessage(USER_MESSAGE.RIDE_DELETED_ERROR);
           this.isRideDeleted.set(true);
-        }),
-      ),
+        },
+      }),
     );
   }
 
