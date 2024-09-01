@@ -32,7 +32,7 @@ export interface SearchParams {
   fromLongitude: number;
   toLatitude: number;
   toLongitude: number;
-  time?: string;
+  time?: number;
 }
 
 export interface SearchResponse {
