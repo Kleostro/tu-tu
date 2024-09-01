@@ -52,7 +52,6 @@ export class SearchComponent implements OnInit {
   public filteredCities: string[] = [];
   private fakeCities: Station[] = [];
   public minDate: Date = new Date();
-  public timeSelected = false;
 
   public tripData$$ = signal<TripData | null>(null);
 
@@ -67,16 +66,6 @@ export class SearchComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
-    const tripDataSaved = this.filterService.tripPoints$$();
-    if (tripDataSaved) {
-      this.tripForm.setValue({
-        startCity: tripDataSaved?.from,
-        endCity: tripDataSaved?.to,
-        tripDate: '',
-      });
-      this.tripForm.controls.tripDate.setErrors({ invalidDate: true });
-      this.tripForm.controls.tripDate.markAsTouched();
-    }
     try {
       this.stations = await firstValueFrom(this.stationsService.getStations());
       this.fakeCities = await firstValueFrom(this.citiesService.getCities());

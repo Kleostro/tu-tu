@@ -24,37 +24,36 @@
       </div>
     </div>
     <div class="bottom">
-      @if (route.path.length; as length) {
-        <div>
-          <strong>Cities:</strong>
-          <p>
-            @for (path of route.path; let i = $index; track i) {
-              @if (stationsService.findStationById(path)?.city; as city) {
-                @if (i < length - 1) {
-                  {{ stationsService.findStationById(path)?.city }} -
-                } @else {
-                  {{ stationsService.findStationById(path)?.city }}
+      <p-accordion [multiple]="true">
+        @if (route.path.length; as length) {
+          <p-accordionTab header="Cities">
+            <p>
+              @for (path of route.path; let i = $index; track i) {
+                @if (stationsService.findStationById(path)?.city; as city) {
+                  @if (i < length - 1) {
+                    {{ stationsService.findStationById(path)?.city }} -
+                  } @else {
+                    {{ stationsService.findStationById(path)?.city }}
+                  }
                 }
               }
-            }
-          </p>
-        </div>
-      }
-
-      @if (route.carriages.length; as length) {
-        <div>
-          <strong>Carriage Types:</strong>
-          <p>
-            @for (carriage of route.carriages; let i = $index; track i) {
-              @if (i < length - 1) {
-                {{ carriage }} -
-              } @else {
-                {{ carriage }}
+            </p>
+          </p-accordionTab>
+        }
+        @if (route.carriages.length; as length) {
+          <p-accordionTab header="Carriage Types">
+            <p>
+              @for (carriage of route.carriages; let i = $index; track i) {
+                @if (i < length - 1) {
+                  {{ carriage }} -
+                } @else {
+                  {{ carriage }}
+                }
               }
-            }
-          </p>
-        </div>
-      }
+            </p>
+          </p-accordionTab>
+        }
+      </p-accordion>
     </div>
   </div>
 }

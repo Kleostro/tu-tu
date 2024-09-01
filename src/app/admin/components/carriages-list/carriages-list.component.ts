@@ -5,6 +5,7 @@ import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
 import { Carriage } from '@/app/api/models/carriage';
 import { RoutingService } from '@/app/core/services/routing/routing.service';
+import POSITION_DIRECTION from '@/app/shared/directives/position/constants/position.constants';
 import { ModalService } from '@/app/shared/services/modal/modal.service';
 
 import { CarriageComponent } from '../carriage/carriage.component';
@@ -30,6 +31,7 @@ export class CarriagesListComponent {
 
   public handleOpenEditModal(carriage: Carriage): void {
     this.editCarriage.set(carriage);
+    this.modalService.position$$.set(POSITION_DIRECTION.CENTER_TOP);
     this.modalService.openModal(this.editContent, 'Edit carriage');
   }
 

@@ -21,13 +21,11 @@ export class FilterComponent {
   @Input() public tripData!: TripData | null;
 
   public groupRoutes!: GroupedRoutes;
-  public activeIndex = 0;
 
   constructor() {
     effect(() => {
       this.groupRoutes = this.filterService.availableRoutesGroup$$();
       this.takeTabsDates();
-      this.activeIndex = 0;
     });
   }
 
@@ -49,5 +47,6 @@ export class FilterComponent {
   public onTabChange(event: TabViewChangeEvent): void {
     const selectedDate = this.takeTabsDates()[event.index];
     this.setCurrentRides(selectedDate);
+    this.filterService.activeTabIndex$$.set(event.index);
   }
 }
