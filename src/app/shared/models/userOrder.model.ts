@@ -1,18 +1,3 @@
-// orderId: id,
-// rideId,
-// routeId,
-// seatNumber: seatId,
-// userId,
-// status,
-// tripStartStation,
-// tripEndStation,
-// tripStartStationId: stationEnd,
-// tripEndStationId: stationStart,
-// tripDepartureDate: tripDates.departure,
-// tripArrivalDate: tripDates.arrival,
-// carriage,
-// price,
-
 export interface UserOrder {
   orderId: number;
   rideId: number;
