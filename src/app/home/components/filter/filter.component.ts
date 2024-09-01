@@ -1,5 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, Input } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  ElementRef,
+  inject,
+  Input,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 
 import { TabViewChangeEvent, TabViewModule } from 'primeng/tabview';
 
@@ -16,9 +26,11 @@ import { ResultListComponent } from '../result-list/result-list.component';
   styleUrl: './filter.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FilterComponent {
+export class FilterComponent implements AfterViewInit {
   public filterService = inject(FilterService);
   @Input() public tripData!: TripData | null;
+
+  @ViewChildren('tabView') private tabs!: QueryList<ElementRef<HTMLElement>>;
 
   public groupRoutes!: GroupedRoutes;
 
@@ -27,6 +39,19 @@ export class FilterComponent {
       this.groupRoutes = this.filterService.availableRoutesGroup$$();
       this.takeTabsDates();
     });
+  }
+
+  public scrollToActiveTab(index: number): void {
+    const activeTab = this.tabs.toArray()[index].nativeElement;
+    if (activeTab) {
+      activeTab.scrollIntoView({ behavior: 'auto', inline: 'center' });
+    }
+  }
+
+  public ngAfterViewInit(): void {
+    if (this.takeTabsDates().length) {
+      this.scrollToActiveTab(this.filterService.activeTabIndex$$());
+    }
   }
 
   public countRidesNumbers(targetDate: string): number {
