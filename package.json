@@ -29,7 +29,6 @@
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
     "@angular/ssr": "^18.0.6",
-    "@ant-design/icons-angular": "^18.0.0",
     "@ngrx/effects": "^18.0.1",
     "@ngrx/router-store": "^18.0.1",
     "@ngrx/store": "^18.0.2",
