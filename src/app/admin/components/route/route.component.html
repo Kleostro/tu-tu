@@ -42,7 +42,7 @@
           <p-accordionTab header="Carriage Types">
             <p>
               @for (carriage of route.carriages; let i = $index; track i) {
-                @if (i < length - 1) {
+                @if (i < route.carriages.length - 1) {
                   {{ carriage }} -
                 } @else {
                   {{ carriage }}
