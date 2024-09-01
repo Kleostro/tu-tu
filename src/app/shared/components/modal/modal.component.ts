@@ -4,12 +4,13 @@ import { ChangeDetectionStrategy, Component, ElementRef, inject, ViewChild } fro
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 
+import { PositionDirective } from '../../directives/position/position.directive';
 import { ModalService } from '../../services/modal/modal.service';
 
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [NgTemplateOutlet, ButtonModule, RippleModule],
+  imports: [NgTemplateOutlet, ButtonModule, RippleModule, PositionDirective],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

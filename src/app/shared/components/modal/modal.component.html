@@ -2,8 +2,9 @@
   <div
     #modalDialog
     class="modal-dialog"
+    appPosition
+    [position]="modalService.position$$()"
     [style.width]="modalService.contentWidth$$()"
-    [style.marginTop]="modalService.offsetTop$$()"
   >
     <div class="modal-content">
       <div class="modal-header">
