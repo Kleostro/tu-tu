@@ -1,8 +1,8 @@
-import { inject, Injectable, OnDestroy, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { firstValueFrom, Subscription } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 
 import { ADMIN_CREDENTIALS } from '@/app/admin/constants/adminCredentials';
 import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
@@ -24,7 +24,7 @@ import { isOverriddenHttpErrorResponse } from './helpers/helper';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService implements OnDestroy {
+export class AuthService {
   private signUpService = inject(SignUpService);
   private signInService = inject(SignInService);
   private personalInfoService = inject(PersonalInfoService);
@@ -42,25 +42,24 @@ export class AuthService implements OnDestroy {
   public isLoggedIn$$ = signal(this.localStorageService.getValueByKey(STORE_KEYS.TOKEN) !== null);
   public isAdmin$$ = signal(this.localStorageService.getValueByKey(STORE_KEYS.EMAIL) === ADMIN_CREDENTIALS.email);
 
-  private subscription: Subscription | null = null;
-
-  public registerUser(user: User): void {
+  public registerUser(user: User): Observable<object> {
     this.isSignUpLoading$$.set(true);
-    this.subscription = this.signUpService.signUp(user).subscribe({
-      next: () => {
-        this.isRegistrationSuccess$$.set(true);
-        this.errorMessage$$.set('');
-        this.router.navigate([APP_ROUTE.SIGN_IN]);
-        this.userMessageService.showSuccessMessage(USER_MESSAGE.REGISTRATION_SUCCESSFUL);
-        this.isSignUpLoading$$.set(false);
-      },
-      error: (err: OverriddenHttpErrorResponse) => {
-        this.isRegistrationSuccess$$.set(false);
-        this.errorMessage$$.set(err.error.reason);
-        this.userMessageService.showErrorMessage(USER_MESSAGE.REGISTRATION_ERROR);
-        this.isSignUpLoading$$.set(false);
-      },
-    });
+    return this.signUpService.signUp(user);
+  }
+
+  public handleRegisterSuccess(): void {
+    this.isRegistrationSuccess$$.set(true);
+    this.errorMessage$$.set('');
+    this.router.navigate([APP_ROUTE.SIGN_IN]);
+    this.userMessageService.showSuccessMessage(USER_MESSAGE.REGISTRATION_SUCCESSFUL);
+    this.isSignUpLoading$$.set(false);
+  }
+
+  public handleRegisterError(err: OverriddenHttpErrorResponse): void {
+    this.isRegistrationSuccess$$.set(false);
+    this.errorMessage$$.set(err.error.reason);
+    this.userMessageService.showErrorMessage(USER_MESSAGE.REGISTRATION_ERROR);
+    this.isSignUpLoading$$.set(false);
   }
 
   public async loginUser(userData: User, loginForm: FormGroup): Promise<void> {
@@ -98,11 +97,5 @@ export class AuthService implements OnDestroy {
     this.isSignInLoading$$.set(false);
     this.isLoggedIn$$.set(false);
     this.isAdmin$$.set(false);
-  }
-
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 }
