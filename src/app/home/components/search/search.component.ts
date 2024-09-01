@@ -17,7 +17,7 @@ import { AutocompleteIconDirective } from '@/app/shared/directives/autocompleteI
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
-import { TripData } from '../../models/tripData';
+import { TripData } from '../../models/tripData.model';
 import { CitiesService } from '../../services/cities/cities.service';
 import { FilterService } from '../../services/filter/filter.service';
 import { FilterComponent } from '../filter/filter.component';
@@ -103,21 +103,22 @@ export class SearchComponent implements OnInit {
 
   public onSubmit(): void {
     if (this.tripForm.valid) {
-      const startCityData = this.stations.find((station) => station.city === this.tripForm.value.startCity)!;
-      const endCityData = this.stations.find((station) => station.city === this.tripForm.value.endCity)!;
-      if (startCityData && endCityData) {
+      const startCity = this.stations.find((station) => station.city === this.tripForm.value.startCity)!;
+      const endCity = this.stations.find((station) => station.city === this.tripForm.value.endCity)!;
+      const tripDate = new Date(this.tripForm.controls['tripDate'].value ?? '');
+      if (startCity && endCity) {
         const tripData: TripData = {
-          startCity: startCityData,
-          endCity: endCityData,
-          tripDate: new Date(this.tripForm.controls['tripDate'].value ?? ''),
+          startCity,
+          endCity,
+          tripDate,
         };
 
         this.tripData$$.set(tripData);
         const searchPrms = {
-          fromLatitude: startCityData.latitude,
-          toLatitude: endCityData.latitude,
-          fromLongitude: startCityData.longitude,
-          toLongitude: endCityData.longitude,
+          fromLatitude: startCity.latitude,
+          toLatitude: endCity.latitude,
+          fromLongitude: startCity.longitude,
+          toLongitude: endCity.longitude,
           time: new Date(this.tripForm.value.tripDate!).getTime(),
         };
         this.filterService.startSearch(searchPrms);

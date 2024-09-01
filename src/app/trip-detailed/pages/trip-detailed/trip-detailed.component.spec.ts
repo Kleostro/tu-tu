@@ -2,6 +2,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { TemplateRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { MessageService } from 'primeng/api';
+
 import { RoutingService } from '@/app/core/services/routing/routing.service';
 import { CurrentRide } from '@/app/home/models/currentRide.model';
 import { ResultListService } from '@/app/home/services/result-list/result-list.service';
@@ -57,6 +59,7 @@ describe('TripDetailedComponent', () => {
           },
         },
         ModalService,
+        MessageService,
       ],
     }).compileComponents();
 
@@ -79,10 +82,10 @@ describe('TripDetailedComponent', () => {
 
   it('should open modal when tripItem is present', () => {
     component.tripItem = mockCurrentRide;
-    component.modalContent = {} as TemplateRef<unknown>;
+    component.tripModalContent = {} as TemplateRef<unknown>;
     component.openModal();
 
-    expect(modalService.openModal).toHaveBeenCalledWith(component.modalContent, 'Route 1');
+    expect(modalService.openModal).toHaveBeenCalledWith(component.tripModalContent, 'Route 1');
   });
 
   it('should not open modal when tripItem is null', () => {

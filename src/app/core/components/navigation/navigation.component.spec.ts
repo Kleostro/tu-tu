@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 
+import { of } from 'rxjs';
+
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
 import LocalStorageData from '../../models/store.model';
@@ -16,7 +18,12 @@ describe('NavigationComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NavigationComponent],
       providers: [
-        { provide: ActivatedRoute, useValue: {} },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParams: of({}),
+          },
+        },
         { provide: HttpClient, useValue: {} },
         {
           provide: UserMessageService,

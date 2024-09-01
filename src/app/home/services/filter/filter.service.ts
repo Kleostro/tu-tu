@@ -7,7 +7,7 @@ import { Route, SearchParams } from '@/app/api/models/search';
 import { SearchService } from '@/app/api/searchService/search.service';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
-import { GroupedRoutes, TripIds, TripPoints } from '../../models/groupedRoutes';
+import { GroupedRoutes, TripIds, TripPoints } from '../../models/groupedRoutes.model';
 import { ResultListService } from '../result-list/result-list.service';
 
 @Injectable({

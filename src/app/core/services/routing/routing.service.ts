@@ -16,6 +16,7 @@ export class RoutingService {
 
   public queryParams$$ = signal<Record<string, string>>({});
   public isAdminPage$$ = signal<boolean>(false);
+  public isDetailedPage$$ = signal<boolean>(false);
   public isAdminCarriagesPage$$ = signal<boolean>(false);
   public currentRideId$$ = signal<string>('');
 
@@ -27,6 +28,7 @@ export class RoutingService {
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
       const { url } = this.router;
       this.isAdminPage$$.set(url.startsWith(APP_ROUTE.ADMIN));
+      this.isDetailedPage$$.set(url.startsWith(APP_ROUTE.TRIP));
       this.isAdminCarriagesPage$$.set(url.startsWith(`${APP_ROUTE.ADMIN}/carriages`));
 
       const rideId = this.extractRideIdFromUrl(url);
