@@ -32,11 +32,17 @@ export class StationComponent implements OnDestroy {
   public deleteStation(id: number): void {
     this.isStationDeleted.set(true);
     this.subsciption.add(
-      this.stationsService.deleteStation(id).subscribe(() => {
-        this.mapService.removeMarker({ lng: this.station.longitude, lat: this.station.latitude });
-        this.userMessageService.showSuccessMessage(USER_MESSAGE.STATION_DELETED_SUCCESSFULLY);
-        this.isStationDeleted.set(false);
-        this.stationsService.getStations().subscribe();
+      this.stationsService.deleteStation(id).subscribe({
+        next: () => {
+          this.mapService.removeMarker({ lng: this.station.longitude, lat: this.station.latitude });
+          this.userMessageService.showSuccessMessage(USER_MESSAGE.STATION_DELETED_SUCCESSFULLY);
+          this.isStationDeleted.set(false);
+          this.stationsService.getStations().subscribe();
+        },
+        error: () => {
+          this.userMessageService.showErrorMessage(USER_MESSAGE.STATION_DELETED_ERROR);
+          this.isStationDeleted.set(false);
+        },
       }),
     );
   }

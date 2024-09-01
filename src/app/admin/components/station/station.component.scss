@@ -1,6 +1,8 @@
 @import 'variables';
 
 .wrapper {
+  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -21,6 +23,10 @@
 }
 
 .delete {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+
   display: flex;
   gap: 0.5rem;
   align-items: center;

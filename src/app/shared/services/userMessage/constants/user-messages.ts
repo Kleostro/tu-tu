@@ -7,6 +7,7 @@ export const USER_MESSAGE = {
   STATION_CREATED_SUCCESSFULLY: 'Station created successfully!',
   STATION_CREATED_ERROR: 'Station creation error!',
   STATION_DELETED_SUCCESSFULLY: 'Station deleted successfully!',
+  STATION_DELETED_ERROR: 'Station is already used!',
   STATION_EXISTS: 'Station already exists in this city!',
   CARRIAGE_CREATED_SUCCESSFULLY: 'Carriage created successfully!',
   CARRIAGE_UPDATED_SUCCESSFULLY: 'Carriage updated successfully!',
@@ -25,6 +26,7 @@ export const USER_MESSAGE = {
   RIDE_PRICE_UPDATED_SUCCESSFULLY: 'Ride price updated successfully!',
   RIDE_CREATED_SUCCESSFULLY: 'Ride created successfully!',
   RIDE_DELETED_SUCCESSFULLY: 'Ride deleted successfully!',
+  RIDE_DELETED_ERROR: 'Ride is already used!',
   CONNECTION_LOST_ERROR: 'Connection is lost! Please check your internet connection and try again.',
   NO_STATIONS_FOUND_ERROR:
     "Sorry, we couldn't find any stations in the cities you're looking for. Please try searching for another city.",
