@@ -1,28 +1,23 @@
 <div class="item-wrapper">
   <div class="item">
-    @let startStation = stationsService.findStationById(order.path[0]);
-    @let endStation = stationsService.findStationById(order.path[order.path.length - 1]);
-
-    @if (startStation && endStation) {
-      <app-trip-timeline
-        [departureDate]="order.schedule.segments[0].time[0]"
-        [arrivalDate]="order.schedule.segments[this.order.schedule.segments.length - 1].time[1]"
-        [startStation]="startStation.city"
-        [endStation]="endStation.city"
-        [dateFormat]="'MMMM dd hh:mm'"
-      ></app-trip-timeline>
-    }
+    <app-trip-timeline
+      [departureDate]="order.tripDepartureDate"
+      [arrivalDate]="order.tripArrivalDate"
+      [startStation]="order.tripStartStation"
+      [endStation]="order.tripEndStation"
+      [dateFormat]="'MMMM dd hh:mm'"
+    ></app-trip-timeline>
 
     <div class="route-wrapper">
       <div class="carriage-type">
-        Carriage type: <b>{{ carriageName }}</b>
+        Carriage type: <b>{{ order.carriage }}</b>
       </div>
       <div class="price">
-        Price: <b>{{ currentPrice | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
+        Price: <b>{{ order.price | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
       </div>
-      <span>Order ID: {{ order.id }}</span>
+      <span>Order ID: {{ order.orderId }}</span>
       @if (user) {
-        <div>User: {{ user.email }}</div>
+        <div>User: {{ user.name ? user.name : user.id }}</div>
       }
     </div>
   </div>

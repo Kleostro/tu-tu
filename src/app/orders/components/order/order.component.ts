@@ -1,16 +1,16 @@
 import { CurrencyPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { firstValueFrom, Subscription } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
-import { CarriageService } from '@/app/api/carriagesService/carriage.service';
-import { Order, User } from '@/app/api/models/order';
+import { isOverriddenHttpErrorResponse } from '@/app/api/helpers/isOverriddenHttpErrorResponse';
+import { User } from '@/app/api/models/order';
 import { OrdersService } from '@/app/api/ordersService/orders.service';
 import { ProfileService } from '@/app/api/profileService/profile.service';
-import { StationsService } from '@/app/api/stationsService/stations.service';
+import { UserOrder } from '@/app/shared/models/userOrder.model';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
 import { TripTimelineComponent } from '../../../home/components/trip-timeline/trip-timeline.component';
@@ -23,32 +23,16 @@ import { TripTimelineComponent } from '../../../home/components/trip-timeline/tr
   styleUrl: './order.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrderComponent implements OnInit, OnDestroy {
-  @Input() public order!: Order;
-  @Input() public user!: User | null;
-  private cdr = inject(ChangeDetectorRef);
-  public carriageService = inject(CarriageService);
-  public stationsService = inject(StationsService);
+export class OrderComponent {
+  @Input() public order!: UserOrder;
+  @Input() public user!: User;
+
+  private userMessageService = inject(UserMessageService);
+
   public ordersService = inject(OrdersService);
   public profileService = inject(ProfileService);
-  private subsciption = new Subscription();
-  public carriageName = '';
-  public currentPrice = 0;
-  private userMessageService = inject(UserMessageService);
-  public displayCancelDialog = false;
 
-  public ngOnInit(): void {
-    this.subsciption.add(
-      this.carriageService.getCarriages().subscribe((carriages) => {
-        const matchingCarriage = carriages.find((carriage) => this.order.carriages.includes(carriage.code));
-        if (matchingCarriage) {
-          this.carriageName = matchingCarriage.name;
-          this.currentPrice = this.order.schedule.segments.reduce((acc, val) => acc + val.price[this.carriageName], 0);
-          this.cdr.detectChanges();
-        }
-      }),
-    );
-  }
+  public displayCancelDialog = false;
 
   public showCancelDialog(): void {
     this.displayCancelDialog = true;
@@ -57,10 +41,8 @@ export class OrderComponent implements OnInit, OnDestroy {
   public cancelOrder(): void {
     this.order.status = 'canceled';
     this.displayCancelDialog = false;
-    this.cdr.detectChanges();
 
-    // Since no order on server, using mocked data
-    firstValueFrom(this.ordersService.cancelOrder(this.order.id))
+    firstValueFrom(this.ordersService.cancelOrder(this.order.orderId))
       .then(() => {
         this.userMessageService.showSuccessMessage('Order canceled successfully.');
       })
@@ -71,15 +53,9 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
   private getErrorMessage(error: HttpErrorResponse): string {
-    if (error.error && typeof error.error === 'object' && 'message' in error.error) {
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-      const errorObj = error.error as { message: string };
-      return errorObj.message;
+    if (isOverriddenHttpErrorResponse(error)) {
+      return error.message;
     }
     return 'An unknown error occurred.';
-  }
-
-  public ngOnDestroy(): void {
-    this.subsciption.unsubscribe();
   }
 }
