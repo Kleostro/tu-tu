@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { TimelineModule } from 'primeng/timeline';
 
-import { CurrentRide } from '@/app/home/models/currentRide.model';
+import { CurrentRide } from '@/app/shared/models/currentRide.model';
 
 import { ResultItemComponent } from './result-item.component';
 

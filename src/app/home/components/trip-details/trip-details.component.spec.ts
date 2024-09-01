@@ -3,7 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimelineModule } from 'primeng/timeline';
 
-import { CurrentRide } from '../../models/currentRide.model';
+import { CurrentRide } from '@/app/shared/models/currentRide.model';
+
 import { TripDetailsComponent } from './trip-details.component';
 
 describe('TripDetailsComponent', () => {

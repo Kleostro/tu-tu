@@ -12,10 +12,10 @@ import {
 
 import { TimelineModule } from 'primeng/timeline';
 
+import { CurrentRide } from '@/app/shared/models/currentRide.model';
 import { stringTemplate } from '@/app/shared/utils/string-template';
 
-import { CurrentRide } from '../../models/currentRide.model';
-import { StationInfo } from '../../models/stationInfo.model';
+import { StationInfo } from '../../../shared/models/stationInfo.model';
 import { STATION_DETAIL } from './constants/constants';
 
 @Component({

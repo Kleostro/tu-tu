@@ -6,10 +6,10 @@ import { ButtonModule } from 'primeng/button';
 
 import STORE_KEYS from '@/app/core/constants/store';
 import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
-import { CarriageInfo } from '@/app/home/models/carriageInfo.model';
-import { CurrentRide } from '@/app/home/models/currentRide.model';
 import { APP_ROUTE } from '@/app/shared/constants/routes';
 import { template } from '@/app/shared/constants/string-templates';
+import { CarriageInfo } from '@/app/shared/models/carriageInfo.model';
+import { CurrentRide } from '@/app/shared/models/currentRide.model';
 import { ModalService } from '@/app/shared/services/modal/modal.service';
 import { stringTemplate } from '@/app/shared/utils/string-template';
 

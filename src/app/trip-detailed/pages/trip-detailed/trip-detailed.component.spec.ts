@@ -5,8 +5,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MessageService } from 'primeng/api';
 
 import { RoutingService } from '@/app/core/services/routing/routing.service';
-import { CurrentRide } from '@/app/home/models/currentRide.model';
 import { ResultListService } from '@/app/home/services/result-list/result-list.service';
+import { CurrentRide } from '@/app/shared/models/currentRide.model';
 import { ModalService } from '@/app/shared/services/modal/modal.service';
 
 import { TripDetailedComponent } from './trip-detailed.component';
