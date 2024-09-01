@@ -20,7 +20,7 @@ export class FilterService implements OnDestroy {
   public availableRoutesGroup$$ = signal<GroupedRoutes>({});
   public tripPoints$$ = signal<TripPoints | null>(null);
   public isSearchLoading$$ = signal(false);
-
+  public activeTabIndex$$ = signal(0);
   private subscription: Subscription | null = null;
 
   public startSearch(searchPrms: SearchParams): void {
@@ -41,6 +41,7 @@ export class FilterService implements OnDestroy {
         });
         this.setCurrentRides(targetDate);
         this.isSearchLoading$$.set(false);
+        this.activeTabIndex$$.set(0);
       },
       error: (err: OverriddenHttpErrorResponse) => {
         this.userMessageServise.showErrorMessage(err.error.message);
