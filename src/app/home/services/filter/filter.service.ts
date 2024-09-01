@@ -66,11 +66,6 @@ export class FilterService implements OnDestroy {
         const filteredSchedule = [];
         const { segments, rideId } = schedule[ride];
         const targetSegment = segments[fromStationIdIndex];
-        // NOTE: This code is temporarily commented out and will be removed soon
-        // const nextDay = new Date(targetDate);
-        // nextDay.setDate(nextDay.getDate() + 1);
-        // nextDay.setHours(0, 0, 0, 0);
-        // if (targetSegment.time[0] > targetDate && new Date(targetDate).getTime() < nextDay.getTime()) {
         const departureDate = this.formatDate(new Date(targetSegment.time[0]));
         filteredSchedule.push({
           rideId,
@@ -92,7 +87,6 @@ export class FilterService implements OnDestroy {
           path,
           carriages,
         });
-        // }
       }
     }
     return this.generateMissingKeyDates(this.filterRoutesByKeyDate(groupedRoutes), targetDate);
