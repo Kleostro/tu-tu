@@ -43,7 +43,7 @@ import { FilterComponent } from '../filter/filter.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit {
-  private filterService = inject(FilterService);
+  public filterService = inject(FilterService);
   private citiesService = inject(CitiesService);
   private stationsService = inject(StationsService);
   private fb = inject(FormBuilder);
@@ -118,7 +118,7 @@ export class SearchComponent implements OnInit {
           toLatitude: endCityData.latitude,
           fromLongitude: startCityData.longitude,
           toLongitude: endCityData.longitude,
-          time: this.tripForm.value.tripDate!,
+          time: new Date(this.tripForm.value.tripDate!).getTime(),
         };
         this.filterService.startSearch(searchPrms);
       } else {

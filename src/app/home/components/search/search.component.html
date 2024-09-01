@@ -42,7 +42,14 @@
         ></p-calendar>
       </div>
 
-      <button pButton type="submit" label="Search" [disabled]="!tripForm.valid" class="submit-btn"></button>
+      <button
+        pButton
+        type="submit"
+        label="Search"
+        [disabled]="!tripForm.valid || filterService.isSearchLoading$$()"
+        class="submit-btn"
+        [icon]="filterService.isSearchLoading$$() ? 'pi pi-spin pi-spinner' : 'pi pi-search'"
+      ></button>
     </form>
   </div>
   <app-filter [tripData]="tripData$$()"></app-filter>
