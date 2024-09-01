@@ -135,4 +135,11 @@ export class TripCarriagesService {
     });
     return freeSeatsMap;
   }
+
+  public findUserCarriage(seatNumber: number, trainCarriages: TrainCarriages): string {
+    const carriage = Object.values(trainCarriages).find(
+      (crg) => seatNumber >= crg.firstSeat && seatNumber <= crg.lastSeat,
+    );
+    return carriage ? carriage.carriageName : '';
+  }
 }

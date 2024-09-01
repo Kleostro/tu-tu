@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { Schedule } from '@/app/api/models/search';
 import { StationsService } from '@/app/api/stationsService/stations.service';
-import { TripPoints } from '@/app/home/models/groupedRoutes.model';
+import { OrderTripPoints, TripPoints } from '@/app/home/models/groupedRoutes.model';
 import { StationInfo } from '@/app/shared/models/stationInfo.model';
 import { TripIds } from '@/app/shared/models/tripIds.model';
 import { TripIndices } from '@/app/shared/models/tripIndices.model';
@@ -26,7 +26,7 @@ export class TripStationsService {
     };
   }
 
-  public getTripStations(tripPoints: TripPoints): TripStations {
+  public getTripStations(tripPoints: TripPoints | OrderTripPoints): TripStations {
     return {
       start: tripPoints.from,
       end: tripPoints.to,
@@ -47,10 +47,10 @@ export class TripStationsService {
     };
   }
 
-  public getTripStationIndices(path: number[], tripStationIds: TripIds): TripIndices {
+  public getTripStationIndices(path: number[], tripStationStartId: number, tripStationEndId: number): TripIndices {
     return {
-      start: path.indexOf(tripStationIds.start),
-      end: path.indexOf(tripStationIds.end),
+      start: path.indexOf(tripStationStartId),
+      end: path.indexOf(tripStationEndId),
     };
   }
 
@@ -88,7 +88,8 @@ export class TripStationsService {
     return stationsInfo;
   }
 
-  private getStationCityById(stationId: number): string {
+  public getStationCityById(stationId: number): string {
+    this.stationsService.getStations();
     return this.stationsService.findStationById(stationId)?.city ?? PLACEHOLDER.CITY;
   }
 

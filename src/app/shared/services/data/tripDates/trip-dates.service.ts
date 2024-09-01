@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Schedule } from '@/app/api/models/search';
+import { OrderSchedule, Schedule } from '@/app/api/models/search';
 import { RouteDates } from '@/app/shared/models/routeDates.model';
 import { TripDates } from '@/app/shared/models/tripDates.model';
 import { TripIndices } from '@/app/shared/models/tripIndices.model';
@@ -9,7 +9,7 @@ import { TripIndices } from '@/app/shared/models/tripIndices.model';
   providedIn: 'root',
 })
 export class TripDatesService {
-  public getTripDates(schedule: Schedule, indices: TripIndices): TripDates {
+  public getTripDates(schedule: Schedule | OrderSchedule, indices: TripIndices): TripDates {
     return {
       departure: schedule.segments[indices.start].time[0],
       arrival: schedule.segments[indices.end - 1].time[1],

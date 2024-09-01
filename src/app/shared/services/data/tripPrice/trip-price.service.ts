@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { SegmentPrice } from '@/app/api/models/search';
+import { CarriageInfo } from '@/app/shared/models/carriageInfo.model';
 import { PriceMap } from '@/app/shared/models/priceMap.model';
 import { TripIndices } from '@/app/shared/models/tripIndices.model';
 
@@ -21,5 +22,10 @@ export class TripPriceService {
     });
 
     return priceMap;
+  }
+
+  public getCarriagePrice(carriage: string, carriageInfo: CarriageInfo[]): number {
+    const carriageDetails = carriageInfo.find((info) => info.name === carriage);
+    return carriageDetails ? carriageDetails.price : 0;
   }
 }

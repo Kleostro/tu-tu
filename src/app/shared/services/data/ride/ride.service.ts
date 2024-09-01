@@ -19,39 +19,33 @@ export class RideService {
   private tripCarriagesService = inject(TripCarriagesService);
 
   public createCurrentRide(routeInfo: GroupedRoute, schedule: Schedule, tripPoints: TripPoints): CurrentRide {
-    const routeStations = this.tripStationsService.getRouteStations(routeInfo.path);
+    const { path, carriages, routeId } = routeInfo;
+    const { segments, rideId } = schedule;
+    const routeStations = this.tripStationsService.getRouteStations(path);
     const tripStations = this.tripStationsService.getTripStations(tripPoints);
     const tripStationIds = this.tripStationsService.getTripStationIds(tripStations);
-    const routeStationIds = this.tripStationsService.getRouteStationIds(routeInfo.path);
-    const tripStationIndices = this.tripStationsService.getTripStationIndices(routeInfo.path, tripStationIds);
+    const routeStationIds = this.tripStationsService.getRouteStationIds(path);
+    const { start, end } = tripStationIds;
+    const tripStationIndices = this.tripStationsService.getTripStationIndices(path, start, end);
     const tripDates = this.tripDatesService.getTripDates(schedule, tripStationIndices);
-    const { carriages } = routeInfo;
-    const aggregatedPriceMap = this.tripPriceService.aggregatePrices(schedule.segments, tripStationIndices);
-    const stationsInfo = this.tripStationsService.createStationsInfo(routeInfo.path, schedule, tripStationIndices);
+    const aggregatedPriceMap = this.tripPriceService.aggregatePrices(segments, tripStationIndices);
+    const stationsInfo = this.tripStationsService.createStationsInfo(path, schedule, tripStationIndices);
 
-    const trainCarriages = this.tripCarriagesService.countTrainCarriages(
-      carriages,
-      schedule.segments,
-      tripStationIndices,
-    );
+    const trainCarriages = this.tripCarriagesService.countTrainCarriages(carriages, segments, tripStationIndices);
     const freeSeatsMap = this.tripCarriagesService.calculateFreeSeats(trainCarriages);
-    const carriageInfo = this.tripCarriagesService.createCarriageInfo(
-      routeInfo.carriages,
-      aggregatedPriceMap,
-      freeSeatsMap,
-    );
+    const carriageInfo = this.tripCarriagesService.createCarriageInfo(carriages, aggregatedPriceMap, freeSeatsMap);
 
     return {
-      rideId: schedule.rideId,
-      routeId: routeInfo.routeId,
+      rideId,
+      routeId,
       routeStartStation: routeStations.start,
       routeEndStation: routeStations.end,
       tripStartStation: tripStations.start,
       tripEndStation: tripStations.end,
       routeStartStationId: routeStationIds.start,
       routeEndStationId: routeStationIds.end,
-      tripStartStationId: tripStationIds.start,
-      tripEndStationId: tripStationIds.end,
+      tripStartStationId: start,
+      tripEndStationId: end,
       tripDepartureDate: tripDates.departure,
       tripArrivalDate: tripDates.arrival,
       trainCarriages,
