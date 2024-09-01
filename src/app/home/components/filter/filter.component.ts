@@ -31,7 +31,6 @@ export class FilterComponent implements AfterViewInit {
   @Input() public tripData!: TripData | null;
 
   @ViewChildren('tabView') private tabs!: QueryList<ElementRef<HTMLElement>>;
-
   public groupRoutes!: GroupedRoutes;
 
   constructor() {
@@ -42,7 +41,8 @@ export class FilterComponent implements AfterViewInit {
   }
 
   public scrollToActiveTab(index: number): void {
-    const activeTab = this.tabs.toArray()[index].nativeElement;
+    const innerElement = this.tabs.toArray()[index].nativeElement;
+    const activeTab = innerElement.closest('.p-highlight');
     if (activeTab) {
       activeTab.scrollIntoView({ behavior: 'auto', inline: 'center' });
     }
