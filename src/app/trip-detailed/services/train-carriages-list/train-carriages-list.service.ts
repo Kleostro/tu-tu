@@ -18,7 +18,9 @@ export class TrainCarriagesListService {
   public currentCarriages: Carriage[] = [];
 
   constructor() {
-    this.setInitialCarriages();
+    setTimeout(() => {
+      this.setInitialCarriages();
+    }, 300);
   }
 
   private setInitialCarriages(): void {

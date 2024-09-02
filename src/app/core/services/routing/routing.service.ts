@@ -4,6 +4,7 @@ import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 
 import { filter } from 'rxjs';
 
+import { OrderTripPoints } from '@/app/home/models/groupedRoutes.model';
 import { APP_ROUTE } from '@/app/shared/constants/routes';
 
 @Injectable({
@@ -19,10 +20,14 @@ export class RoutingService {
   public isDetailedPage$$ = signal<boolean>(false);
   public isAdminCarriagesPage$$ = signal<boolean>(false);
   public currentRideId$$ = signal<string>('');
+  public currentTripPoints$$ = signal<OrderTripPoints>({ from: '', to: '' });
 
   constructor() {
-    this.activatedRoute.queryParams.subscribe((params) => {
+    this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.queryParams$$.set(params);
+      if (params['from'] && params['to'] && typeof params['from'] === 'string' && typeof params['to'] === 'string') {
+        this.currentTripPoints$$.set({ from: params['from'], to: params['to'] });
+      }
     });
 
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {

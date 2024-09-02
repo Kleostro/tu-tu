@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 
-import { Schedule } from '@/app/api/models/search';
+import { OrderSchedule, Schedule } from '@/app/api/models/search';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 import { OrderTripPoints, TripPoints } from '@/app/home/models/groupedRoutes.model';
 import { StationInfo } from '@/app/shared/models/stationInfo.model';
@@ -54,7 +54,7 @@ export class TripStationsService {
     };
   }
 
-  public createStationsInfo(paths: number[], schedule: Schedule, indices: TripIndices): StationInfo[] {
+  public createStationsInfo(paths: number[], schedule: Schedule | OrderSchedule, indices: TripIndices): StationInfo[] {
     const pathsLength = paths.length;
     const stations = this.stationsService.allStations();
     const stationMap = new Map<number, string>();

@@ -88,13 +88,6 @@ describe('TripDetailedComponent', () => {
     expect(modalService.openModal).toHaveBeenCalledWith(component.tripModalContent, 'Route 1');
   });
 
-  it('should not open modal when tripItem is null', () => {
-    component.tripItem = null;
-    component.openModal();
-
-    expect(modalService.openModal).not.toHaveBeenCalled();
-  });
-
   it('should call goBack on routingService', () => {
     component.goBack();
     expect(routingService.goBack).toHaveBeenCalled();

@@ -1,7 +1,10 @@
-<div class="wrapper">
-  @if (authService.isAdmin$$()) {
-    <app-orders-list [users]="ordersService.allUsers()"></app-orders-list>
-  } @else {
-    <app-orders-list></app-orders-list>
-  }
-</div>
+@let users = ordersService.allUsers();
+@if (users) {
+  <div class="wrapper">
+    @if (authService.isAdmin$$()) {
+      <app-orders-list [users]="users"></app-orders-list>
+    } @else {
+      <app-orders-list></app-orders-list>
+    }
+  </div>
+}

@@ -16,7 +16,11 @@ export class TripDatesService {
     };
   }
 
-  public getArrivalAndDepartureDates(index: number, pathsLength: number, schedule: Schedule): RouteDates {
+  public getArrivalAndDepartureDates(
+    index: number,
+    pathsLength: number,
+    schedule: Schedule | OrderSchedule,
+  ): RouteDates {
     let arrivalDate = '';
     let departureDate = '';
 

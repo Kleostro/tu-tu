@@ -23,9 +23,11 @@ export class OrdersComponent implements OnInit {
   public authService = inject(AuthService);
 
   public ngOnInit(): void {
-    if (this.authService.isAdmin$$()) {
-      this.ordersService.getAllUsers().subscribe();
-    }
-    this.userOrderService.createUserOrders();
+    setTimeout(() => {
+      if (this.authService.isAdmin$$()) {
+        this.ordersService.getAllUsers().subscribe();
+      }
+      this.userOrderService.createUserOrders();
+    }, 600);
   }
 }
