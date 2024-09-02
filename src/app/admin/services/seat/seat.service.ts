@@ -1,12 +1,11 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { catchError, EMPTY, of } from 'rxjs';
 
 import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { OrdersService } from '@/app/api/ordersService/orders.service';
-import { CurrentRide } from '@/app/home/models/currentRide.model';
 import { template } from '@/app/shared/constants/string-templates';
+import { CurrentRide } from '@/app/shared/models/currentRide.model';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 import { stringTemplate } from '@/app/shared/utils/string-template';
 
@@ -18,7 +17,6 @@ import { isOrderId } from './helpers/helper';
 export class SeatService {
   private orderService = inject(OrdersService);
   private userMessageService = inject(UserMessageService);
-  private router = inject(Router);
 
   public selectedSeat$$ = signal<number | null>(null);
   public seatPrice$$ = signal<number | null>(null);

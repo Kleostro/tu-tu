@@ -1,10 +1,9 @@
-import { Segment } from './search';
+import { OrderSchedule } from './search';
 
 export interface RideInfo {
+  routeId: number;
   rideId: number;
   path: number[];
   carriages: string[];
-  schedule: {
-    segments: Segment[];
-  };
+  schedule: OrderSchedule;
 }

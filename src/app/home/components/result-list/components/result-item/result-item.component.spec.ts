@@ -1,12 +1,13 @@
 import { DatePipe } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { TimelineModule } from 'primeng/timeline';
+import { of } from 'rxjs';
 
-import { CurrentRide } from '@/app/home/models/currentRide.model';
+import { CurrentRide } from '@/app/shared/models/currentRide.model';
 
 import { ResultItemComponent } from './result-item.component';
 
@@ -17,7 +18,17 @@ describe('ResultItemComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterModule, TimelineModule, ButtonModule, ResultItemComponent],
-      providers: [DatePipe, provideHttpClient()],
+      providers: [
+        DatePipe,
+        provideHttpClient(),
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParams: of({}),
+            snapshot: { params: {} },
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ResultItemComponent);

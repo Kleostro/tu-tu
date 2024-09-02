@@ -7,14 +7,16 @@ import { RippleModule } from 'primeng/ripple';
 import { TabViewChangeEvent, TabViewModule } from 'primeng/tabview';
 
 import { SeatService } from '@/app/admin/services/seat/seat.service';
+import { RideInfo } from '@/app/api/models/trip-detailed';
+import { TripDetailedService } from '@/app/api/tripDetailedService/trip-detailed.service';
 import { AuthService } from '@/app/auth/services/auth-service/auth.service';
-import STORE_KEYS from '@/app/core/constants/store';
-import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
 import { RoutingService } from '@/app/core/services/routing/routing.service';
-import { CarriageInfo } from '@/app/home/models/carriageInfo.model';
-import { CurrentRide } from '@/app/home/models/currentRide.model';
 import { ResultListService } from '@/app/home/services/result-list/result-list.service';
 import { template } from '@/app/shared/constants/string-templates';
+import { CarriageInfo } from '@/app/shared/models/carriageInfo.model';
+import { CurrentRide } from '@/app/shared/models/currentRide.model';
+import { RideService } from '@/app/shared/services/data/ride/ride.service';
+import { TripStationsService } from '@/app/shared/services/data/tripStations/trip-stations.service';
 import { ModalService } from '@/app/shared/services/modal/modal.service';
 import { stringTemplate } from '@/app/shared/utils/string-template';
 
@@ -23,7 +25,6 @@ import { TripDetailsComponent } from '../../../home/components/trip-details/trip
 import { TripTimelineComponent } from '../../../home/components/trip-timeline/trip-timeline.component';
 import { TrainCarriagesListComponent } from '../../components/train-carriages-list/train-carriages-list.component';
 import { TrainCarriagesListService } from '../../services/train-carriages-list/train-carriages-list.service';
-import { isCurrentRide } from './helpers/helper';
 
 @Component({
   selector: 'app-trip-detailed',
@@ -45,23 +46,40 @@ import { isCurrentRide } from './helpers/helper';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TripDetailedComponent implements OnInit, OnDestroy {
+  private tripDetailedService = inject(TripDetailedService);
   private resultListService = inject(ResultListService);
   private routingService = inject(RoutingService);
   private modalService = inject(ModalService);
-  private localStorageService = inject(LocalStorageService);
   private trainCarriagesListService = inject(TrainCarriagesListService);
   private authService = inject(AuthService);
 
+  public tripStationsService = inject(TripStationsService);
+  public rideService = inject(RideService);
   public seatService = inject(SeatService);
 
-  public tripItem!: CurrentRide | null;
+  public tripItem!: CurrentRide;
 
   @ViewChild('tripModalContent') public tripModalContent!: TemplateRef<unknown>;
   @ViewChild('loginModalContent') public loginModalContent!: TemplateRef<unknown>;
 
   public ngOnInit(): void {
-    this.tripItem = this.findRideById() ?? this.getCurrentRideFromLocalStorage();
+    setTimeout(() => {
+      const rideId = +this.routingService.currentRideId$$();
+      this.tripDetailedService.getRideInfo(rideId).subscribe((ride) => {
+        this.initializeRide(ride);
+        this.setInitialValues();
+      });
+    }, 200);
+  }
 
+  private initializeRide(ride: RideInfo): void {
+    const tripPoints = this.routingService.currentTripPoints$$();
+    const currentRide = this.rideService.createCurrentRideById(ride, ride.schedule, tripPoints);
+    this.rideService.rideFromId$$.set(currentRide);
+    this.tripItem = this.findRideById() || currentRide;
+  }
+
+  private setInitialValues(): void {
     const firstCarriage = this.takeTabsCarriageType()[0].type;
     this.updateCarriagesList(firstCarriage);
     this.setInitialPrice(firstCarriage);
@@ -81,15 +99,6 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getCurrentRideFromLocalStorage(): CurrentRide | null {
-    const currentRide = this.localStorageService.getValueByKey(STORE_KEYS.CURRENT_RIDE);
-    if (!isCurrentRide(currentRide)) {
-      return null;
-    }
-    this.resultListService.currentResultList$$.set([currentRide]);
-    return isCurrentRide(currentRide) ? currentRide : null;
-  }
-
   private findRideById(): CurrentRide | null {
     return (
       this.resultListService
@@ -103,9 +112,6 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
   }
 
   public takeTabsCarriageType(): { name: string; type: string }[] {
-    if (!this.tripItem) {
-      return [];
-    }
     return this.tripItem.carriageInfo
       .map((carriage) => ({ name: carriage.name, type: carriage.type }))
       .sort((a, b) => a.type.localeCompare(b.type));
@@ -120,7 +126,7 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
   }
 
   private findCarriage(carriageType: string): CarriageInfo | null {
-    return this.tripItem?.carriageInfo.find((carriage) => carriage.type === carriageType) ?? null;
+    return this.tripItem.carriageInfo.find((carriage) => carriage.type === carriageType) ?? null;
   }
 
   public onTabChange(event: TabViewChangeEvent, price: number): void {
@@ -133,7 +139,7 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
 
   private updateCarriagesList(carriageType: string): void {
     this.trainCarriagesListService.currentCarriageType$$.set(carriageType);
-    this.trainCarriagesListService.currentCarriages$$.set(this.tripItem?.carriages ?? []);
+    this.trainCarriagesListService.currentCarriages$$.set(this.tripItem.carriages);
   }
 
   public ngOnDestroy(): void {
@@ -142,7 +148,7 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
 
   public bookSeat(): void {
     if (this.authService.isLoggedIn$$()) {
-      this.seatService.bookSelectedSeat(this.tripItem!);
+      this.seatService.bookSelectedSeat(this.tripItem);
     } else {
       this.modalService.openModal(this.loginModalContent);
     }

@@ -1,8 +1,8 @@
-<div>
-  <div>
-    @for (order of orders; track order.id) {
-      @let user = ordersService.findUserById(order.userId) ?? null;
-      <app-order [order]="order" [user]="user"></app-order>
+@if (userOrderService.currentOrders$$() && users) {
+  <div class="orders-list">
+    @for (order of userOrderService.currentOrders$$(); track order.orderId) {
+      @let user = ordersService.findUserById(order.userId);
+      <app-order [order]="order" [user]="user!"></app-order>
     }
   </div>
-</div>
+}

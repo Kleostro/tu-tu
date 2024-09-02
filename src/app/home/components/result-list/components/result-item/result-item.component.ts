@@ -1,15 +1,14 @@
 import { CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, Input, TemplateRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 
 import STORE_KEYS from '@/app/core/constants/store';
 import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
-import { CarriageInfo } from '@/app/home/models/carriageInfo.model';
-import { CurrentRide } from '@/app/home/models/currentRide.model';
-import { APP_ROUTE } from '@/app/shared/constants/routes';
 import { template } from '@/app/shared/constants/string-templates';
+import { CarriageInfo } from '@/app/shared/models/carriageInfo.model';
+import { CurrentRide } from '@/app/shared/models/currentRide.model';
 import { ModalService } from '@/app/shared/services/modal/modal.service';
 import { stringTemplate } from '@/app/shared/utils/string-template';
 
@@ -19,7 +18,7 @@ import { TripTimelineComponent } from '../../../trip-timeline/trip-timeline.comp
 @Component({
   selector: 'app-result-item',
   standalone: true,
-  imports: [CurrencyPipe, ButtonModule, TripDetailsComponent, TripTimelineComponent],
+  imports: [CurrencyPipe, ButtonModule, TripDetailsComponent, TripTimelineComponent, RouterLink],
   templateUrl: './result-item.component.html',
   styleUrl: './result-item.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,15 +39,6 @@ export class ResultItemComponent {
       this.modalContent,
       stringTemplate(template.ROUTE_TITLE, { id: this.resultItem.routeId }),
     );
-  }
-
-  public redirectToDetailed(): void {
-    this.saveCurrentRide();
-    const { rideId, tripStartStationId, tripEndStationId } = this.resultItem;
-
-    this.router.navigate([stringTemplate(template.DETAILED_PAGE_PATH, { route: APP_ROUTE.TRIP, id: rideId })], {
-      queryParams: { from: tripStartStationId, to: tripEndStationId },
-    });
   }
 
   private saveCurrentRide(): void {

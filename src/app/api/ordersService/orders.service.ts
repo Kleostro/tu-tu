@@ -5,7 +5,6 @@ import { Observable, shareReplay, tap } from 'rxjs';
 
 import ENDPOINTS from '../constants/constants';
 import { Order, OrderId, OrderRequest, User } from '../models/order';
-import { ordersDummyData } from './orders.data';
 
 @Injectable({
   providedIn: 'root',
@@ -15,21 +14,22 @@ export class OrdersService {
   public allOrders = signal<Order[]>([]);
   public allUsers = signal<User[]>([]);
 
+  constructor() {
+    this.getAllOrders().subscribe();
+    this.getAllUsers().subscribe();
+  }
+
   public getOrders(): Observable<Order[]> {
     return this.httpClient.get<Order[]>(ENDPOINTS.ORDER).pipe(
       shareReplay(1),
-      // Temporar solution with hardcoded data
-      // tap((orders) => this.allOrders.set(orders)),
-      tap(() => this.allOrders.set(ordersDummyData.filter((order) => order.userId === 3))),
+      tap((orders) => this.allOrders.set(orders)),
     );
   }
 
   public getAllOrders(): Observable<Order[]> {
     return this.httpClient.get<Order[]>(`${ENDPOINTS.ORDER}?all=true`).pipe(
       shareReplay(1),
-      // Temporar solution with hardcoded data
-      // tap((orders) => this.allOrders.set(orders)),
-      tap(() => this.allOrders.set(ordersDummyData)),
+      tap((orders) => this.allOrders.set(orders)),
     );
   }
 

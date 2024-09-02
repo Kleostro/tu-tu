@@ -1,9 +1,9 @@
 import { Carriage } from '@/app/api/models/carriage';
-import { CarriageInfo } from '@/app/home/models/carriageInfo.model';
-import { CurrentRide } from '@/app/home/models/currentRide.model';
-import { StationInfo } from '@/app/home/models/stationInfo.model';
-import { TrainCarriage } from '@/app/home/models/trainCarriage.model';
-import { TrainCarriages } from '@/app/home/models/trainCarriages.model';
+import { CarriageInfo } from '@/app/shared/models/carriageInfo.model';
+import { CurrentRide } from '@/app/shared/models/currentRide.model';
+import { StationInfo } from '@/app/shared/models/stationInfo.model';
+import { TrainCarriage } from '@/app/shared/models/trainCarriage.model';
+import { TrainCarriages } from '@/app/shared/models/trainCarriages.model';
 
 const isCarriageInfoArray = (data: unknown): data is CarriageInfo[] =>
   Array.isArray(data) && data.every((item) => typeof item === 'object' && item !== null);

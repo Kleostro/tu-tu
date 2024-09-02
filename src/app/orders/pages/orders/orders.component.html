@@ -1,9 +1,10 @@
-<div class="wrapper">
-  @let orders = ordersService.allOrders();
-  @let users = ordersService.allUsers();
-  @if (isManager) {
-    <app-orders-list [orders]="orders" [users]="users"></app-orders-list>
-  } @else {
-    <app-orders-list [orders]="orders"></app-orders-list>
-  }
-</div>
+@let users = ordersService.allUsers();
+@if (users) {
+  <div class="wrapper">
+    @if (authService.isAdmin$$()) {
+      <app-orders-list [users]="users"></app-orders-list>
+    } @else {
+      <app-orders-list></app-orders-list>
+    }
+  </div>
+}

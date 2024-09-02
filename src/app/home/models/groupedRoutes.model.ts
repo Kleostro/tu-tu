@@ -6,6 +6,8 @@ export interface TripPoints {
   date: string;
 }
 
+export type OrderTripPoints = Omit<TripPoints, 'date'>;
+
 export interface GroupedRoute {
   routeId: number;
   path: number[];

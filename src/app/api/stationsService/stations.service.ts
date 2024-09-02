@@ -15,7 +15,9 @@ export class StationsService {
   public allStationNames = computed(() => this.allStations().map((station) => station.city));
 
   constructor() {
-    this.getStations();
+    this.getStations().subscribe(() => {
+      this.allStations.set(this.allStations());
+    });
   }
 
   public getStations(): Observable<Station[]> {

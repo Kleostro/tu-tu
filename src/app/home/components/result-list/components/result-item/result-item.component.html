@@ -1,4 +1,8 @@
-<div class="item-wrapper" (click)="redirectToDetailed()">
+<div
+  class="item-wrapper"
+  [routerLink]="'/trip/' + resultItem.rideId"
+  [queryParams]="{ from: resultItem.tripStartStationId, to: resultItem.tripEndStationId }"
+>
   <div class="item">
     <app-trip-timeline
       [departureDate]="resultItem.tripDepartureDate"
@@ -11,8 +15,6 @@
       <div class="from-to-stations">
         <i class="material-icons">train</i>{{ resultItem.routeStartStation }} - {{ resultItem.routeEndStation }}
       </div>
-
-      <span>Ride ID: {{ resultItem.rideId }}</span>
 
       <p-button #buttonElement class="route-button" label="Route" text (click)="openModal($event)">
         <i class="material-icons">route</i>

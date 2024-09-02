@@ -19,6 +19,8 @@ export interface Schedule {
   occupiedSeats?: number[];
 }
 
+export type OrderSchedule = Omit<Schedule, 'rideId'>;
+
 export interface Route {
   id: number;
   path: number[];

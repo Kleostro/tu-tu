@@ -18,8 +18,8 @@ import { ModalService } from '@/app/shared/services/modal/modal.service';
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
+import { isOverriddenHttpErrorResponse } from '../../../api/helpers/isOverriddenHttpErrorResponse';
 import { SignUpService } from '../../../api/signUpService/sign-up.service';
-import { isOverriddenHttpErrorResponse } from './helpers/helper';
 
 @Injectable({
   providedIn: 'root',

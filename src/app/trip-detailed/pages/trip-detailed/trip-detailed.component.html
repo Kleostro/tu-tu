@@ -1,5 +1,6 @@
-<div class="page-wrapper">
-  @if (tripItem) {
+@let ride = rideService.rideFromId$$();
+@if (tripItem || ride) {
+  <div class="page-wrapper">
     <p-button icon="pi pi-chevron-left" [rounded]="true" [text]="true" (onClick)="goBack()" />
     <h1 class="title">Book your trip from {{ tripItem.tripStartStation }} to {{ tripItem.tripEndStation }}</h1>
     <h2 class="ride-id">Ride {{ tripItem.rideId }}</h2>
@@ -40,7 +41,7 @@
               }
             </div>
           </ng-template>
-          <app-train-carriages-list></app-train-carriages-list>
+          <app-train-carriages-list [carriageType]="tab.type" [currentRide]="tripItem"></app-train-carriages-list>
         </p-tabPanel>
       }
     </p-tabView>
@@ -55,7 +56,9 @@
         </ng-template>
         <div class="seat-info">
           <p class="m-0">
-            from <span class="variable">{{ tripItem.tripStartStation }}</span> to
+            From
+            <span class="variable">{{ tripItem.tripStartStation }}</span>
+            to
             <span class="variable">{{ tripItem.tripEndStation }}</span>
           </p>
           <p class="m-0">
@@ -91,8 +94,8 @@
         <p-button label="Book a seat" class="book-button" (click)="bookSeat()"></p-button>
       </p-fieldset>
     }
-  }
-</div>
+  </div>
+}
 
 <ng-template #tripModalContent>
   <app-trip-details [trip]="tripItem"></app-trip-details>
