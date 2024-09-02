@@ -29,6 +29,7 @@
   display: flex;
   flex-direction: column;
   gap: 3rem;
+  justify-content: center;
 
   width: 100%;
   max-height: 20rem;
@@ -78,4 +79,8 @@
 
 .right-line {
   margin-left: 0.5rem;
+}
+
+.disabled {
+  pointer-events: none;
 }

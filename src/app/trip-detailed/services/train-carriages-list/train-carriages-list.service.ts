@@ -9,31 +9,15 @@ import { Carriage } from '@/app/api/models/carriage';
 export class TrainCarriagesListService {
   private carriageService = inject(CarriageService);
 
-  private allCarriages$$ = signal<Carriage[]>([]);
-
   public currentCarriages$$ = signal<string[]>([]);
   public currentTrainCarriages$$ = signal<Carriage[]>([]);
   public currentCarriageType$$ = signal<string>('');
 
   public currentCarriages: Carriage[] = [];
 
-  constructor() {
-    setTimeout(() => {
-      this.setInitialCarriages();
-    }, 300);
-  }
-
-  private setInitialCarriages(): void {
-    this.carriageService.getCarriages().subscribe((carriages) => {
-      this.allCarriages$$.set(carriages);
-      this.updateCurrentCarriages(carriages);
-      this.currentTrainCarriages$$.set(this.currentCarriages);
-    });
-  }
-
-  public setCurrentCarriages(): void {
+  public setInitialCarriages(): void {
     this.currentCarriages = [];
-    this.updateCurrentCarriages(this.allCarriages$$());
+    this.updateCurrentCarriages(this.carriageService.allCarriages());
     this.currentTrainCarriages$$.set(this.currentCarriages);
   }
 

@@ -39,6 +39,9 @@
             @if (latitude.hasError('required')) {
               <small class="p-error">Please enter a latitude!</small>
             }
+            @if (latitude.hasError('min') || latitude.hasError('max')) {
+              <small class="p-error">Please enter a valid latitude!</small>
+            }
           </ng-container>
         }
       }
@@ -59,6 +62,9 @@
           <ng-container>
             @if (longitude.hasError('required')) {
               <small class="p-error">Please enter a longitude!</small>
+            }
+            @if (longitude.hasError('min') || longitude.hasError('max')) {
+              <small class="p-error">Please enter a valid longitude!</small>
             }
           </ng-container>
         }

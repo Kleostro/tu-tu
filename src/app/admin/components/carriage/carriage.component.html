@@ -19,7 +19,7 @@
       }
     </div>
 
-    <div class="car-bottom">
+    <div class="car-bottom" [class]="!isInteractive() ? 'disabled' : ''">
       <div class="seats">
         @if (seatsSchema(); as seatsSchema) {
           <div class="right-seats">
@@ -29,20 +29,15 @@
                 @for (rightSeat of rightRow; let index = $index; track index) {
                   @let seatNumber = firstSeat() + rightSeat;
                   <app-seat
-                    [seatNumber]="seatNumber"
                     [classes]="[
                       'right',
                       i === seatsSchema.rightSeats.length - 1 ? 'first-seat' : '',
                       isInteractive() ? 'interactive' : '',
-                      isOccupiedSeat(seatNumber) ? 'occupied-seat' : 'free-seat',
-                      seatService.selectedSeat$$() === seatNumber ? 'selected-seat' : '',
-                      seatService.bookedSeatNumber$$() === seatNumber ? 'occupied-seat' : '',
                     ]"
-                    (click)="
-                      seatService.selectedSeat$$.set(seatNumber);
-                      seatService.seatCarriageName$$.set(carriage.name);
-                      seatService.seatCarriageNumber$$.set(carriageNumber())
-                    "
+                    [carriageName]="carriage.name"
+                    [carriageNumber]="carriageNumber()"
+                    [seatNumber]="seatNumber"
+                    [isOccupiedSeat]="isOccupiedSeat(seatNumber)"
                   ></app-seat>
                 }
               </div>
@@ -56,16 +51,11 @@
                 @for (leftSeat of leftRow; track leftSeat) {
                   @let seatNumber = firstSeat() + leftSeat;
                   <app-seat
+                    [classes]="['left', i === 0 ? 'first-seat' : '', isInteractive() ? 'interactive' : '']"
+                    [carriageName]="carriage.name"
+                    [carriageNumber]="carriageNumber()"
                     [seatNumber]="seatNumber"
-                    [classes]="[
-                      'left',
-                      i === 0 ? 'first-seat' : '',
-                      isInteractive() ? 'interactive' : '',
-                      isOccupiedSeat(seatNumber) ? 'occupied-seat' : 'free-seat',
-                      seatService.selectedSeat$$() === seatNumber ? 'selected-seat' : '',
-                      seatService.bookedSeatNumber$$() === seatNumber ? 'occupied-seat' : '',
-                    ]"
-                    (click)="seatService.selectedSeat$$.set(seatNumber)"
+                    [isOccupiedSeat]="isOccupiedSeat(seatNumber)"
                   ></app-seat>
                 }
               </div>

@@ -1,5 +1,5 @@
 @let ride = rideService.rideFromId$$();
-@if (tripItem || ride) {
+@if (tripItem && ride) {
   <div class="page-wrapper">
     <p-button icon="pi pi-chevron-left" [rounded]="true" [text]="true" (onClick)="goBack()" />
     <h1 class="title">Book your trip from {{ tripItem.tripStartStation }} to {{ tripItem.tripEndStation }}</h1>

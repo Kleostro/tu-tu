@@ -19,7 +19,7 @@ export class RideService {
   private tripDatesService = inject(TripDatesService);
   private tripPriceService = inject(TripPriceService);
   private tripCarriagesService = inject(TripCarriagesService);
-  public trainCarriagesListService = inject(TrainCarriagesListService);
+  private trainCarriagesListService = inject(TrainCarriagesListService);
 
   public rideFromId$$ = signal<CurrentRide | null>(null);
 
@@ -76,7 +76,7 @@ export class RideService {
     const freeSeatsMap = this.tripCarriagesService.calculateFreeSeats(trainCarriages);
     const carriageInfo = this.tripCarriagesService.createCarriageInfo(carriages, aggregatedPriceMap, freeSeatsMap);
     this.trainCarriagesListService.currentCarriages$$.set(carriages);
-    this.trainCarriagesListService.setCurrentCarriages();
+
     return {
       rideId,
       routeId,

@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+
+import { SeatService } from '../../services/seat/seat.service';
 
 @Component({
   selector: 'app-seat',
@@ -9,6 +11,10 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeatComponent {
+  public seatService = inject(SeatService);
+  public carriageName = input<string>('');
+  public carriageNumber = input<number>(NaN);
   public seatNumber = input<number>(NaN);
   public classes = input<string[]>([]);
+  public isOccupiedSeat = input(false);
 }

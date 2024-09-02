@@ -31,4 +31,7 @@ export const USER_MESSAGE = {
   CONNECTION_LOST_ERROR: 'Connection is lost! Please check your internet connection and try again.',
   NO_STATIONS_FOUND_ERROR:
     "Sorry, we couldn't find any stations in the cities you're looking for. Please try searching for another city.",
+  ORDER_CANCELED_SUCCESSFULLY: 'Order canceled successfully!',
+  ORDER_CANCELED_ERROR: "We couldn't cancel your order. Please try again.",
+  INVALID_TIME: 'Invalid time! Please choose a time in the future.',
 };

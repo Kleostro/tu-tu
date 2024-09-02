@@ -7,7 +7,9 @@ import { RippleModule } from 'primeng/ripple';
 import { TabViewChangeEvent, TabViewModule } from 'primeng/tabview';
 
 import { SeatService } from '@/app/admin/services/seat/seat.service';
+import { CarriageService } from '@/app/api/carriagesService/carriage.service';
 import { RideInfo } from '@/app/api/models/trip-detailed';
+import { StationsService } from '@/app/api/stationsService/stations.service';
 import { TripDetailedService } from '@/app/api/tripDetailedService/trip-detailed.service';
 import { AuthService } from '@/app/auth/services/auth-service/auth.service';
 import { RoutingService } from '@/app/core/services/routing/routing.service';
@@ -52,7 +54,8 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
   private trainCarriagesListService = inject(TrainCarriagesListService);
   private authService = inject(AuthService);
-
+  private stationsService = inject(StationsService);
+  private carriageService = inject(CarriageService);
   public tripStationsService = inject(TripStationsService);
   public rideService = inject(RideService);
   public seatService = inject(SeatService);
@@ -63,20 +66,24 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
   @ViewChild('loginModalContent') public loginModalContent!: TemplateRef<unknown>;
 
   public ngOnInit(): void {
-    setTimeout(() => {
-      const rideId = +this.routingService.currentRideId$$();
-      this.tripDetailedService.getRideInfo(rideId).subscribe((ride) => {
-        this.initializeRide(ride);
-        this.setInitialValues();
-      });
-    }, 200);
+    this.carriageService.getCarriages().subscribe((carriages) => {
+      this.carriageService.allCarriages.set(carriages);
+      this.trainCarriagesListService.currentTrainCarriages$$.set(carriages);
+      this.stationsService.getStations().subscribe(() =>
+        this.tripDetailedService.getRideInfo(+this.routingService.currentRideId$$()).subscribe((ride) => {
+          this.initializeRide(ride);
+          this.setInitialValues();
+          this.trainCarriagesListService.setInitialCarriages();
+        }),
+      );
+    });
   }
 
   private initializeRide(ride: RideInfo): void {
     const tripPoints = this.routingService.currentTripPoints$$();
     const currentRide = this.rideService.createCurrentRideById(ride, ride.schedule, tripPoints);
     this.rideService.rideFromId$$.set(currentRide);
-    this.tripItem = this.findRideById() || currentRide;
+    this.tripItem = currentRide;
   }
 
   private setInitialValues(): void {
@@ -134,7 +141,6 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
     this.seatService.seatPrice$$.set(price);
     this.seatService.selectedSeat$$.set(null);
     this.updateCarriagesList(selectedCarriageType.type);
-    this.trainCarriagesListService.setCurrentCarriages();
   }
 
   private updateCarriagesList(carriageType: string): void {

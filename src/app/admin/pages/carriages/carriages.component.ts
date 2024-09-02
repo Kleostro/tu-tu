@@ -1,4 +1,3 @@
-import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 
 import { ButtonModule } from 'primeng/button';
@@ -16,14 +15,7 @@ import { CreateCarriageFormComponent } from '../../components/create-carriage-fo
 @Component({
   selector: 'app-carriages',
   standalone: true,
-  imports: [
-    CarriagesListComponent,
-    ButtonModule,
-    RippleModule,
-    AsyncPipe,
-    CreateCarriageFormComponent,
-    ProgressSpinnerModule,
-  ],
+  imports: [CarriagesListComponent, ButtonModule, RippleModule, CreateCarriageFormComponent, ProgressSpinnerModule],
   templateUrl: './carriages.component.html',
   styleUrl: './carriages.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,7 +34,7 @@ export class CarriagesComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.subsciption.add(
       this.carriageService.getCarriages().subscribe((carriages) => {
-        this.carriageService.setAllCarriages(carriages);
+        this.carriageService.allCarriages.set(carriages);
         this.cdr.detectChanges();
       }),
     );

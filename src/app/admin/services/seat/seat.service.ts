@@ -57,4 +57,16 @@ export class SeatService {
         });
     }
   }
+
+  public selectSeat(seatNumber: number, carriageName: string, carriageNumber: number): void {
+    if (this.selectedSeat$$() !== seatNumber) {
+      this.selectedSeat$$.set(seatNumber);
+      this.seatCarriageName$$.set(carriageName);
+      this.seatCarriageNumber$$.set(carriageNumber);
+    } else {
+      this.selectedSeat$$.set(null);
+      this.seatCarriageName$$.set(null);
+      this.seatCarriageNumber$$.set(null);
+    }
+  }
 }
