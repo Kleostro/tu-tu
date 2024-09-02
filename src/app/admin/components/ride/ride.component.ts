@@ -48,6 +48,11 @@ export class RideComponent implements OnDestroy {
     const currentRide = this.ride();
     if (currentRide) {
       this.isTimeEdited.set(false);
+      if (event.from && event.to && new Date(event.from) < new Date(event.to)) {
+        this.userMessageService.showErrorMessage(USER_MESSAGE.INVALID_TIME);
+        this.isTimeEdited.set(true);
+        return;
+      }
       this.subscription.add(
         this.rideService
           .updateRide(
@@ -57,9 +62,11 @@ export class RideComponent implements OnDestroy {
           )
           .pipe(take(1))
           .subscribe(() => {
-            this.rideService.getRouteById(this.rideService.currentRouteId()).subscribe(() => {
-              this.userMessageService.showSuccessMessage(USER_MESSAGE.RIDE_DATA_UPDATED_SUCCESSFULLY);
-              this.isTimeEdited.set(true);
+            this.rideService.getRouteById(this.rideService.currentRouteId()).subscribe({
+              next: () => {
+                this.userMessageService.showSuccessMessage(USER_MESSAGE.RIDE_DATA_UPDATED_SUCCESSFULLY);
+                this.isTimeEdited.set(true);
+              },
             });
           }),
       );

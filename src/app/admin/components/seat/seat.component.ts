@@ -16,4 +16,5 @@ export class SeatComponent {
   public carriageNumber = input<number>(NaN);
   public seatNumber = input<number>(NaN);
   public classes = input<string[]>([]);
+  public isOccupiedSeat = input(false);
 }

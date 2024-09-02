@@ -33,11 +33,11 @@
                       'right',
                       i === seatsSchema.rightSeats.length - 1 ? 'first-seat' : '',
                       isInteractive() ? 'interactive' : '',
-                      isOccupiedSeat(seatNumber) ? 'occupied-seat' : 'free-seat',
                     ]"
                     [carriageName]="carriage.name"
                     [carriageNumber]="carriageNumber()"
                     [seatNumber]="seatNumber"
+                    [isOccupiedSeat]="isOccupiedSeat(seatNumber)"
                   ></app-seat>
                 }
               </div>
@@ -51,15 +51,11 @@
                 @for (leftSeat of leftRow; track leftSeat) {
                   @let seatNumber = firstSeat() + leftSeat;
                   <app-seat
-                    [classes]="[
-                      'left',
-                      i === 0 ? 'first-seat' : '',
-                      isInteractive() ? 'interactive' : '',
-                      isOccupiedSeat(seatNumber) ? 'occupied-seat' : 'free-seat',
-                    ]"
+                    [classes]="['left', i === 0 ? 'first-seat' : '', isInteractive() ? 'interactive' : '']"
                     [carriageName]="carriage.name"
                     [carriageNumber]="carriageNumber()"
                     [seatNumber]="seatNumber"
+                    [isOccupiedSeat]="isOccupiedSeat(seatNumber)"
                   ></app-seat>
                 }
               </div>

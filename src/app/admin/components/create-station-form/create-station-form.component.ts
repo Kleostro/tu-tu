@@ -51,8 +51,8 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
 
   public createStationForm = this.fb.nonNullable.group({
     city: ['', [Validators.required.bind(this)]],
-    latitude: [0, [Validators.required.bind(this)]],
-    longitude: [0, [Validators.required.bind(this)]],
+    latitude: [0, [Validators.required.bind(this), Validators.min(-90), Validators.max(90)]],
+    longitude: [0, [Validators.required.bind(this), Validators.min(-180), Validators.max(180)]],
     connections: new FormArray([this.addConnection()]),
   });
 

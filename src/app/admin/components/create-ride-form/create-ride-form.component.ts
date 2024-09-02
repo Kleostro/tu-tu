@@ -54,6 +54,12 @@ export class CreateRideFormComponent implements OnInit, OnDestroy {
     }
 
     const { carriageTypes, times } = this.createRideForm.getRawValue();
+
+    if (times.some((time) => time.arrival && time.departure && new Date(time.arrival) < new Date(time.departure))) {
+      this.userMessageService.showErrorMessage(USER_MESSAGE.INVALID_TIME);
+      this.isRideCreated.set(true);
+      return;
+    }
     this.subscription.add(
       this.rideService
         .createRide(this.rideService.currentRouteId(), collectNewRideData(carriageTypes, times))
