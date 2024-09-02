@@ -6,7 +6,7 @@
       @for (tab of takeTabsDates(); track $index) {
         <p-tabPanel>
           <ng-template pTemplate="header">
-            <div class="tab-container">
+            <div class="tab-container" #tabView>
               <div class="tab-title-month">
                 {{ tab | date: 'MMMM d' }}
               </div>
