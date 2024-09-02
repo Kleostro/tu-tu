@@ -1,10 +1,9 @@
 @let users = ordersService.allUsers();
-@if (users) {
-  <div class="wrapper">
-    @if (authService.isAdmin$$()) {
-      <app-orders-list [users]="users"></app-orders-list>
-    } @else {
-      <app-orders-list></app-orders-list>
-    }
-  </div>
-}
+
+<div class="wrapper">
+  @if (authService.isAdmin$$() && userOrderService.currentOrders$$().length) {
+    <app-orders-list [users]="users"></app-orders-list>
+  } @else {
+    <app-orders-list></app-orders-list>
+  }
+</div>

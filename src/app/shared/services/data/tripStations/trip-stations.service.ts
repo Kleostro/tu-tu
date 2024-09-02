@@ -89,7 +89,6 @@ export class TripStationsService {
   }
 
   public getStationCityById(stationId: number): string {
-    this.stationsService.getStations();
     return this.stationsService.findStationById(stationId)?.city ?? PLACEHOLDER.CITY;
   }
 

@@ -1,8 +1,20 @@
-@if (userOrderService.currentOrders$$() && users) {
-  <div class="orders-list">
-    @for (order of userOrderService.currentOrders$$(); track order.orderId) {
-      @let user = ordersService.findUserById(order.userId);
-      <app-order [order]="order" [user]="user!"></app-order>
-    }
-  </div>
-}
+<div class="orders-list">
+  <ng-container *ngTemplateOutlet="paginator"></ng-container>
+  @for (order of orders().slice(firstPage, firstPage + rowsCount); track order.orderId) {
+    @let user = ordersService.findUserById(order.userId);
+    <app-order [order]="order" [user]="user"></app-order>
+  }
+  <ng-container *ngTemplateOutlet="paginator"></ng-container>
+</div>
+
+<ng-template #paginator>
+  @if (orders().length) {
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="firstPage"
+      [rows]="rowsCount"
+      [totalRecords]="orders().length"
+      [rowsPerPageOptions]="[10, 20, 30, 40, 50, 100]"
+    />
+  }
+</ng-template>

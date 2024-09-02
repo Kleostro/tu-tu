@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -21,7 +21,7 @@ import { ResultListComponent } from '../result-list/result-list.component';
 @Component({
   selector: 'app-filter',
   standalone: true,
-  imports: [TabViewModule, CommonModule, ResultListComponent],
+  imports: [TabViewModule, ResultListComponent, DatePipe],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

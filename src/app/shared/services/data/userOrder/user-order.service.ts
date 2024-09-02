@@ -22,14 +22,9 @@ export class UserOrderService {
   private currentOrders: UserOrder[] = [];
   public currentOrders$$ = signal<UserOrder[]>([]);
 
-  constructor() {
-    this.createUserOrders();
-  }
-
   public createUserOrders(): void {
     this.currentOrders = [];
-    const allOrders = this.ordersService.allOrders();
-    allOrders.forEach((order) => {
+    this.ordersService.allOrders().forEach((order) => {
       const currentOrder = this.createOrder(order);
       this.currentOrders.push(currentOrder);
     });
@@ -56,6 +51,7 @@ export class UserOrderService {
     const price = this.tripPriceService.getCarriagePrice(carriage, carriageInfo);
     return {
       orderId: id,
+
       rideId,
       routeId,
       seatNumber: seatId,

@@ -20,12 +20,6 @@ export class CarriageService {
     })),
   );
 
-  constructor() {
-    this.getCarriages().subscribe((carriages) => {
-      this.setAllCarriages(carriages);
-    });
-  }
-
   public getCarriages(): Observable<Carriage[]> {
     return this.httpClient.get<Carriage[]>(ENDPOINTS.CARRIAGE);
   }
@@ -40,10 +34,6 @@ export class CarriageService {
 
   public updateCarriage(carriage: Carriage): Observable<Code> {
     return this.httpClient.put<Code>(`${ENDPOINTS.CARRIAGE}/${carriage.code}`, carriage);
-  }
-
-  public setAllCarriages(carriages: Carriage[]): void {
-    this.allCarriages.set(carriages);
   }
 
   public getLastNewCarriage(name: string): Carriage | null {
