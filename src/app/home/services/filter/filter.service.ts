@@ -1,6 +1,4 @@
-import { inject, Injectable, OnDestroy, signal } from '@angular/core';
-
-import { Subscription } from 'rxjs';
+import { inject, Injectable, signal } from '@angular/core';
 
 import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { Route, SearchParams } from '@/app/api/models/search';
@@ -13,21 +11,21 @@ import { ResultListService } from '../result-list/result-list.service';
 @Injectable({
   providedIn: 'root',
 })
-export class FilterService implements OnDestroy {
+export class FilterService {
   private searchService = inject(SearchService);
   private resultListService = inject(ResultListService);
   private userMessageServise = inject(UserMessageService);
+
   public availableRoutesGroup$$ = signal<GroupedRoutes>({});
   public tripPoints$$ = signal<TripPoints | null>(null);
   public isSearchLoading$$ = signal(false);
   public activeTabIndex$$ = signal(0);
-  private subscription: Subscription | null = null;
 
   public startSearch(searchPrms: SearchParams): void {
     this.isSearchLoading$$.set(true);
     const targetDate = new Date(searchPrms.time!).toISOString();
 
-    this.subscription = this.searchService.search(searchPrms).subscribe({
+    this.searchService.search(searchPrms).subscribe({
       next: (res) => {
         const tripIds = {
           from: res.from.stationId,
@@ -109,7 +107,8 @@ export class FilterService implements OnDestroy {
     return updatedGroupedRoutes;
   }
 
-  private formatDate(date: Date): string {
+  // TBD: move to utils
+  public formatDate(date: Date): string {
     return date.toLocaleDateString('en-CA');
   }
 
@@ -123,12 +122,5 @@ export class FilterService implements OnDestroy {
       );
     });
     return filteredRoutes;
-  }
-
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = null;
-    }
   }
 }

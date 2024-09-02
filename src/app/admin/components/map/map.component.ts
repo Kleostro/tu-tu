@@ -31,15 +31,17 @@ import { MapService } from '../../services/map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
+  private subscription = new Subscription();
+
   private mapService = inject(MapService);
   private stationsService = inject(StationsService);
 
+  private map: Map | null = null;
+  private lastClickedMarker: Marker | null = null;
+
   public allStations = input.required<Station[]>();
 
-  private subscription = new Subscription();
-  private map: Map | null = null;
   public isMapLoaded = signal(false);
-  private lastClickedMarker: Marker | null = null;
 
   @ViewChild('mapContainer')
   private mapContainer: ElementRef<HTMLElement> | null = null;

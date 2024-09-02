@@ -17,8 +17,9 @@ import { StationsListComponent } from '../../components/stations-list/stations-l
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StationsComponent implements OnInit, OnDestroy {
-  public stationsService = inject(StationsService);
   private subsciption = new Subscription();
+
+  public stationsService = inject(StationsService);
 
   public ngOnInit(): void {
     this.subsciption.add(this.stationsService.getStations().subscribe());

@@ -6,6 +6,7 @@ import ENDPOINTS from '../constants/constants';
 
 export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   const localStorageService = inject(LocalStorageService);
+
   const token = localStorageService.getValueByKey('token');
 
   if (req.headers.has('stop-interceptor')) {

@@ -21,12 +21,15 @@ import { RidesListComponent } from '../../components/rides-list/rides-list.compo
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RouteDetailedComponent implements OnInit, OnDestroy {
+  private subscribtion = new Subscription();
+
   public routeService = inject(RideService);
   public stationsService = inject(StationsService);
+
   public id = input<string>('');
+
   public isOpenCreateRideForm = signal(false);
   public isDataLoaded = signal(false);
-  private subscribtion = new Subscription();
 
   public ngOnInit(): void {
     this.routeService.currentRouteInfo.set(null);

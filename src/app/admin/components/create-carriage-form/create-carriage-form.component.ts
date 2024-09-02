@@ -25,12 +25,12 @@ import { CarriageComponent } from '../carriage/carriage.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateCarriageFormComponent implements OnInit, AfterViewInit, OnDestroy {
+  private subsciption = new Subscription();
+
   private fb = inject(FormBuilder);
   private modalService = inject(ModalService);
   private userMessageService = inject(UserMessageService);
   private carriageService = inject(CarriageService);
-
-  private subsciption = new Subscription();
 
   public newCarriage = signal<Carriage>(INITIAL_CARRIAGE);
   public isCreated = signal(false);

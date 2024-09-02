@@ -32,15 +32,15 @@ import { FORM_TITLE, formField, FormFieldType } from './constants/constants';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserInfoComponent {
-  @ViewChild('passwordChangeTemplate') private passwordChangeTemplate!: TemplateRef<unknown>;
-
   private fb = inject(FormBuilder);
   private userMessageService = inject(UserMessageService);
   private personalInfoService = inject(PersonalInfoService);
   private modalService = inject(ModalService);
 
-  public isEditingName = signal(false);
+  @ViewChild('passwordChangeTemplate') private passwordChangeTemplate!: TemplateRef<unknown>;
+
   public isEditingEmail = signal(false);
+  public isEditingName = signal(false);
 
   public userForm = this.fb.nonNullable.group({
     name: this.fb.control(this.personalInfoService.currentUserName$$(), [Validators.required.bind(this)]),

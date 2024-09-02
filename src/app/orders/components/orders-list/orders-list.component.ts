@@ -19,13 +19,13 @@ import { OrderComponent } from '../order/order.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersListComponent implements OnInit {
-  @Input() public users!: User[];
-
   public userOrderService = inject(UserOrderService);
   public ordersService = inject(OrdersService);
   public orders = signal<UserOrder[]>([]);
   public firstPage = 0;
   public rowsCount = 10;
+
+  @Input() public users!: User[];
 
   public ngOnInit(): void {
     this.orders.set(

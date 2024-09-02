@@ -4,7 +4,7 @@ import { RouteInfo } from '@/app/api/models/schedule';
 import { CurrentRide } from '@/app/shared/models/currentRide.model';
 import { RideService } from '@/app/shared/services/data/ride/ride.service';
 
-import { GroupedRoute, TripPoints } from '../../models/groupedRoutes.model';
+import { GroupedRoute, OrderTripPoints, TripPoints } from '../../models/groupedRoutes.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,7 @@ export class ResultListService {
   public currentResultList$$ = signal<CurrentRide[]>([]);
   public routesInfo$$ = signal<Record<string, RouteInfo> | null>(null);
 
-  public createCurrentRides(data: GroupedRoute[], tripPoints: TripPoints): void {
+  public createCurrentRides(data: GroupedRoute[], tripPoints: TripPoints | OrderTripPoints): void {
     if (data === undefined) {
       this.currentResultList$$.set([]);
       return;

@@ -11,7 +11,9 @@ import { Carriage, Code } from '../models/carriage';
 })
 export class CarriageService {
   private httpClient = inject(HttpClient);
+
   public allCarriages = signal<Carriage[]>([]);
+
   public allCarriageTypes = computed(() => this.allCarriages().map((carriage) => carriage.code));
   public allCariageSeats = computed(() =>
     this.allCarriages().map((carriage) => ({

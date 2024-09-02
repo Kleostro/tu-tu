@@ -21,12 +21,13 @@ import { RoutesListComponent } from '../../components/routes-list/routes-list.co
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoutesComponent implements OnInit, OnDestroy {
+  private subscription = new Subscription();
+
   public routeService = inject(RouteService);
   public stationsService = inject(StationsService);
   public carriageService = inject(CarriageService);
-  public isFormVisible = signal(false);
 
-  private subscription = new Subscription();
+  public isFormVisible = signal(false);
 
   public hadnleOpenRouteForm(): void {
     this.isFormVisible.set(true);

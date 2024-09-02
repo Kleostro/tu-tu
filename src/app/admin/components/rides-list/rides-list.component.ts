@@ -19,6 +19,7 @@ import { RideComponent } from '../ride/ride.component';
 export class RidesListComponent {
   public schedule = input<CustomSchedule[]>([]);
   public path = input<number[]>([]);
+
   public firstPage = 0;
   public rowsCount = 10;
 

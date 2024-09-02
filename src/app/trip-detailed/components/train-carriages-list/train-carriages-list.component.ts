@@ -19,6 +19,7 @@ export class TrainCarriagesListComponent {
   public resultListService = inject(ResultListService);
   public rideService = inject(RideService);
   public trainCarriagesListService = inject(TrainCarriagesListService);
+
   public carriageType = input.required<string>();
   public currentRide = input.required<CurrentRide>();
 }

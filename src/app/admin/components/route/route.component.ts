@@ -20,6 +20,7 @@ import { StationsService } from '@/app/api/stationsService/stations.service';
 export class RouteComponent {
   public stationsService = inject(StationsService);
   public routeService = inject(RouteService);
+
   public route = input<RouteResponse | null>(null);
 
   @Output() public openDeleteConfirm: EventEmitter<number> = new EventEmitter<number>();

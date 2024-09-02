@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, inject, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  effect,
+  inject,
+  input,
+  OnDestroy,
+  signal,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -21,15 +30,18 @@ import { UserMessageService } from '@/app/shared/services/userMessage/user-messa
   styleUrl: './route-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RouteFormComponent {
+export class RouteFormComponent implements OnDestroy {
+  private subscription = new Subscription();
+
   private stationsService = inject(StationsService);
   private carriageService = inject(CarriageService);
   private routeService = inject(RouteService);
   private userMessageService = inject(UserMessageService);
   private fb = inject(FormBuilder);
   private cdr = inject(ChangeDetectorRef);
+
   public currentRoute = input<RouteResponse | null>(null);
-  private subscription = new Subscription();
+
   public filteredStations = signal<string[]>([]);
   public filteredCarriages = signal<string[]>([]);
   public isRouteChanged = signal(false);
@@ -251,5 +263,9 @@ export class RouteFormComponent {
     const stationsArray = this.routeForm.controls.stations.controls;
     stationsArray.splice(this.currentStationControl() + 1);
     this.routeForm.controls.stations.controls = stationsArray;
+  }
+
+  public ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

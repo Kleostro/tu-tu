@@ -21,11 +21,11 @@ import { CreateCarriageFormComponent } from '../../components/create-carriage-fo
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarriagesComponent implements OnInit, OnDestroy {
+  private subsciption = new Subscription();
+
   private cdr = inject(ChangeDetectorRef);
   public carriageService = inject(CarriageService);
   public modalService = inject(ModalService);
-
-  private subsciption = new Subscription();
 
   public setParamsInModal(): void {
     this.modalService.position$$.set(POSITION_DIRECTION.CENTER_TOP);

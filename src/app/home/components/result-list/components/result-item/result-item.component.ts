@@ -1,11 +1,9 @@
 import { CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, Input, TemplateRef, ViewChild } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 
-import STORE_KEYS from '@/app/core/constants/store';
-import { LocalStorageService } from '@/app/core/services/local-storage/local-storage.service';
 import { template } from '@/app/shared/constants/string-templates';
 import { CarriageInfo } from '@/app/shared/models/carriageInfo.model';
 import { CurrentRide } from '@/app/shared/models/currentRide.model';
@@ -24,9 +22,7 @@ import { TripTimelineComponent } from '../../../trip-timeline/trip-timeline.comp
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResultItemComponent {
-  private router = inject(Router);
   private modalService = inject(ModalService);
-  private localStorageService = inject(LocalStorageService);
 
   @Input() public resultItem!: CurrentRide;
 
@@ -39,10 +35,6 @@ export class ResultItemComponent {
       this.modalContent,
       stringTemplate(template.ROUTE_TITLE, { id: this.resultItem.routeId }),
     );
-  }
-
-  private saveCurrentRide(): void {
-    this.localStorageService.addValueByKey(STORE_KEYS.CURRENT_RIDE, this.resultItem);
   }
 
   public getSortedCarriageInfo(): CarriageInfo[] {

@@ -25,16 +25,19 @@ import { TripTimelineComponent } from '../../../home/components/trip-timeline/tr
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderComponent implements OnDestroy {
-  @Input() public order!: UserOrder;
-  @Input() public user: User | null = null;
+  private subscription = new Subscription();
+
+  private cdr = inject(ChangeDetectorRef);
+  private userMessageService = inject(UserMessageService);
 
   public modalService = inject(ModalService);
-  private userMessageService = inject(UserMessageService);
   public ordersService = inject(OrdersService);
   public profileService = inject(ProfileService);
-  private cdr = inject(ChangeDetectorRef);
-  private subscription = new Subscription();
+
   public isCanceled = signal(true);
+
+  @Input() public order!: UserOrder;
+  @Input() public user: User | null = null;
 
   public cancelOrder(): void {
     this.isCanceled.set(false);

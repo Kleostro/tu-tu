@@ -37,6 +37,7 @@ export class LoginFormComponent {
       minTrimmedLengthValidator(PASSWORD_MIN_LENGTH).bind(this),
     ]),
   });
+
   public signUpPath = APP_ROUTE.SIGN_UP;
 
   public submitForm(): void {

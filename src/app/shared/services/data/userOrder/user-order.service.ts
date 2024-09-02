@@ -20,6 +20,7 @@ export class UserOrderService {
   private tripCarriagesService = inject(TripCarriagesService);
 
   private currentOrders: UserOrder[] = [];
+
   public currentOrders$$ = signal<UserOrder[]>([]);
 
   public createUserOrders(): void {

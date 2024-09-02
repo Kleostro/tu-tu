@@ -59,7 +59,11 @@ export class RideService {
     };
   }
 
-  public createCurrentRide(routeInfo: GroupedRoute, schedule: Schedule, tripPoints: TripPoints): CurrentRide {
+  public createCurrentRide(
+    routeInfo: GroupedRoute,
+    schedule: Schedule,
+    tripPoints: TripPoints | OrderTripPoints,
+  ): CurrentRide {
     const { path, carriages, routeId } = routeInfo;
     const { segments, rideId } = schedule;
     const routeStations = this.tripStationsService.getRouteStations(path);

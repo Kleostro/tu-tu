@@ -40,13 +40,15 @@ import { MapService } from '../../services/map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateStationFormComponent implements OnInit, OnDestroy {
+  private subscription = new Subscription();
+
   private fb = inject(FormBuilder);
   private mapService = inject(MapService);
   private stationsService = inject(StationsService);
   private userMessageService = inject(UserMessageService);
-  private subscription = new Subscription();
 
   public isStationCreated = signal(false);
+
   public filteredCountries: string[] = [];
 
   public createStationForm = this.fb.nonNullable.group({

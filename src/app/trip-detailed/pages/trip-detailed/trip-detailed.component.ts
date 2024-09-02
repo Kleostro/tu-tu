@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { FieldsetModule } from 'primeng/fieldset';
 import { RippleModule } from 'primeng/ripple';
 import { TabViewChangeEvent, TabViewModule } from 'primeng/tabview';
+import { Subscription } from 'rxjs';
 
 import { SeatService } from '@/app/admin/services/seat/seat.service';
 import { CarriageService } from '@/app/api/carriagesService/carriage.service';
@@ -13,7 +14,6 @@ import { StationsService } from '@/app/api/stationsService/stations.service';
 import { TripDetailedService } from '@/app/api/tripDetailedService/trip-detailed.service';
 import { AuthService } from '@/app/auth/services/auth-service/auth.service';
 import { RoutingService } from '@/app/core/services/routing/routing.service';
-import { ResultListService } from '@/app/home/services/result-list/result-list.service';
 import { template } from '@/app/shared/constants/string-templates';
 import { CarriageInfo } from '@/app/shared/models/carriageInfo.model';
 import { CurrentRide } from '@/app/shared/models/currentRide.model';
@@ -48,14 +48,16 @@ import { TrainCarriagesListService } from '../../services/train-carriages-list/t
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TripDetailedComponent implements OnInit, OnDestroy {
+  private subscription = new Subscription();
+
   private tripDetailedService = inject(TripDetailedService);
-  private resultListService = inject(ResultListService);
   private routingService = inject(RoutingService);
   private modalService = inject(ModalService);
   private trainCarriagesListService = inject(TrainCarriagesListService);
   private authService = inject(AuthService);
   private stationsService = inject(StationsService);
   private carriageService = inject(CarriageService);
+
   public tripStationsService = inject(TripStationsService);
   public rideService = inject(RideService);
   public seatService = inject(SeatService);
@@ -66,17 +68,19 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
   @ViewChild('loginModalContent') public loginModalContent!: TemplateRef<unknown>;
 
   public ngOnInit(): void {
-    this.carriageService.getCarriages().subscribe((carriages) => {
-      this.carriageService.allCarriages.set(carriages);
-      this.trainCarriagesListService.currentTrainCarriages$$.set(carriages);
-      this.stationsService.getStations().subscribe(() =>
-        this.tripDetailedService.getRideInfo(+this.routingService.currentRideId$$()).subscribe((ride) => {
-          this.initializeRide(ride);
-          this.setInitialValues();
-          this.trainCarriagesListService.setInitialCarriages();
-        }),
-      );
-    });
+    this.subscription.add(
+      this.carriageService.getCarriages().subscribe((carriages) => {
+        this.carriageService.allCarriages.set(carriages);
+        this.trainCarriagesListService.currentTrainCarriages$$.set(carriages);
+        this.stationsService.getStations().subscribe(() =>
+          this.tripDetailedService.getRideInfo(+this.routingService.currentRideId$$()).subscribe((ride) => {
+            this.initializeRide(ride);
+            this.setInitialValues();
+            this.trainCarriagesListService.setInitialCarriages();
+          }),
+        );
+      }),
+    );
   }
 
   private initializeRide(ride: RideInfo): void {
@@ -104,14 +108,6 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
         stringTemplate(template.ROUTE_TITLE, { id: this.tripItem.routeId }),
       );
     }
-  }
-
-  private findRideById(): CurrentRide | null {
-    return (
-      this.resultListService
-        .currentResultList$$()
-        .find((ride) => ride.rideId === +this.routingService.currentRideId$$()) ?? null
-    );
   }
 
   public goBack(): void {
@@ -148,15 +144,16 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
     this.trainCarriagesListService.currentCarriages$$.set(this.tripItem.carriages);
   }
 
-  public ngOnDestroy(): void {
-    this.seatService.setDefaultValues();
-  }
-
   public bookSeat(): void {
     if (this.authService.isLoggedIn$$()) {
       this.seatService.bookSelectedSeat(this.tripItem);
     } else {
       this.modalService.openModal(this.loginModalContent);
     }
+  }
+
+  public ngOnDestroy(): void {
+    this.seatService.setDefaultValues();
+    this.subscription.unsubscribe();
   }
 }

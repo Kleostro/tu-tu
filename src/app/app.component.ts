@@ -20,6 +20,7 @@ import { ScrollToTopButtonComponent } from './shared/components/scroll-to-top-bu
 export class AppComponent implements OnInit {
   private localStorageService = inject(LocalStorageService);
   private primengConfig = inject(PrimeNGConfig);
+
   public routingService = inject(RoutingService);
 
   public ngOnInit(): void {

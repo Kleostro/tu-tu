@@ -21,14 +21,16 @@ import { MapService } from '../../services/map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StationComponent implements OnDestroy {
+  private subsciption = new Subscription();
+
   private userMessageService = inject(UserMessageService);
+
   public stationsService = inject(StationsService);
   public mapService = inject(MapService);
+
   public isStationDeleted = signal(false);
 
   @Input() public station!: Station;
-
-  private subsciption = new Subscription();
 
   public deleteStation(id: number): void {
     this.isStationDeleted.set(true);

@@ -5,6 +5,8 @@ import { StationInfo } from '@/app/shared/models/stationInfo.model';
 import { TrainCarriage } from '@/app/shared/models/trainCarriage.model';
 import { TrainCarriages } from '@/app/shared/models/trainCarriages.model';
 
+// TBD: separate files
+
 const isCarriageInfoArray = (data: unknown): data is CarriageInfo[] =>
   Array.isArray(data) && data.every((item) => typeof item === 'object' && item !== null);
 

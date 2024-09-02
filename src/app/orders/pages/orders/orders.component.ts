@@ -20,12 +20,14 @@ import { OrdersListComponent } from '../../components/orders-list/orders-list.co
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersComponent implements OnInit, OnDestroy {
+  private subscription = new Subscription();
+
+  private carriageService = inject(CarriageService);
+  private stationsService = inject(StationsService);
+
   public ordersService = inject(OrdersService);
-  public carriageService = inject(CarriageService);
-  public stationsService = inject(StationsService);
   public userOrderService = inject(UserOrderService);
   public authService = inject(AuthService);
-  private subscription = new Subscription();
 
   public ngOnInit(): void {
     if (this.authService.isAdmin$$()) {
