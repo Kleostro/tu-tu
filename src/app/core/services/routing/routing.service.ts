@@ -42,7 +42,7 @@ export class RoutingService {
   }
 
   private extractRideIdFromUrl(url: string): number | null {
-    const match = /\/trip\/:(\d+)/.exec(url);
+    const match = /\/trip\/(\d+)/.exec(url);
     if (match?.[1]) {
       return parseInt(match[1], 10);
     }
