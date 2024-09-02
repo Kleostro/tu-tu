@@ -4,6 +4,7 @@ import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { Route, SearchParams } from '@/app/api/models/search';
 import { SearchService } from '@/app/api/searchService/search.service';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
+import { formatDate } from '@/app/shared/utils/formatDate';
 
 import { GroupedRoutes, TripIds, TripPoints } from '../../models/groupedRoutes.model';
 import { ResultListService } from '../result-list/result-list.service';
@@ -50,7 +51,7 @@ export class FilterService {
 
   public setCurrentRides(targetDate: string): void {
     this.resultListService.createCurrentRides(
-      this.availableRoutesGroup$$()[this.formatDate(new Date(targetDate))],
+      this.availableRoutesGroup$$()[formatDate(new Date(targetDate))],
       this.tripPoints$$()!,
     );
   }
@@ -65,7 +66,7 @@ export class FilterService {
         const filteredSchedule = [];
         const { segments, rideId } = schedule[ride];
         const targetSegment = segments[fromStationIdIndex];
-        const departureDate = this.formatDate(new Date(targetSegment.time[0]));
+        const departureDate = formatDate(new Date(targetSegment.time[0]));
         filteredSchedule.push({
           rideId,
           segments: segments.map((currSegment) => {
@@ -98,7 +99,7 @@ export class FilterService {
     const endDate = new Date(dateKeys[dateKeys.length - 1]);
 
     for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-      const dateString = this.formatDate(date);
+      const dateString = formatDate(date);
       if (!updatedGroupedRoutes[dateString]) {
         updatedGroupedRoutes[dateString] = [];
       }
@@ -107,17 +108,12 @@ export class FilterService {
     return updatedGroupedRoutes;
   }
 
-  // TBD: move to utils
-  public formatDate(date: Date): string {
-    return date.toLocaleDateString('en-CA');
-  }
-
   private filterRoutesByKeyDate(groupedRoutes: GroupedRoutes): GroupedRoutes {
     const filteredRoutes = { ...groupedRoutes };
     Object.keys(groupedRoutes).forEach((keyDate) => {
       filteredRoutes[keyDate] = groupedRoutes[keyDate].filter((route) =>
         route.schedule.some((ride) =>
-          ride.segments.some((segment) => this.formatDate(new Date(segment.time[0])) === keyDate),
+          ride.segments.some((segment) => formatDate(new Date(segment.time[0])) === keyDate),
         ),
       );
     });
