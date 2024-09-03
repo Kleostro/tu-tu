@@ -23,6 +23,7 @@ export class SeatService {
   public seatCarriageNumber$$ = signal<number | null>(null);
   public seatCarriageName$$ = signal<string | null>(null);
   public bookedSeatNumber$$ = signal<number | null>(null);
+  public hasResponse$$ = signal<boolean>(true);
 
   public setDefaultValues(): void {
     this.selectedSeat$$.set(null);
@@ -30,6 +31,7 @@ export class SeatService {
     this.seatCarriageNumber$$.set(null);
     this.seatCarriageName$$.set(null);
     this.bookedSeatNumber$$.set(null);
+    this.hasResponse$$.set(true);
   }
 
   public bookSelectedSeat(tripItem: CurrentRide): void {
@@ -46,6 +48,7 @@ export class SeatService {
         .pipe(
           catchError((error: OverriddenHttpErrorResponse) => {
             this.userMessageService.showErrorMessage(error.error.message);
+            this.hasResponse$$.set(true);
             return of(EMPTY);
           }),
         )
@@ -54,6 +57,7 @@ export class SeatService {
             this.userMessageService.showSuccessMessage(stringTemplate(template.BOOKED_ORDER, { id: response.id }));
             this.bookedSeatNumber$$.set(selectedSeat);
             this.selectedSeat$$.set(null);
+            this.hasResponse$$.set(true);
           }
         });
     }
