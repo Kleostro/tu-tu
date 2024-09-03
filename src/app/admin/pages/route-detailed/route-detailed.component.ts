@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -23,6 +23,7 @@ import { RidesListComponent } from '../../components/rides-list/rides-list.compo
 export class RouteDetailedComponent implements OnInit, OnDestroy {
   public routeService = inject(RideService);
   public stationsService = inject(StationsService);
+  private router = inject(Router);
   public id = input<string>('');
   public isOpenCreateRideForm = signal(false);
   public isDataLoaded = signal(false);
@@ -32,10 +33,14 @@ export class RouteDetailedComponent implements OnInit, OnDestroy {
     this.routeService.currentRouteInfo.set(null);
     this.subscribtion.add(
       this.stationsService.getStations().subscribe(() => {
-        this.routeService.getRouteById(+this.id()).subscribe(
-          // TBD: redirect to 404 if there is no route
-          () => this.isDataLoaded.set(true),
-        );
+        this.routeService.getRouteById(+this.id()).subscribe({
+          next: () => {
+            this.isDataLoaded.set(true);
+          },
+          error: () => {
+            this.router.navigate(['404']);
+          },
+        });
       }),
     );
   }
