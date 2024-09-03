@@ -1,6 +1,8 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
+import { ButtonModule } from 'primeng/button';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
 import { User } from '@/app/api/models/order';
@@ -10,10 +12,11 @@ import { UserOrder } from '@/app/orders/models/userOrder.model';
 import { UserOrderService } from '../../services/userOrder/user-order.service';
 import { OrderComponent } from '../order/order.component';
 
+const imgUrl = '/img/png/no-results.webp';
 @Component({
   selector: 'app-orders-list',
   standalone: true,
-  imports: [OrderComponent, NgTemplateOutlet, PaginatorModule],
+  imports: [OrderComponent, NgTemplateOutlet, PaginatorModule, ButtonModule, RouterLink],
   templateUrl: './orders-list.component.html',
   styleUrl: './orders-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,6 +29,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
   public rowsCount = 10;
 
   @Input() public users!: User[];
+
+  public imageUrl = imgUrl;
 
   public ngOnInit(): void {
     this.userOrderService.createUserOrders();
