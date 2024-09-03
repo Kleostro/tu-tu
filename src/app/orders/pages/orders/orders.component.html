@@ -3,7 +3,13 @@
 <div class="wrapper">
   @if (authService.isAdmin$$() && userOrderService.currentOrders$$().length) {
     <app-orders-list [users]="users"></app-orders-list>
-  } @else {
+  } @else if (userOrderService.currentOrders$$().length) {
     <app-orders-list></app-orders-list>
+  } @else {
+    <div class="no-result">
+      <h1 class="description">You don't have any orders yet.<br />Time to choose where you want to go.</h1>
+      <p-button class="to-main-button" label="Choose a trip" routerLink="/" icon="pi pi-globe"></p-button>
+      <img class="image" [src]="imageUrl" alt="No result" />
+    </div>
   }
 </div>

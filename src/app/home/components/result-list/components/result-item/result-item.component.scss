@@ -16,13 +16,11 @@
 
   transition:
     border-color 0.2s,
-    box-shadow 0.2s,
     filter 0.2s;
 
   &:hover {
     filter: brightness(1.01);
     border: $three solid $main-color;
-    box-shadow: $shadow-100;
   }
 
   @media (width <=1024px) {
