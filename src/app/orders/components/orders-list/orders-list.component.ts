@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
 
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
@@ -18,7 +18,7 @@ import { OrderComponent } from '../order/order.component';
   styleUrl: './orders-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrdersListComponent implements OnInit {
+export class OrdersListComponent implements OnInit, OnDestroy {
   public userOrderService = inject(UserOrderService);
   public ordersService = inject(OrdersService);
   public orders = signal<UserOrder[]>([]);
@@ -28,15 +28,20 @@ export class OrdersListComponent implements OnInit {
   @Input() public users!: User[];
 
   public ngOnInit(): void {
-    this.orders.set(
-      this.userOrderService
-        .currentOrders$$()
-        .sort((a, b) => new Date(a.tripDepartureDate).getTime() - new Date(b.tripDepartureDate).getTime()),
-    );
+    this.userOrderService.createUserOrders();
+    const orders = this.userOrderService.currentOrders$$();
+    if (orders?.length) {
+      orders.sort((a, b) => new Date(a.tripDepartureDate).getTime() - new Date(b.tripDepartureDate).getTime());
+      this.orders.set(orders);
+    }
   }
 
   public onPageChange(event: PaginatorState): void {
     this.firstPage = event.first ?? 0;
     this.rowsCount = event.rows ?? 10;
+  }
+
+  public ngOnDestroy(): void {
+    this.userOrderService.currentOrders$$.set(null);
   }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
@@ -42,7 +42,7 @@ import { FilterComponent } from '../filter/filter.component';
   styleUrl: './search.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
   private citiesService = inject(CitiesService);
   private stationsService = inject(StationsService);
   private fb = inject(FormBuilder);
@@ -118,5 +118,9 @@ export class SearchComponent implements OnInit {
         this.userMessageService.showErrorMessage(USER_MESSAGE.NO_STATIONS_FOUND_ERROR);
       }
     }
+  }
+
+  public ngOnDestroy(): void {
+    this.tripForm.reset();
   }
 }

@@ -37,7 +37,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     if (this.authService.isAdmin$$()) {
-      this.ordersService.getAllUsers().subscribe();
+      this.subscription.add(this.ordersService.getAllUsers().subscribe());
     }
     this.subscription.add(
       this.ordersService.getAllOrders().subscribe(() =>

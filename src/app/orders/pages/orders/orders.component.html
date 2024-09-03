@@ -1,9 +1,9 @@
 @let users = ordersService.allUsers();
 
 <div class="wrapper">
-  @if (authService.isAdmin$$() && userOrderService.currentOrders$$().length) {
+  @if (authService.isAdmin$$() && userOrderService.currentOrders$$()?.length) {
     <app-orders-list [users]="users"></app-orders-list>
-  } @else if (userOrderService.currentOrders$$().length) {
+  } @else if (userOrderService.currentOrders$$()?.length) {
     <app-orders-list></app-orders-list>
   } @else {
     <div class="no-result">

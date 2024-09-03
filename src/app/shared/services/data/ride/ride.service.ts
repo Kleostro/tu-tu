@@ -79,7 +79,6 @@ export class RideService {
     const trainCarriages = this.tripCarriagesService.countTrainCarriages(carriages, segments, tripStationIndices);
     const freeSeatsMap = this.tripCarriagesService.calculateFreeSeats(trainCarriages);
     const carriageInfo = this.tripCarriagesService.createCarriageInfo(carriages, aggregatedPriceMap, freeSeatsMap);
-    this.trainCarriagesListService.currentCarriages$$.set(carriages);
 
     return {
       rideId,

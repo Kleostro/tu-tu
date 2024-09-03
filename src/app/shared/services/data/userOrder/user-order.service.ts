@@ -21,7 +21,7 @@ export class UserOrderService {
 
   private currentOrders: UserOrder[] = [];
 
-  public currentOrders$$ = signal<UserOrder[]>([]);
+  public currentOrders$$ = signal<UserOrder[] | null>(null);
 
   public createUserOrders(): void {
     this.currentOrders = [];
