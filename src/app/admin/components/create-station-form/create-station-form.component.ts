@@ -16,7 +16,6 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { RippleModule } from 'primeng/ripple';
 import { Subscription, take } from 'rxjs';
 
-import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { NewStation } from '@/app/api/models/stations';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
@@ -118,8 +117,8 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
                 this.submitErrorHandler(USER_MESSAGE.STATION_CREATED_ERROR);
               }
             },
-            error: (err: OverriddenHttpErrorResponse) => {
-              this.submitErrorHandler(err.error.message);
+            error: () => {
+              this.submitErrorHandler(USER_MESSAGE.STATION_EXISTS);
             },
           }),
       );
