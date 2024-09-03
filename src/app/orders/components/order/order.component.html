@@ -45,7 +45,8 @@
     </div>
   } @else {
     <span class="order-status"
-      >Order status: <span class="order-status-accent">{{ order.status }}</span></span
+      >Order status:
+      <span class="order-status-accent">{{ order.status === 'rejected' ? 'canceled' : order.status }}</span></span
     >
   }
 </div>
