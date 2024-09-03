@@ -20,7 +20,7 @@ export class UserOrderService {
   private tripCarriagesService = inject(TripCarriagesService);
 
   private currentOrders: UserOrder[] = [];
-  public currentOrders$$ = signal<UserOrder[]>([]);
+  public currentOrders$$ = signal<UserOrder[] | null>(null);
 
   public createUserOrders(): void {
     this.currentOrders = [];
