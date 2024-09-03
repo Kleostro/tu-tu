@@ -8,9 +8,9 @@ import { CarriageService } from '@/app/api/carriagesService/carriage.service';
 import { OrdersService } from '@/app/api/ordersService/orders.service';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 import { AuthService } from '@/app/auth/services/auth-service/auth.service';
-import { UserOrderService } from '@/app/shared/services/data/userOrder/user-order.service';
 
 import { OrdersListComponent } from '../../components/orders-list/orders-list.component';
+import { UserOrderService } from '../../services/userOrder/user-order.service';
 
 const imgUrl = '/img/png/no-results.webp';
 

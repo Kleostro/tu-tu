@@ -7,6 +7,7 @@ import { CarriageInfo } from '@/app/shared/models/carriageInfo.model';
 import { CarriageNameMap } from '@/app/shared/models/carriageNameMap.model';
 import { FreeSeatsMap } from '@/app/shared/models/freeSeatsMap.model';
 import { PriceMap } from '@/app/shared/models/priceMap.model';
+import { TrainCarriage } from '@/app/shared/models/trainCarriage.model';
 import { TrainCarriages } from '@/app/shared/models/trainCarriages.model';
 import { TripIndices } from '@/app/shared/models/tripIndices.model';
 
@@ -136,10 +137,10 @@ export class TripCarriagesService {
     return freeSeatsMap;
   }
 
-  public findUserCarriage(seatNumber: number, trainCarriages: TrainCarriages): string {
+  public findCarriageBySeat(seatNumber: number, trainCarriages: TrainCarriages): TrainCarriage | null {
     const carriage = Object.values(trainCarriages).find(
       (crg) => seatNumber >= crg.firstSeat && seatNumber <= crg.lastSeat,
     );
-    return carriage ? carriage.carriageName : '';
+    return carriage || null;
   }
 }
