@@ -5,3 +5,28 @@
   flex-direction: column;
   padding: $offset-l;
 }
+
+.no-result {
+  display: flex;
+  flex-direction: column;
+  gap: $offset-xs;
+  align-items: center;
+  justify-content: center;
+
+  padding: $offset-m;
+
+  text-align: center;
+}
+
+.description {
+  font-size: $font-size-m;
+  color: $gray-500;
+}
+
+.to-main-button {
+  margin-top: $offset-s;
+}
+
+.image {
+  max-width: 50dvw;
+}

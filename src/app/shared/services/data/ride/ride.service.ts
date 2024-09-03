@@ -59,7 +59,11 @@ export class RideService {
     };
   }
 
-  public createCurrentRide(routeInfo: GroupedRoute, schedule: Schedule, tripPoints: TripPoints): CurrentRide {
+  public createCurrentRide(
+    routeInfo: GroupedRoute,
+    schedule: Schedule,
+    tripPoints: TripPoints | OrderTripPoints,
+  ): CurrentRide {
     const { path, carriages, routeId } = routeInfo;
     const { segments, rideId } = schedule;
     const routeStations = this.tripStationsService.getRouteStations(path);
@@ -75,7 +79,6 @@ export class RideService {
     const trainCarriages = this.tripCarriagesService.countTrainCarriages(carriages, segments, tripStationIndices);
     const freeSeatsMap = this.tripCarriagesService.calculateFreeSeats(trainCarriages);
     const carriageInfo = this.tripCarriagesService.createCarriageInfo(carriages, aggregatedPriceMap, freeSeatsMap);
-    this.trainCarriagesListService.currentCarriages$$.set(carriages);
 
     return {
       rideId,

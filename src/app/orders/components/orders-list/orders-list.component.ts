@@ -5,9 +5,9 @@ import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
 import { User } from '@/app/api/models/order';
 import { OrdersService } from '@/app/api/ordersService/orders.service';
-import { UserOrder } from '@/app/shared/models/userOrder.model';
-import { UserOrderService } from '@/app/shared/services/data/userOrder/user-order.service';
+import { UserOrder } from '@/app/orders/models/userOrder.model';
 
+import { UserOrderService } from '../../services/userOrder/user-order.service';
 import { OrderComponent } from '../order/order.component';
 
 @Component({
@@ -19,13 +19,13 @@ import { OrderComponent } from '../order/order.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersListComponent implements OnInit, OnDestroy {
-  @Input() public users!: User[];
-
   public userOrderService = inject(UserOrderService);
   public ordersService = inject(OrdersService);
   public orders = signal<UserOrder[]>([]);
   public firstPage = 0;
   public rowsCount = 10;
+
+  @Input() public users!: User[];
 
   public ngOnInit(): void {
     this.userOrderService.createUserOrders();

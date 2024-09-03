@@ -1,11 +1,10 @@
-import { inject, Injectable, OnDestroy, signal } from '@angular/core';
-
-import { Subscription } from 'rxjs';
+import { inject, Injectable, signal } from '@angular/core';
 
 import { OverriddenHttpErrorResponse } from '@/app/api/models/errorResponse';
 import { Route, SearchParams } from '@/app/api/models/search';
 import { SearchService } from '@/app/api/searchService/search.service';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
+import { formatDate } from '@/app/shared/utils/formatDate';
 
 import { GroupedRoutes, TripIds, TripPoints } from '../../models/groupedRoutes.model';
 import { ResultListService } from '../result-list/result-list.service';
@@ -13,21 +12,21 @@ import { ResultListService } from '../result-list/result-list.service';
 @Injectable({
   providedIn: 'root',
 })
-export class FilterService implements OnDestroy {
+export class FilterService {
   private searchService = inject(SearchService);
   private resultListService = inject(ResultListService);
   private userMessageServise = inject(UserMessageService);
+
   public availableRoutesGroup$$ = signal<GroupedRoutes>({});
   public tripPoints$$ = signal<TripPoints | null>(null);
   public isSearchLoading$$ = signal(false);
   public activeTabIndex$$ = signal(0);
-  private subscription: Subscription | null = null;
 
   public startSearch(searchPrms: SearchParams): void {
     this.isSearchLoading$$.set(true);
     const targetDate = new Date(searchPrms.time!).toISOString();
 
-    this.subscription = this.searchService.search(searchPrms).subscribe({
+    this.searchService.search(searchPrms).subscribe({
       next: (res) => {
         const tripIds = {
           from: res.from.stationId,
@@ -52,7 +51,7 @@ export class FilterService implements OnDestroy {
 
   public setCurrentRides(targetDate: string): void {
     this.resultListService.createCurrentRides(
-      this.availableRoutesGroup$$()[this.formatDate(new Date(targetDate))],
+      this.availableRoutesGroup$$()[formatDate(new Date(targetDate))],
       this.tripPoints$$()!,
     );
   }
@@ -67,7 +66,7 @@ export class FilterService implements OnDestroy {
         const filteredSchedule = [];
         const { segments, rideId } = schedule[ride];
         const targetSegment = segments[fromStationIdIndex];
-        const departureDate = this.formatDate(new Date(targetSegment.time[0]));
+        const departureDate = formatDate(new Date(targetSegment.time[0]));
         filteredSchedule.push({
           rideId,
           segments: segments.map((currSegment) => {
@@ -100,7 +99,7 @@ export class FilterService implements OnDestroy {
     const endDate = new Date(dateKeys[dateKeys.length - 1]);
 
     for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-      const dateString = this.formatDate(date);
+      const dateString = formatDate(date);
       if (!updatedGroupedRoutes[dateString]) {
         updatedGroupedRoutes[dateString] = [];
       }
@@ -109,26 +108,15 @@ export class FilterService implements OnDestroy {
     return updatedGroupedRoutes;
   }
 
-  private formatDate(date: Date): string {
-    return date.toLocaleDateString('en-CA');
-  }
-
   private filterRoutesByKeyDate(groupedRoutes: GroupedRoutes): GroupedRoutes {
     const filteredRoutes = { ...groupedRoutes };
     Object.keys(groupedRoutes).forEach((keyDate) => {
       filteredRoutes[keyDate] = groupedRoutes[keyDate].filter((route) =>
         route.schedule.some((ride) =>
-          ride.segments.some((segment) => this.formatDate(new Date(segment.time[0])) === keyDate),
+          ride.segments.some((segment) => formatDate(new Date(segment.time[0])) === keyDate),
         ),
       );
     });
     return filteredRoutes;
-  }
-
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = null;
-    }
   }
 }

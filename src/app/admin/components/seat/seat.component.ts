@@ -12,6 +12,7 @@ import { SeatService } from '../../services/seat/seat.service';
 })
 export class SeatComponent {
   public seatService = inject(SeatService);
+
   public carriageName = input<string>('');
   public carriageNumber = input<number>(NaN);
   public seatNumber = input<number>(NaN);

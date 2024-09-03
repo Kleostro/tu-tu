@@ -8,8 +8,8 @@ import { Subscription } from 'rxjs';
 import { User } from '@/app/api/models/order';
 import { OrdersService } from '@/app/api/ordersService/orders.service';
 import { ProfileService } from '@/app/api/profileService/profile.service';
+import { UserOrder } from '@/app/orders/models/userOrder.model';
 import POSITION_DIRECTION from '@/app/shared/directives/position/constants/position.constants';
-import { UserOrder } from '@/app/shared/models/userOrder.model';
 import { ModalService } from '@/app/shared/services/modal/modal.service';
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
@@ -25,16 +25,19 @@ import { TripTimelineComponent } from '../../../home/components/trip-timeline/tr
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderComponent implements OnDestroy {
-  @Input() public order!: UserOrder;
-  @Input() public user: User | null = null;
+  private subscription = new Subscription();
+
+  private cdr = inject(ChangeDetectorRef);
+  private userMessageService = inject(UserMessageService);
 
   public modalService = inject(ModalService);
-  private userMessageService = inject(UserMessageService);
   public ordersService = inject(OrdersService);
   public profileService = inject(ProfileService);
-  private cdr = inject(ChangeDetectorRef);
-  private subscription = new Subscription();
+
   public isCanceled = signal(true);
+
+  @Input() public order!: UserOrder;
+  @Input() public user: User | null = null;
 
   public cancelOrder(): void {
     this.isCanceled.set(false);

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
@@ -42,28 +42,27 @@ import { FilterComponent } from '../filter/filter.component';
   styleUrl: './search.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchComponent implements OnInit {
-  public filterService = inject(FilterService);
+export class SearchComponent implements OnInit, OnDestroy {
   private citiesService = inject(CitiesService);
   private stationsService = inject(StationsService);
   private fb = inject(FormBuilder);
   private userMessageService = inject(UserMessageService);
-  public stations: Station[] = [];
-  public filteredCities: string[] = [];
+
+  public filterService = inject(FilterService);
+
   private fakeCities: Station[] = [];
-  public minDate: Date = new Date();
 
   public tripData$$ = signal<TripData | null>(null);
+
+  public stations: Station[] = [];
+  public filteredCities: string[] = [];
+  public minDate: Date = new Date();
 
   public tripForm = this.fb.group({
     startCity: this.fb.control<string>('', [Validators.required.bind(this)]),
     endCity: this.fb.control<string>('', [Validators.required.bind(this)]),
     tripDate: this.fb.control<string>('', [Validators.required.bind(this)]),
   });
-
-  public get tripData(): TripData | null {
-    return this.tripData$$();
-  }
 
   public async ngOnInit(): Promise<void> {
     try {
@@ -72,6 +71,10 @@ export class SearchComponent implements OnInit {
     } catch {
       this.userMessageService.showErrorMessage(USER_MESSAGE.CONNECTION_LOST_ERROR);
     }
+  }
+
+  public get tripData(): TripData | null {
+    return this.tripData$$();
   }
 
   public filterCity(event: AutoCompleteCompleteEvent): void {
@@ -115,5 +118,9 @@ export class SearchComponent implements OnInit {
         this.userMessageService.showErrorMessage(USER_MESSAGE.NO_STATIONS_FOUND_ERROR);
       }
     }
+  }
+
+  public ngOnDestroy(): void {
+    this.tripForm.reset();
   }
 }

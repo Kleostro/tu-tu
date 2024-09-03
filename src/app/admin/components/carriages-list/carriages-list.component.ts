@@ -22,8 +22,11 @@ import { UpdateCarriageFormComponent } from '../update-carriage-form/update-carr
 export class CarriagesListComponent {
   public routingService = inject(RoutingService);
   public modalService = inject(ModalService);
+
   public allCarriages = input<Carriage[]>([]);
+
   public editCarriage = signal<Carriage | null>(null);
+
   public firstPage = 0;
   public rowsCount = 10;
 

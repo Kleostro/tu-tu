@@ -1,3 +1,5 @@
+import { TrainCarriage } from '@/app/shared/models/trainCarriage.model';
+
 export interface UserOrder {
   orderId: number;
   rideId: number;
@@ -11,6 +13,6 @@ export interface UserOrder {
   tripEndStationId: number;
   tripDepartureDate: string;
   tripArrivalDate: string;
-  carriage: string;
+  carriage: TrainCarriage | null;
   price: number;
 }

@@ -11,6 +11,7 @@ import { Order, OrderId, OrderRequest, User } from '../models/order';
 })
 export class OrdersService {
   private httpClient = inject(HttpClient);
+
   public allOrders = signal<Order[]>([]);
   public allUsers = signal<User[]>([]);
 

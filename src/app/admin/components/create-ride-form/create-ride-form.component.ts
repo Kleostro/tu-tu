@@ -22,10 +22,14 @@ import { collectNewRideData } from '../../utils/collectAllRideData';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateRideFormComponent implements OnInit, OnDestroy {
+  private subscription = new Subscription();
+
   private fb = inject(FormBuilder);
+
   public rideService = inject(RideService);
   public stationsService = inject(StationsService);
   public userMessageService = inject(UserMessageService);
+
   public stationNamesList = computed(() => {
     const routeInfo = this.rideService.currentRouteInfo();
     if (routeInfo) {
@@ -34,15 +38,17 @@ export class CreateRideFormComponent implements OnInit, OnDestroy {
     return [];
   });
   public carriageTypes = computed(() => this.rideService.currentRouteInfo()?.carriages);
+
   public createRideForm = this.fb.nonNullable.group({
     times: this.fb.array<TimesFGType>([]),
     carriageTypes: this.fb.array<CarriageTypesFGType>([]),
   });
+
+  public isRideCreated = signal(true);
+
   public Object = Object;
   public minDate = new Date();
   public time = false;
-  public isRideCreated = signal(true);
-  private subscription = new Subscription();
 
   public submit(): void {
     this.isRideCreated.set(false);

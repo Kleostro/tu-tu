@@ -11,6 +11,7 @@ import { RouteBody, RouteId, RouteResponse } from '../models/route';
 })
 export class RouteService {
   private httpClient = inject(HttpClient);
+
   public allRoutes = signal<RouteResponse[]>([]);
   public currentRoute = signal<RouteResponse | null>(null);
 

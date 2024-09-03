@@ -2,12 +2,11 @@ import { inject, Injectable, signal } from '@angular/core';
 
 import { Order } from '@/app/api/models/order';
 import { OrdersService } from '@/app/api/ordersService/orders.service';
-import { UserOrder } from '@/app/shared/models/userOrder.model';
-
-import { TripCarriagesService } from '../tripCarriages/trip-carriages.service';
-import { TripDatesService } from '../tripDates/trip-dates.service';
-import { TripPriceService } from '../tripPrice/trip-price.service';
-import { TripStationsService } from '../tripStations/trip-stations.service';
+import { UserOrder } from '@/app/orders/models/userOrder.model';
+import { TripCarriagesService } from '@/app/shared/services/data/tripCarriages/trip-carriages.service';
+import { TripDatesService } from '@/app/shared/services/data/tripDates/trip-dates.service';
+import { TripPriceService } from '@/app/shared/services/data/tripPrice/trip-price.service';
+import { TripStationsService } from '@/app/shared/services/data/tripStations/trip-stations.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +19,7 @@ export class UserOrderService {
   private tripCarriagesService = inject(TripCarriagesService);
 
   private currentOrders: UserOrder[] = [];
+
   public currentOrders$$ = signal<UserOrder[] | null>(null);
 
   public createUserOrders(): void {
@@ -47,11 +47,10 @@ export class UserOrderService {
     );
     const freeSeatsMap = this.tripCarriagesService.calculateFreeSeats(trainCarriages);
     const carriageInfo = this.tripCarriagesService.createCarriageInfo(carriages, aggregatedPriceMap, freeSeatsMap);
-    const carriage = this.tripCarriagesService.findUserCarriage(seatId, trainCarriages) ?? '';
-    const price = this.tripPriceService.getCarriagePrice(carriage, carriageInfo);
+    const carriage = this.tripCarriagesService.findCarriageBySeat(seatId, trainCarriages) ?? null;
+    const price = this.tripPriceService.getCarriagePrice(carriage!.carriageName, carriageInfo);
     return {
       orderId: id,
-
       rideId,
       routeId,
       seatNumber: seatId,

@@ -53,6 +53,7 @@ export class SeatService {
           if (isOrderId(response)) {
             this.userMessageService.showSuccessMessage(stringTemplate(template.BOOKED_ORDER, { id: response.id }));
             this.bookedSeatNumber$$.set(selectedSeat);
+            this.selectedSeat$$.set(null);
           }
         });
     }

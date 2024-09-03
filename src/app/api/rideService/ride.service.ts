@@ -12,6 +12,7 @@ import { RideBody, RouteInfo } from '../models/schedule';
 })
 export class RideService {
   private httpClient = inject(HttpClient);
+
   public currentRouteId = signal<number>(NaN);
   public currentRouteInfo = signal<RouteInfo | null>(null);
 

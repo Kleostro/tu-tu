@@ -1,5 +1,6 @@
 <div class="result-list">
   @let searchResults = resultListService.currentResultList$$();
+
   @if (searchResults.length) {
     <h1>Showing {{ searchResults.length }} results</h1>
   } @else {

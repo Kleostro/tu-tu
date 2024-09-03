@@ -11,7 +11,9 @@ import { NewStation, Station } from '../models/stations';
 })
 export class StationsService {
   private httpClient = inject(HttpClient);
+
   public allStations = signal<Station[]>([]);
+
   public allStationNames = computed(() => this.allStations().map((station) => station.city));
 
   public getStations(): Observable<Station[]> {

@@ -16,9 +16,11 @@
         Seat: <b>{{ order.seatNumber }}</b>
       </div>
       <div class="carriage-type">
-        Carriage type: <b>{{ order.carriage }}</b>
+        Carriage type: <b>{{ order.carriage?.carriageName }}</b>
       </div>
-      // TBD: display carriage number
+      <div class="carriage-type">
+        Carriage №: <b>{{ order.carriage?.carriageOrder }}</b>
+      </div>
       <div class="price">
         Price: <b>{{ order.price | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
       </div>

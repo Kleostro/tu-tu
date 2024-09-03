@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 
 import { RideService } from '@/app/api/rideService/ride.service';
 import { StationsService } from '@/app/api/stationsService/stations.service';
+import { APP_PATH } from '@/app/shared/constants/routes';
 
 import { CreateRideFormComponent } from '../../components/create-ride-form/create-ride-form.component';
 import { RidesListComponent } from '../../components/rides-list/rides-list.component';
@@ -21,13 +22,17 @@ import { RidesListComponent } from '../../components/rides-list/rides-list.compo
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RouteDetailedComponent implements OnInit, OnDestroy {
+  private subscribtion = new Subscription();
+
+  private router = inject(Router);
+
   public routeService = inject(RideService);
   public stationsService = inject(StationsService);
-  private router = inject(Router);
+
   public id = input<string>('');
+
   public isOpenCreateRideForm = signal(false);
   public isDataLoaded = signal(false);
-  private subscribtion = new Subscription();
 
   public ngOnInit(): void {
     this.routeService.currentRouteInfo.set(null);
@@ -38,7 +43,7 @@ export class RouteDetailedComponent implements OnInit, OnDestroy {
             this.isDataLoaded.set(true);
           },
           error: () => {
-            this.router.navigate(['404']);
+            this.router.navigate([APP_PATH.NOT_FOUND]);
           },
         });
       }),

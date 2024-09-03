@@ -36,7 +36,6 @@ export class AuthService {
 
   public isSignInLoading$$ = signal(false);
   public isSignUpLoading$$ = signal(false);
-
   public isRegistrationSuccess$$ = signal<boolean | null>(null);
   public errorMessage$$ = signal<string>('');
   public isLoggedIn$$ = signal(this.localStorageService.getValueByKey(STORE_KEYS.TOKEN) !== null);

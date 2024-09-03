@@ -36,14 +36,18 @@ import { RouteComponent } from '../route/route.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoutesListComponent implements OnDestroy {
+  private subscription = new Subscription();
+
   public routeService = inject(RouteService);
   public modalService = inject(ModalService);
   public userMessageService = inject(UserMessageService);
+
   public routes = input<RouteResponse[]>([]);
   public stations = input<Station[]>([]);
+
   public deletionRouteId = signal<number>(NaN);
   public isRouteDeleted = signal(false);
-  private subscription = new Subscription();
+
   public firstPage = 0;
   public rowsCount = 10;
 

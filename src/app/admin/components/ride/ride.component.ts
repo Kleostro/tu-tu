@@ -30,19 +30,23 @@ import { RideTimeComponent } from '../ride-time/ride-time.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RideComponent implements OnDestroy {
+  private subscription = new Subscription();
+
   private stationsService = inject(StationsService);
   private rideService = inject(RideService);
   private userMessageService = inject(UserMessageService);
+
   public ride = input<CustomSchedule | null>(null);
   public path = input<number[]>([]);
+
   public stations = computed<(Station | null)[]>(() =>
     this.path().map((id) => this.stationsService.findStationById(id)),
   );
   public fullRideData = computed(() => collectAllRideData(this.stations(), this.ride()?.segments ?? []));
+
   public isTimeEdited = signal(true);
   public isPriceEdited = signal(true);
   public isRideDeleted = signal(true);
-  private subscription = new Subscription();
 
   public handleTimeChanged(event: RidePath, index: number): void {
     const currentRide = this.ride();

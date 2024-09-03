@@ -23,9 +23,12 @@ import { AuthService } from '../../services/auth-service/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterFormComponent implements OnDestroy {
-  public authService = inject(AuthService);
-  private fb = inject(FormBuilder);
   private subscription = new Subscription();
+
+  private fb = inject(FormBuilder);
+
+  public authService = inject(AuthService);
+
   public registrationForm = this.fb.nonNullable.group(
     {
       email: ['', [Validators.required.bind(this), Validators.email.bind(this)]],
@@ -36,6 +39,7 @@ export class RegisterFormComponent implements OnDestroy {
       validators: passwordMatchValidator,
     },
   );
+
   public APP_ROUTE = APP_ROUTE;
 
   public submitForm(): void {

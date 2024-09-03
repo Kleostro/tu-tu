@@ -27,7 +27,7 @@
             @for (rightRow of seatsSchema.rightSeats; let i = $index; track i) {
               <div class="right-seats-row">
                 @for (rightSeat of rightRow; let index = $index; track index) {
-                  @let seatNumber = firstSeat() + rightSeat;
+                  @let seatNumber = firstSeat() ? firstSeat() + rightSeat - 1 : rightSeat;
                   <app-seat
                     [classes]="[
                       'right',
@@ -49,7 +49,7 @@
             @for (leftRow of seatsSchema.leftSeats; let i = $index; track i) {
               <div class="left-seats-row">
                 @for (leftSeat of leftRow; let index = $index; track index) {
-                  @let seatNumber = firstSeat() + leftSeat;
+                  @let seatNumber = firstSeat() ? firstSeat() + leftSeat - 1 : leftSeat;
                   <app-seat
                     [classes]="['left', i === 0 ? 'first-seat' : '', isInteractive() ? 'interactive' : '']"
                     [carriageName]="carriage.name"

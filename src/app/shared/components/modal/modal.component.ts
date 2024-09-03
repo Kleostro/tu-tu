@@ -17,6 +17,7 @@ import { ModalService } from '../../services/modal/modal.service';
 })
 export class ModalComponent {
   public modalService = inject(ModalService);
+
   @ViewChild('modalDialog') public modalDialog!: ElementRef;
 
   public outsideClick(event: Event): void {

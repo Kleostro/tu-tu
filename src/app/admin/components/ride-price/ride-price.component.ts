@@ -1,10 +1,21 @@
 import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, inject, input, OnInit, Output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  Output,
+  signal,
+} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { RippleModule } from 'primeng/ripple';
+import { Subscription } from 'rxjs';
 
 import { RidePrice } from '../../models/ride.model';
 
@@ -17,10 +28,14 @@ import { RidePrice } from '../../models/ride.model';
   styleUrl: './ride-price.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RidePriceComponent implements OnInit {
+export class RidePriceComponent implements OnInit, OnDestroy {
+  private subscription = new Subscription();
+
   private fb = inject(FormBuilder);
+
   public priceList = input<RidePrice[] | null>(null);
   public isPriceEdited = input(false);
+
   public isEdit = signal(false);
 
   public priceForm = this.fb.group({
@@ -57,5 +72,9 @@ export class RidePriceComponent implements OnInit {
       }));
       this.priceChanged.emit(updatedPriceList);
     }
+  }
+
+  public ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
