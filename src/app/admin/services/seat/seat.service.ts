@@ -49,6 +49,7 @@ export class SeatService {
           catchError((error: OverriddenHttpErrorResponse) => {
             this.userMessageService.showErrorMessage(error.error.message);
             this.hasResponse$$.set(true);
+            this.selectedSeat$$.set(null);
             return of(EMPTY);
           }),
         )
