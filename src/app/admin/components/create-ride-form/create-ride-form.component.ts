@@ -71,9 +71,15 @@ export class CreateRideFormComponent implements OnInit, OnDestroy {
         .createRide(this.rideService.currentRouteId(), collectNewRideData(carriageTypes, times))
         .pipe(take(1))
         .subscribe(() =>
-          this.rideService.getRouteById(this.rideService.currentRouteId()).subscribe(() => {
-            this.isRideCreated.set(true);
-            this.userMessageService.showSuccessMessage(USER_MESSAGE.RIDE_CREATED_SUCCESSFULLY);
+          this.rideService.getRouteById(this.rideService.currentRouteId()).subscribe({
+            next: () => {
+              this.isRideCreated.set(true);
+              this.userMessageService.showSuccessMessage(USER_MESSAGE.RIDE_CREATED_SUCCESSFULLY);
+            },
+            error: () => {
+              this.userMessageService.showErrorMessage(USER_MESSAGE.INVALID_TIME);
+              this.isRideCreated.set(true);
+            },
           }),
         ),
     );

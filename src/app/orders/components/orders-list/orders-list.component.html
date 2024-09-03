@@ -3,6 +3,12 @@
   @for (order of orders().slice(firstPage, firstPage + rowsCount); track order.orderId) {
     @let user = ordersService.findUserById(order.userId);
     <app-order [order]="order" [user]="user"></app-order>
+  } @empty {
+    <div class="no-result">
+      <h1 class="description">You don't have any orders yet.<br />Time to choose where you want to go.</h1>
+      <p-button class="to-main-button" label="Choose a trip" routerLink="/" icon="pi pi-globe"></p-button>
+      <img class="image" [src]="imageUrl" alt="No result" />
+    </div>
   }
   <ng-container *ngTemplateOutlet="paginator"></ng-container>
 </div>

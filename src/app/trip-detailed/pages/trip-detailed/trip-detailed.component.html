@@ -91,7 +91,18 @@
           severity="danger"
           (onClick)="seatService.selectedSeat$$.set(null)"
         ></p-button>
-        <p-button label="Book a seat" class="book-button" (click)="bookSeat()"></p-button>
+        <p-button
+          [disabled]="!seatService.hasResponse$$()"
+          [label]="!seatService.hasResponse$$() ? 'Booking...' : 'Book a seat'"
+          class="book-button"
+          (click)="bookSeat()"
+        >
+          @if (!seatService.hasResponse$$()) {
+            <i class="pi pi-spin pi-spinner-dotted" style="font-size: 1rem"></i>
+          } @else {
+            <span class="material-icons p-button-icon">event_seat</span>
+          }
+        </p-button>
       </p-fieldset>
     }
   </div>

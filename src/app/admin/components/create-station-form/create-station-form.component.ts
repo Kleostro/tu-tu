@@ -20,6 +20,7 @@ import { NewStation } from '@/app/api/models/stations';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
+import { capitalizeEachWord } from '@/app/shared/utils/capitalizeEachWord';
 
 import { MapService } from '../../services/map/map.service';
 
@@ -83,9 +84,11 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
   }
 
   public getValidFormData(): NewStation {
+    const rawData = this.createStationForm.getRawValue();
     return {
-      ...this.createStationForm.getRawValue(),
-      relations: this.stationsService.collectedStationConnectionIds(this.createStationForm.getRawValue().connections),
+      ...rawData,
+      city: capitalizeEachWord(rawData.city),
+      relations: this.stationsService.collectedStationConnectionIds(rawData.connections),
     };
   }
 
@@ -106,12 +109,17 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
         this.stationsService
           .createNewStation(this.getValidFormData())
           .pipe(take(1))
-          .subscribe(({ id }) => {
-            if (id) {
-              this.submitSuccessHandler();
-            } else {
-              this.submitErrorHandler(USER_MESSAGE.STATION_CREATED_ERROR);
-            }
+          .subscribe({
+            next: ({ id }) => {
+              if (id) {
+                this.submitSuccessHandler();
+              } else {
+                this.submitErrorHandler(USER_MESSAGE.STATION_CREATED_ERROR);
+              }
+            },
+            error: () => {
+              this.submitErrorHandler(USER_MESSAGE.STATION_EXISTS);
+            },
           }),
       );
     }

@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, Template
 
 import { ButtonModule } from 'primeng/button';
 import { FieldsetModule } from 'primeng/fieldset';
-import { RippleModule } from 'primeng/ripple';
 import { TabViewChangeEvent, TabViewModule } from 'primeng/tabview';
 import { Subscription } from 'rxjs';
 
@@ -34,7 +33,6 @@ import { TrainCarriagesListService } from '../../services/train-carriages-list/t
   imports: [
     ButtonModule,
     CurrencyPipe,
-    RippleModule,
     TabViewModule,
     FieldsetModule,
     DatePipe,
@@ -147,6 +145,7 @@ export class TripDetailedComponent implements OnInit, OnDestroy {
   public bookSeat(): void {
     if (this.authService.isLoggedIn$$()) {
       this.seatService.bookSelectedSeat(this.tripItem);
+      this.seatService.hasResponse$$.set(false);
     } else {
       this.modalService.openModal(this.loginModalContent);
     }

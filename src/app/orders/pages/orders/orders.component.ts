@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
 
-import { ButtonModule } from 'primeng/button';
 import { Subscription } from 'rxjs';
 
 import { CarriageService } from '@/app/api/carriagesService/carriage.service';
@@ -12,12 +10,10 @@ import { AuthService } from '@/app/auth/services/auth-service/auth.service';
 import { OrdersListComponent } from '../../components/orders-list/orders-list.component';
 import { UserOrderService } from '../../services/userOrder/user-order.service';
 
-const imgUrl = '/img/png/no-results.webp';
-
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [OrdersListComponent, ButtonModule, RouterLink],
+  imports: [OrdersListComponent],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss',
   providers: [],
@@ -32,8 +28,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
   public ordersService = inject(OrdersService);
   public userOrderService = inject(UserOrderService);
   public authService = inject(AuthService);
-
-  public imageUrl = imgUrl;
 
   public ngOnInit(): void {
     if (this.authService.isAdmin$$()) {

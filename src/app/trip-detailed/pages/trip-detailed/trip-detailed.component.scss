@@ -167,7 +167,22 @@
 
 .book-button {
   ::ng-deep button {
+    justify-content: center;
     width: 100%;
     margin-top: $offset-s;
   }
+
+  ::ng-deep .p-button {
+    display: flex;
+    gap: $offset-xxs;
+    justify-content: center;
+  }
+
+  ::ng-deep .p-button .p-button-label {
+    flex: none;
+  }
+}
+
+.p-button-icon {
+  color: $white-100;
 }
