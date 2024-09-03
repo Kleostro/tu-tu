@@ -89,6 +89,8 @@ export class AuthService {
     this.isLoggedIn$$.set(true);
     if (userData.email === ADMIN_CREDENTIALS.email) {
       this.isAdmin$$.set(true);
+    } else {
+      this.isAdmin$$.set(false);
     }
   }
 

@@ -19,10 +19,10 @@
       }
     </div>
 
-    <div class="car-bottom" [class]="!isInteractive() ? 'disabled' : ''">
+    <div class="car-bottom">
       <div class="seats">
         @if (seatsSchema(); as seatsSchema) {
-          <div class="right-seats">
+          <div class="right-seats" [class]="!isInteractive() ? 'disabled' : ''">
             <div class="left-line"></div>
             @for (rightRow of seatsSchema.rightSeats; let i = $index; track i) {
               <div class="right-seats-row">
@@ -44,11 +44,11 @@
             }
             <div class="right-line"></div>
           </div>
-          <div class="left-seats">
+          <div class="left-seats" [class]="!isInteractive() ? 'disabled' : ''">
             <div class="left-line"></div>
             @for (leftRow of seatsSchema.leftSeats; let i = $index; track i) {
               <div class="left-seats-row">
-                @for (leftSeat of leftRow; track leftSeat) {
+                @for (leftSeat of leftRow; let index = $index; track index) {
                   @let seatNumber = firstSeat() ? firstSeat() + leftSeat - 1 : leftSeat;
                   <app-seat
                     [classes]="['left', i === 0 ? 'first-seat' : '', isInteractive() ? 'interactive' : '']"
