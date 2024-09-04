@@ -9,6 +9,8 @@ import { CustomSchedule } from '@/app/api/models/schedule';
 import { Station } from '@/app/api/models/stations';
 import { RideService } from '@/app/api/rideService/ride.service';
 import { StationsService } from '@/app/api/stationsService/stations.service';
+import POSITION_DIRECTION from '@/app/shared/directives/position/constants/position.constants';
+import { ModalService } from '@/app/shared/services/modal/modal.service';
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 
@@ -33,6 +35,7 @@ import { RideTimeComponent } from '../ride-time/ride-time.component';
 export class RideComponent implements OnDestroy {
   private subscription = new Subscription();
 
+  public modalService = inject(ModalService);
   private stationsService = inject(StationsService);
   private rideService = inject(RideService);
   private userMessageService = inject(UserMessageService);
@@ -146,6 +149,11 @@ export class RideComponent implements OnDestroy {
         },
       }),
     );
+  }
+
+  public setParamsInModal(): void {
+    this.modalService.position$$.set(POSITION_DIRECTION.CENTER);
+    this.modalService.contentWidth$$.set('50%');
   }
 
   public ngOnDestroy(): void {

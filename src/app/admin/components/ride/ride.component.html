@@ -4,7 +4,7 @@
     <p-button
       [icon]="!isRideDeleted() ? 'pi pi-spin pi-cog' : 'pi pi-trash'"
       severity="danger"
-      (onClick)="deleteRide(ride()?.rideId ?? 0)"
+      (onClick)="setParamsInModal(); modalService.openModal(deleteCurrentRide, 'Delete ride ' + ride()?.rideId)"
       [label]="!isRideDeleted() ? 'Deleting...' : 'Delete'"
       [disabled]="!isRideDeleted()"
     ></p-button>
@@ -40,3 +40,27 @@
     </div>
   </div>
 </div>
+
+<ng-template #deleteCurrentRide>
+  <div class="modal-wrapper">
+    <strong class="subtitle">{{ 'Are you sure you want to delete this ride?' }}</strong>
+    <div class="buttons">
+      <p-button
+        [icon]="!isRideDeleted() ? 'pi pi-spin pi-cog' : 'pi pi-trash'"
+        severity="danger"
+        (onClick)="deleteRide(ride()?.rideId ?? 0); modalService.closeModal()"
+        [label]="!isRideDeleted() ? 'Deleting...' : 'Delete'"
+        [disabled]="!isRideDeleted()"
+      ></p-button>
+      <button
+        pButton
+        pRipple
+        label="Cancel"
+        [icon]="isRideDeleted() ? 'pi pi-times' : 'pi pi-spin pi-cog'"
+        class="p-button-primary"
+        (click)="modalService.closeModal()"
+        [disabled]="!isRideDeleted()"
+      ></button>
+    </div>
+  </div>
+</ng-template>
