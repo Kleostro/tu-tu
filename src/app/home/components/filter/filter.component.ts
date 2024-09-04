@@ -18,6 +18,8 @@ import { TripData } from '../../models/tripData.model';
 import { FilterService } from '../../services/filter/filter.service';
 import { ResultListComponent } from '../result-list/result-list.component';
 
+const imgUrl = '/img/png/no-results.png';
+
 @Component({
   selector: 'app-filter',
   standalone: true,
@@ -32,6 +34,7 @@ export class FilterComponent implements AfterViewInit {
 
   @ViewChildren('tabView') private tabs!: QueryList<ElementRef<HTMLElement>>;
   public groupRoutes!: GroupedRoutes;
+  public imageUrl = imgUrl;
 
   constructor() {
     effect(() => {
