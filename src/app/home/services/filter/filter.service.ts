@@ -32,7 +32,7 @@ export class FilterService {
           from: res.from.stationId,
           to: res.to.stationId,
         };
-        this.availableRoutesGroup$$.set(this.generateAvailableRoutesGroup(res.routes, tripIds, targetDate));
+        this.availableRoutesGroup$$.set(this.generateAvailableRoutesGroup(res.routes, tripIds));
         this.tripPoints$$.set({
           from: res.from.city,
           to: res.to.city,
@@ -50,13 +50,20 @@ export class FilterService {
   }
 
   public setCurrentRides(targetDate: string): void {
-    this.resultListService.createCurrentRides(
-      this.availableRoutesGroup$$()[formatDate(new Date(targetDate))],
-      this.tripPoints$$()!,
-    );
+    const availableRoutesGroup = this.availableRoutesGroup$$();
+    const keys = Object.keys(availableRoutesGroup);
+
+    if (keys.length > 0) {
+      keys.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+      const firstKey = keys[0];
+      const formattedTargetDate = formatDate(new Date(targetDate));
+      const selectedKey = availableRoutesGroup[formattedTargetDate] ? formattedTargetDate : firstKey;
+
+      this.resultListService.createCurrentRides(availableRoutesGroup[selectedKey], this.tripPoints$$()!);
+    }
   }
 
-  private generateAvailableRoutesGroup(routes: Route[], tripIds: TripIds, targetDate: string): GroupedRoutes {
+  private generateAvailableRoutesGroup(routes: Route[], tripIds: TripIds): GroupedRoutes {
     const groupedRoutes: GroupedRoutes = {};
     for (let route = 0; route < routes.length; route += 1) {
       const { schedule, path, id, carriages } = routes[route];
@@ -89,23 +96,7 @@ export class FilterService {
         });
       }
     }
-    return this.generateMissingKeyDates(this.filterRoutesByKeyDate(groupedRoutes), targetDate);
-  }
-
-  private generateMissingKeyDates(groupedRoutes: GroupedRoutes, targetDate: string): GroupedRoutes {
-    const updatedGroupedRoutes = { ...groupedRoutes };
-    const dateKeys = Object.keys(updatedGroupedRoutes).sort((a, b) => a.localeCompare(b));
-    const startDate = new Date(targetDate);
-    const endDate = new Date(dateKeys[dateKeys.length - 1]);
-
-    for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-      const dateString = formatDate(date);
-      if (!updatedGroupedRoutes[dateString]) {
-        updatedGroupedRoutes[dateString] = [];
-      }
-    }
-
-    return updatedGroupedRoutes;
+    return this.filterRoutesByKeyDate(groupedRoutes);
   }
 
   private filterRoutesByKeyDate(groupedRoutes: GroupedRoutes): GroupedRoutes {
