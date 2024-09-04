@@ -21,6 +21,7 @@ import { StationsService } from '@/app/api/stationsService/stations.service';
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
 import { capitalizeEachWord } from '@/app/shared/utils/capitalizeEachWord';
+import { atLeastOneConnectionValidator } from '@/app/shared/validators/validators';
 
 import { MapService } from '../../services/map/map.service';
 
@@ -56,7 +57,7 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
     city: ['', [Validators.required.bind(this)]],
     latitude: [0, [Validators.required.bind(this), Validators.min(-90), Validators.max(90)]],
     longitude: [0, [Validators.required.bind(this), Validators.min(-180), Validators.max(180)]],
-    connections: new FormArray([this.addConnection()]),
+    connections: new FormArray([this.addConnection()], atLeastOneConnectionValidator.bind(this)),
   });
 
   public filterCountry(event: { originalEvent: Event; query: string }): void {

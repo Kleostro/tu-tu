@@ -26,7 +26,12 @@
           <app-result-list></app-result-list>
         </p-tabPanel>
       } @empty {
-        <div class="no-trips-title">Unfortunately, no rides were found for your search.</div>
+        <div class="no-result">
+          <h1 class="description">
+            Sorry, we couldn't find anything for your search.<br />Please try another date or station.
+          </h1>
+          <img class="image" [src]="imageUrl" alt="No result" />
+        </div>
       }
     </p-tabView>
   }
