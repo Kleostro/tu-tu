@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, OnDestroy,
 
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { catchError, EMPTY, Observable, Subscription, take } from 'rxjs';
+import { catchError, EMPTY, finalize, Observable, Subscription, take } from 'rxjs';
 
 import { isOverriddenHttpErrorResponse } from '@/app/api/helpers/isOverriddenHttpErrorResponse';
 import { CustomSchedule } from '@/app/api/models/schedule';
@@ -137,23 +137,29 @@ export class RideComponent implements OnDestroy {
   public deleteRide(rideId: number): void {
     this.isRideDeleted.set(false);
     this.subscription.add(
-      this.rideService.deleteRide(this.rideService.currentRouteId(), rideId).subscribe({
-        next: () =>
-          this.rideService.getRouteById(this.rideService.currentRouteId()).subscribe(() => {
-            this.userMessageService.showSuccessMessage(USER_MESSAGE.RIDE_DELETED_SUCCESSFULLY);
+      this.rideService
+        .deleteRide(this.rideService.currentRouteId(), rideId)
+        .pipe(
+          finalize(() => {
             this.isRideDeleted.set(true);
+            this.modalService.closeModal();
           }),
-        error: () => {
-          this.userMessageService.showErrorMessage(USER_MESSAGE.RIDE_DELETED_ERROR);
-          this.isRideDeleted.set(true);
-        },
-      }),
+        )
+        .subscribe({
+          next: () =>
+            this.rideService.getRouteById(this.rideService.currentRouteId()).subscribe(() => {
+              this.userMessageService.showSuccessMessage(USER_MESSAGE.RIDE_DELETED_SUCCESSFULLY);
+            }),
+          error: () => {
+            this.userMessageService.showErrorMessage(USER_MESSAGE.RIDE_DELETED_ERROR);
+          },
+        }),
     );
   }
 
   public setParamsInModal(): void {
-    this.modalService.position$$.set(POSITION_DIRECTION.CENTER);
-    this.modalService.contentWidth$$.set('50%');
+    this.modalService.contentWidth$$.set('40%');
+    this.modalService.position$$.set(POSITION_DIRECTION.CENTER_TOP);
   }
 
   public ngOnDestroy(): void {
