@@ -1,0 +1,86 @@
+@import 'variables';
+
+.top {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 0.5rem;
+
+  border-bottom: $three solid $gray-200;
+}
+
+.bottom {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.rides {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  width: 100%;
+
+  transition: opacity 0.3s;
+}
+
+.pending {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.ride {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+
+  width: 100%;
+  padding: 1rem 2rem;
+}
+
+.time {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.price {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+
+  padding-top: 5rem;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $offset-s;
+  justify-content: center;
+
+  padding: $offset-s;
+  padding-bottom: 0;
+}
+
+.subtitle {
+  font-weight: 500;
+  color: $gray-700;
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  gap: $offset-xs;
+  align-self: center;
+  width: max-content;
+}

@@ -16,10 +16,10 @@ import { PersonalInfoService } from '../../services/personalInfo/personal-info.s
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   private profileService = inject(ProfileService);
   private personalInfoService = inject(PersonalInfoService);
-
-  private destroy$ = new Subject<void>();
 
   public userInfoLoaded$$ = signal(false);
 

@@ -1,0 +1,109 @@
+@import 'variables';
+
+.filter-container {
+  width: 100%;
+}
+
+.from-to-title {
+  display: flex;
+  padding: $offset-xxs;
+  padding-left: 0;
+  color: $main-color;
+}
+
+.tab-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.tab-title-month {
+  font-size: $font-size-xs;
+  color: $gray-900;
+  text-wrap: nowrap;
+}
+
+.tab-title-day {
+  font-size: $font-size-xxs;
+  color: $gray-700;
+}
+
+.no-trips-title {
+  font-size: $font-size-ms;
+  font-weight: bold;
+  color: $gray-500;
+  text-align: center;
+}
+
+::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  &:hover {
+    background-color: $gray-100;
+    border-bottom-color: transparent;
+  }
+}
+
+::ng-deep .p-tabview .p-tabview-nav-btn.p-link {
+  background-color: $gray-100;
+  border: $one solid $gray-200;
+  border-radius: $border-radius-xs;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: $main-color;
+    border-color: $main-color;
+
+    & path {
+      fill: $white-100;
+    }
+  }
+}
+
+::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background-color: $gray-100;
+  border-color: $gray-200;
+  border-bottom-color: transparent;
+
+  .tab-title-month {
+    color: $main-color;
+  }
+
+  .tab-title-day {
+    color: $gray-900;
+  }
+}
+
+::ng-deep .p-tabview .p-tabview-panels {
+  background: $gray-100;
+  border: $one solid $gray-200;
+  border-top: none;
+  border-bottom-right-radius: $border-radius-s;
+  border-bottom-left-radius: $border-radius-s;
+}
+
+.ride-count {
+  font-size: $font-size-xxs;
+  font-style: italic;
+  color: $gray-500;
+}
+
+.no-result {
+  display: flex;
+  flex-direction: column;
+  gap: $offset-xs;
+  align-items: center;
+  justify-content: center;
+
+  padding: $offset-m;
+
+  text-align: center;
+}
+
+.description {
+  font-size: $font-size-m;
+  color: $gray-500;
+}
+
+.image {
+  max-width: 50dvw;
+}

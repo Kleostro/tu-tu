@@ -1,0 +1,47 @@
+@if (priceList(); as priceList) {
+  <div class="wrapper">
+    <div class="top">
+      <span class="title">Price</span>
+      @if (isEdit()) {
+        <p-button
+          icon="pi pi-save"
+          [rounded]="true"
+          severity="success"
+          [disabled]="priceForm.invalid"
+          (click)="this.isEdit.set(false)"
+          (click)="submit()"
+        ></p-button>
+        <p-button
+          icon="pi pi-arrow-left"
+          [rounded]="true"
+          severity="primary"
+          (click)="this.isEdit.set(false)"
+        ></p-button>
+      } @else {
+        <p-button
+          [disabled]="!isPriceEdited()"
+          [icon]="!isPriceEdited() ? 'pi pi-spin pi-cog' : 'pi pi-pencil'"
+          [rounded]="true"
+          severity="primary"
+          (click)="this.isEdit.set(true)"
+        ></p-button>
+      }
+    </div>
+    <div class="bottom">
+      <form [formGroup]="priceForm">
+        <div class="controls" formArrayName="priceList">
+          @for (priceControl of priceForm.controls.priceList.controls; track priceControl; let i = $index) {
+            <div class="control" [formGroupName]="i">
+              {{ priceList[i].type }}
+              @if (isEdit()) {
+                <p-inputNumber formControlName="price" [showButtons]="false"></p-inputNumber>
+              } @else {
+                <span> - {{ priceList[i].price | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+              }
+            </div>
+          }
+        </div>
+      </form>
+    </div>
+  </div>
+}

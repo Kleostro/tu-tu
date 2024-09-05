@@ -20,6 +20,8 @@ import { NewStation } from '@/app/api/models/stations';
 import { StationsService } from '@/app/api/stationsService/stations.service';
 import { USER_MESSAGE } from '@/app/shared/services/userMessage/constants/user-messages';
 import { UserMessageService } from '@/app/shared/services/userMessage/user-message.service';
+import { capitalizeEachWord } from '@/app/shared/utils/capitalizeEachWord';
+import { atLeastOneConnectionValidator } from '@/app/shared/validators/validators';
 
 import { MapService } from '../../services/map/map.service';
 
@@ -40,20 +42,22 @@ import { MapService } from '../../services/map/map.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateStationFormComponent implements OnInit, OnDestroy {
+  private subscription = new Subscription();
+
   private fb = inject(FormBuilder);
   private mapService = inject(MapService);
   private stationsService = inject(StationsService);
   private userMessageService = inject(UserMessageService);
-  private subscription = new Subscription();
 
   public isStationCreated = signal(false);
+
   public filteredCountries: string[] = [];
 
   public createStationForm = this.fb.nonNullable.group({
     city: ['', [Validators.required.bind(this)]],
-    latitude: [0, [Validators.required.bind(this)]],
-    longitude: [0, [Validators.required.bind(this)]],
-    connections: new FormArray([this.addConnection()]),
+    latitude: [0, [Validators.required.bind(this), Validators.min(-90), Validators.max(90)]],
+    longitude: [0, [Validators.required.bind(this), Validators.min(-180), Validators.max(180)]],
+    connections: new FormArray([this.addConnection()], atLeastOneConnectionValidator.bind(this)),
   });
 
   public filterCountry(event: { originalEvent: Event; query: string }): void {
@@ -72,7 +76,7 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
     const connectionControl = this.fb.nonNullable.group({ connection: [name] }, { updateOn: 'blur' });
     this.subscription.add(
       connectionControl.valueChanges.pipe(take(1)).subscribe((value) => {
-        if (value.connection && this.stationsService.allStationNames().includes(value.connection)) {
+        if (value.connection) {
           this.createStationForm.controls.connections.push(this.addConnection());
         }
       }),
@@ -81,9 +85,11 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
   }
 
   public getValidFormData(): NewStation {
+    const rawData = this.createStationForm.getRawValue();
     return {
-      ...this.createStationForm.getRawValue(),
-      relations: this.stationsService.collectedStationConnectionIds(this.createStationForm.getRawValue().connections),
+      ...rawData,
+      city: capitalizeEachWord(rawData.city),
+      relations: this.stationsService.collectedStationConnectionIds(rawData.connections),
     };
   }
 
@@ -104,12 +110,17 @@ export class CreateStationFormComponent implements OnInit, OnDestroy {
         this.stationsService
           .createNewStation(this.getValidFormData())
           .pipe(take(1))
-          .subscribe(({ id }) => {
-            if (id) {
-              this.submitSuccessHandler();
-            } else {
-              this.submitErrorHandler(USER_MESSAGE.STATION_CREATED_ERROR);
-            }
+          .subscribe({
+            next: ({ id }) => {
+              if (id) {
+                this.submitSuccessHandler();
+              } else {
+                this.submitErrorHandler(USER_MESSAGE.STATION_CREATED_ERROR);
+              }
+            },
+            error: () => {
+              this.submitErrorHandler(USER_MESSAGE.STATION_EXISTS);
+            },
           }),
       );
     }

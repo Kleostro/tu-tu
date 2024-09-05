@@ -37,7 +37,7 @@
             type="button"
             pButton
             pRipple
-            [icon]="nameValid ? 'pi pi-check' : 'pi pi-times'"
+            [icon]="nameValid ? 'pi pi-check' : 'pi pi-ban'"
             [class]="nameValid ? 'p-button-success' : 'p-button-danger'"
             [title]="nameValid ? 'Save name' : 'Cancel editing'"
             (click)="nameValid ? updateName() : cancelEditingField('isEditingName')"
@@ -77,7 +77,7 @@
             type="button"
             pButton
             pRipple
-            [icon]="emailValid ? 'pi pi-check' : 'pi pi-times'"
+            [icon]="emailValid ? 'pi pi-check' : 'pi pi-ban'"
             [class]="emailValid ? 'p-button-success' : 'p-button-danger'"
             [title]="emailValid ? 'Save email' : 'Cancel editing'"
             (click)="emailValid ? updateEmail() : cancelEditingField('isEditingEmail')"

@@ -1,16 +1,20 @@
 <div class="top">
   <p-button
-    [rounded]="true"
     class="create-btn"
     severity="success"
     icon="pi pi-plus"
+    label="Create new carriage"
+    (click)="setParamsInModal()"
     (click)="modalService.openModal(createContent, 'Create new carriage')"
   />
 </div>
-
-@if (carriageService.allCarriages().length) {
-  <app-carriages-list [allCarriages]="carriageService.allCarriages()"></app-carriages-list>
-}
+<div class="bottom">
+  @if (carriageService.allCarriages().length) {
+    <app-carriages-list [allCarriages]="carriageService.allCarriages()"></app-carriages-list>
+  } @else {
+    <p-progressSpinner styleClass="spinner" animationDuration="2.5s" ariaLabel="loading" />
+  }
+</div>
 
 <ng-template #createContent>
   <app-create-carriage-form></app-create-carriage-form>

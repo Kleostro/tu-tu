@@ -1,0 +1,41 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.controls-wrapper {
+  display: flex;
+  gap: 3rem;
+  justify-content: space-between;
+}
+
+.control-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+
+  width: 50%;
+
+  text-align: center;
+}
+
+::ng-deep .p-autocomplete {
+  width: 100%;
+}
+
+::ng-deep .p-inputtext {
+  width: 100%;
+}
+
+.carriages-wrapper,
+.stations-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.submit {
+  align-self: center;
+  padding: 0.5rem 2rem;
+}

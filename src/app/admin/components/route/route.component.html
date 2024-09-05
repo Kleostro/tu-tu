@@ -1,0 +1,59 @@
+@if (route(); as route) {
+  <div class="wrapper">
+    <div class="top">
+      <strong>Route {{ route.id }}</strong>
+      <div class="btn-wrapper">
+        <p-button
+          icon="pi pi-pencil"
+          label="Edit"
+          severity="success"
+          (click)="routeService.currentRoute.set(route)"
+          (click)="openRouteForm.emit()"
+        />
+        <a
+          class="p-button"
+          pButton
+          pRipple
+          icon="pi pi-car"
+          label="Rides"
+          severity="warning"
+          [style.color]="'white'"
+          [routerLink]="'/admin/routes/' + route.id"
+        ></a>
+        <p-button icon="pi pi-trash" severity="danger" label="Delete" (onClick)="openDeleteConfirm.emit(route.id)" />
+      </div>
+    </div>
+    <div class="bottom">
+      <p-accordion [multiple]="true">
+        @if (route.path.length; as length) {
+          <p-accordionTab header="Cities">
+            <p>
+              @for (path of route.path; let i = $index; track i) {
+                @if (stationsService.findStationById(path)?.city; as city) {
+                  @if (i < length - 1) {
+                    {{ stationsService.findStationById(path)?.city }} -
+                  } @else {
+                    {{ stationsService.findStationById(path)?.city }}
+                  }
+                }
+              }
+            </p>
+          </p-accordionTab>
+        }
+        @if (route.carriages.length; as length) {
+          <p-accordionTab header="Carriage Types">
+            <p>
+              @for (carriage of route.carriages; let i = $index; track i) {
+                @if (i < length - 1) {
+                  {{ carriage }} -
+                } @else {
+                  {{ carriage }}
+                }
+              }
+            </p>
+          </p-accordionTab>
+        }
+      </p-accordion>
+    </div>
+  </div>
+}

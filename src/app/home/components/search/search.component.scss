@@ -1,0 +1,77 @@
+@import 'variables';
+
+.search-container {
+  .search-form {
+    display: flex;
+    flex-direction: row;
+    gap: $ten;
+    justify-content: center;
+
+    .autocomlete-section {
+      display: flex;
+      flex-direction: row;
+      gap: $ten;
+    }
+  }
+}
+
+::ng-deep .p-button {
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .p-button .p-button-label {
+  flex: none;
+}
+
+@media screen and (width <= 1024px) {
+  .search-container {
+    max-width: $offset-xxxl * 9;
+    margin: 0 auto;
+
+    .search-form {
+      flex-direction: column;
+      gap: $ten;
+      max-width: $offset-xxxl * 9;
+
+      .autocomlete-section {
+        display: flex;
+        flex: 50%;
+        flex-direction: row;
+        gap: $ten;
+      }
+
+      ::ng-deep .p-autocomplete input {
+        width: $offset-xxxl * 4.4375;
+      }
+
+      ::ng-deep .p-calendar {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (width <= 768px) {
+  .search-container {
+    .search-form {
+      flex-direction: column;
+      gap: 10px;
+      max-width: $offset-xxxl * 5;
+      margin: 0 auto;
+
+      .autocomlete-section {
+        display: flex;
+        flex-direction: column;
+      }
+
+      ::ng-deep .p-autocomplete input {
+        width: $offset-xxxl * 5;
+      }
+
+      .submit-btn {
+        width: 100%;
+      }
+    }
+  }
+}

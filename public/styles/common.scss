@@ -42,6 +42,20 @@ body {
     'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+    border-radius: unset;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: unset;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    height: 3.12rem;
+    border-radius: unset;
+  }
 }
 
 code {
@@ -51,4 +65,8 @@ code {
 .hidden {
   position: fixed;
   scale: 0;
+}
+
+.material-icons {
+  font-size: $material-icon-size;
 }

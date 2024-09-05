@@ -1,1 +1,22 @@
-<p>routes works!</p>
+<div class="top">
+  <p-button
+    class="create-btn"
+    [severity]="isFormVisible() ? 'danger' : 'success'"
+    [icon]="isFormVisible() ? 'pi pi-times' : 'pi pi-plus'"
+    [label]="isFormVisible() ? 'Close' : 'Create new route'"
+    (click)="isFormVisible.set(!isFormVisible())"
+    (click)="routeService.currentRoute.set(null)"
+  />
+  <app-route-form [hidden]="!isFormVisible()" [currentRoute]="routeService.currentRoute()"></app-route-form>
+</div>
+<div class="bottom">
+  @if (routeService.allRoutes().length && stationsService.allStations().length) {
+    <app-routes-list
+      [routes]="routeService.allRoutes()"
+      [stations]="stationsService.allStations()"
+      (openRouteForm)="hadnleOpenRouteForm()"
+    ></app-routes-list>
+  } @else {
+    <p-progressSpinner styleClass="spinner" animationDuration="2.5s" ariaLabel="loading" />
+  }
+</div>

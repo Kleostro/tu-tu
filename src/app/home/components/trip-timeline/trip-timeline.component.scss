@@ -1,0 +1,65 @@
+@import 'variables';
+
+::ng-deep .p-timeline {
+  align-items: flex-start;
+
+  @media (width <=768px) {
+    align-items: center;
+    align-self: center;
+
+    width: max-content;
+    margin-right: auto;
+    margin-bottom: 1rem;
+  }
+}
+
+::ng-deep .p-timeline-event-opposite,
+.p-timeline-event-content {
+  @media (width <=768px) {
+    display: none;
+  }
+}
+
+.marker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+  height: $offset-ms;
+  margin: $offset-xxs;
+
+  line-height: 0;
+}
+
+.custom-marker {
+  margin: $offset-xxs 0 $offset-xxs -0.7rem;
+  padding: $offset-xxs;
+
+  color: $white-100;
+
+  background-color: $main-color;
+  border-radius: $border-radius-s;
+}
+
+.time-marker {
+  font-size: $font-size-ms;
+  font-weight: bold;
+  color: $main-color;
+}
+
+.event-details {
+  display: flex;
+  flex-direction: column;
+  gap: $offset-xxs;
+}
+
+.city {
+  width: $offset-xxxl * 2;
+  font-weight: bold;
+}
+
+.p-timeline-event-content {
+  width: $offset-xxxl * 2;
+}

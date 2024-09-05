@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
@@ -13,6 +13,14 @@ export class CarriageService {
   private httpClient = inject(HttpClient);
 
   public allCarriages = signal<Carriage[]>([]);
+
+  public allCarriageTypes = computed(() => this.allCarriages().map((carriage) => carriage.code));
+  public allCariageSeats = computed(() =>
+    this.allCarriages().map((carriage) => ({
+      code: carriage.code,
+      allSeats: (carriage.leftSeats + carriage.rightSeats) * carriage.rows,
+    })),
+  );
 
   public getCarriages(): Observable<Carriage[]> {
     return this.httpClient.get<Carriage[]>(ENDPOINTS.CARRIAGE);
@@ -30,15 +38,23 @@ export class CarriageService {
     return this.httpClient.put<Code>(`${ENDPOINTS.CARRIAGE}/${carriage.code}`, carriage);
   }
 
-  public setAllCarriages(carriages: Carriage[]): void {
-    this.allCarriages.set(carriages);
-  }
-
   public getLastNewCarriage(name: string): Carriage | null {
     return this.allCarriages().find((carriage) => carriage.name === name) ?? null;
   }
 
   public getCarriagesWithoutLastNewCarriage(name: string): Carriage[] {
     return this.allCarriages().filter((carriage) => carriage.name !== name);
+  }
+
+  public findCarriageByCode(code: string): Carriage | null {
+    return this.allCarriages().find((carriage) => carriage.code === code) ?? null;
+  }
+
+  public collectedCarriageCodes(carriages: Carriage[]): string[] {
+    return carriages.map((carriage) => carriage.code);
+  }
+
+  public deleteCarriage(code: string): Observable<object> {
+    return this.httpClient.delete<object>(`${ENDPOINTS.CARRIAGE}/${code}`);
   }
 }

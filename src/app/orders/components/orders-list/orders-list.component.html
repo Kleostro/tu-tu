@@ -1,0 +1,26 @@
+<div class="orders-list">
+  <ng-container *ngTemplateOutlet="paginator"></ng-container>
+  @for (order of orders().slice(firstPage, firstPage + rowsCount); track order.orderId) {
+    @let user = ordersService.findUserById(order.userId);
+    <app-order [order]="order" [user]="user"></app-order>
+  } @empty {
+    <div class="no-result">
+      <h1 class="description">You don't have any orders yet.<br />Time to choose where you want to go.</h1>
+      <p-button class="to-main-button" label="Choose a trip" routerLink="/" icon="pi pi-globe"></p-button>
+      <img class="image" [src]="imageUrl" alt="No result" />
+    </div>
+  }
+  <ng-container *ngTemplateOutlet="paginator"></ng-container>
+</div>
+
+<ng-template #paginator>
+  @if (orders().length) {
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="firstPage"
+      [rows]="rowsCount"
+      [totalRecords]="orders().length"
+      [rowsPerPageOptions]="[10, 20, 30, 40, 50, 100]"
+    />
+  }
+</ng-template>

@@ -6,7 +6,16 @@ import ENDPOINTS from '../constants/constants';
 
 export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   const localStorageService = inject(LocalStorageService);
+
   const token = localStorageService.getValueByKey('token');
+
+  if (req.headers.has('stop-interceptor')) {
+    const newReq = req.clone({
+      headers: req.headers.delete('stop-interceptor'),
+    });
+    return next(newReq);
+  }
+
   let headers = new HttpHeaders();
   if (typeof token === 'string') {
     headers = headers.append('Authorization', `Bearer ${token}`);

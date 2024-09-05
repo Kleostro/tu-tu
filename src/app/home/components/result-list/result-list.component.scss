@@ -1,0 +1,28 @@
+@import 'variables';
+
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: $offset-s;
+}
+
+.no-result {
+  display: flex;
+  flex-direction: column;
+  gap: $offset-xs;
+  align-items: center;
+  justify-content: center;
+
+  padding: $offset-m;
+
+  text-align: center;
+}
+
+.description {
+  font-size: $font-size-m;
+  color: $gray-500;
+}
+
+.image {
+  max-width: 50dvw;
+}

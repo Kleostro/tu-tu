@@ -1,0 +1,74 @@
+<section class="login-container">
+  <form class="login-form" [formGroup]="loginForm" (ngSubmit)="submitForm()">
+    <h2 class="login-title">Sign In</h2>
+    <div class="login-inputs-container">
+      <div class="login-form-item">
+        <label for="email" class="login-label">Email</label>
+        <div class="login-field">
+          <input
+            id="email"
+            type="email"
+            pInputText
+            formControlName="email"
+            placeholder="Enter your email"
+            class="login-input p-inputtext"
+          />
+          @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+            @if (loginForm.get('email')?.errors?.['required']) {
+              <small class="p-error">Please input your email!</small>
+            }
+            @if (loginForm.get('email')?.errors?.['pattern']) {
+              <small class="p-error">Incorrect email. Please input a valid email!</small>
+            }
+          }
+          @if (loginForm.hasError('invalidEmail')) {
+            <small class="p-error">Email is wrong. Please input a valid email!</small>
+          }
+          @if (loginForm.hasError('alreadyLoggedIn')) {
+            <small class="p-error">Authorization error</small>
+          }
+        </div>
+      </div>
+      <div class="login-form-item">
+        <label for="password" class="login-label">Password</label>
+        <div class="login-field">
+          <input
+            id="password"
+            type="password"
+            pInputText
+            formControlName="password"
+            placeholder="Enter your password"
+            class="login-input p-inputtext"
+          />
+          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+            @if (loginForm.get('password')?.errors?.['required']) {
+              <small class="p-error">Please input your password!</small>
+            }
+            @if (loginForm.get('password')?.hasError('minTrimmedLength')) {
+              <small class="p-error">Password must be at least 8 characters long.</small>
+            }
+          }
+        </div>
+      </div>
+      @if (loginForm.hasError('invalidFields')) {
+        <small class="p-error">Fields are empty</small>
+      }
+      @if (loginForm.hasError('alreadyLoggedIn')) {
+        <small class="p-error">You are already logged in.</small>
+      }
+      @if (loginForm.hasError('userNotFound')) {
+        <small class="p-error">Incorrect email or password</small>
+      }
+    </div>
+    <div class="login-button-container">
+      <p-button
+        type="submit"
+        label="Sign in"
+        [disabled]="!loginForm.valid || authService.isSignInLoading$$()"
+        class="p-mt-2"
+        [icon]="authService.isSignInLoading$$() ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in'"
+      ></p-button>
+      <p-link pButton routerLink="{{ signUpPath }}" label="Sign Up" class="p-button-text p-mt-2"></p-link>
+    </div>
+  </form>
+</section>

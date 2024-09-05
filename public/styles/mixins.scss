@@ -5,3 +5,17 @@
     }
   }
 }
+
+@mixin empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  padding: 1rem;
+
+  font-size: 1.5rem;
+  color: $gray-600;
+
+  border-top: $three solid $gray-300;
+}

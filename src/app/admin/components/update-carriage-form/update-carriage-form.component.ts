@@ -33,6 +33,8 @@ import { CarriageComponent } from '../carriage/carriage.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UpdateCarriageFormComponent implements OnInit, OnDestroy {
+  private subsciption = new Subscription();
+
   private fb = inject(FormBuilder);
   private modalService = inject(ModalService);
   private userMessageService = inject(UserMessageService);
@@ -41,9 +43,9 @@ export class UpdateCarriageFormComponent implements OnInit, OnDestroy {
 
   public carriage = input<Carriage | null>(null);
 
-  private subsciption = new Subscription();
   public currentCarriage = signal<Carriage | null>(null);
   public isUpdating = signal(false);
+
   public carriageForm = this.fb.nonNullable.group({
     rows: [0, [Validators.required.bind(this), Validators.min(1)]],
     leftSeats: [0, [Validators.required.bind(this), Validators.min(1)]],

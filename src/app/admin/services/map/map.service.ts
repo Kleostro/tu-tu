@@ -13,9 +13,11 @@ import createNewPopupOffsets from '../../utils/createNewPopupOffsets';
 })
 export class MapService {
   private lngLat = new BehaviorSubject({ lng: 0, lat: 0 });
+
   public newMarker = new BehaviorSubject<Marker | null>(null);
-  public markers = signal<Marker[]>([]);
   public removedMarker = new Subject<Marker>();
+
+  public markers = signal<Marker[]>([]);
 
   public createNewMarker({ city, lng, lat }: { city: string; lng: number; lat: number }): void {
     const newMarker = new Marker({ color: MARKER_PARAMS.color })

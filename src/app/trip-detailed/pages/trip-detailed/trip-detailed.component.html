@@ -1,1 +1,117 @@
-<p>trip-detailed works!</p>
+@let ride = rideService.rideFromId$$();
+@if (tripItem && ride) {
+  <div class="page-wrapper">
+    <p-button icon="pi pi-chevron-left" [rounded]="true" [text]="true" (onClick)="goBack()" />
+    <h1 class="title">Book your trip from {{ tripItem.tripStartStation }} to {{ tripItem.tripEndStation }}</h1>
+    <h2 class="ride-id">Ride {{ tripItem.rideId }}</h2>
+    <div class="item-wrapper">
+      <div class="item">
+        <app-trip-timeline
+          [departureDate]="tripItem.tripDepartureDate"
+          [arrivalDate]="tripItem.tripArrivalDate"
+          [startStation]="tripItem.tripStartStation"
+          [endStation]="tripItem.tripEndStation"
+        ></app-trip-timeline>
+      </div>
+      <p-button #buttonElement class="route-button" label="Route" text (click)="openModal()">
+        <i class="material-icons">route</i>
+      </p-button>
+    </div>
+
+    <p-tabView
+      [scrollable]="true"
+      (onChange)="onTabChange($event, getPrice(takeTabsCarriageType()[$event.index].type))"
+    >
+      @for (tab of takeTabsCarriageType(); track $index) {
+        <p-tabPanel>
+          <ng-template pTemplate="header">
+            <div class="tab-container">
+              <div class="tab-title-carriage-type">
+                {{ tab.name }}
+              </div>
+              <div class="tab-title-price">
+                {{ getPrice(tab.type) | currency: 'USD' : 'symbol' : '1.0-0' }}
+              </div>
+
+              @let seatsNumber = getFreeSeatsNumber(tab.type);
+              @if (!seatsNumber) {
+                <div class="seat-count">(no seats)</div>
+              } @else {
+                <div class="seat-count">({{ seatsNumber }} {{ seatsNumber === 1 ? 'seat' : 'seats' }})</div>
+              }
+            </div>
+          </ng-template>
+          <app-train-carriages-list [carriageType]="tab.type" [currentRide]="tripItem"></app-train-carriages-list>
+        </p-tabPanel>
+      }
+    </p-tabView>
+
+    @if (seatService.selectedSeat$$()) {
+      <p-fieldset class="seat-info-panel">
+        <ng-template pTemplate="header">
+          <div class="heading">
+            <span class="material-icons">local_activity</span>
+            <span class="font-bold">Your ticket:</span>
+          </div>
+        </ng-template>
+        <div class="seat-info">
+          <p class="m-0">
+            From
+            <span class="variable">{{ tripItem.tripStartStation }}</span>
+            to
+            <span class="variable">{{ tripItem.tripEndStation }}</span>
+          </p>
+          <p class="m-0">
+            Ride <span class="variable">{{ tripItem.rideId }}</span>
+          </p>
+          <p class="m-0">
+            Departure: <span class="variable">{{ tripItem.tripDepartureDate | date: 'MMM-dd-yyyy HH:mm' }}</span>
+          </p>
+          <p class="m-0">
+            Arrival: <span class="variable">{{ tripItem.tripArrivalDate | date: 'MMM-dd-yyyy HH:mm' }}</span>
+          </p>
+          <p class="m-0">
+            Carriage name: <span class="variable">{{ seatService.seatCarriageName$$() }}</span>
+          </p>
+          <p class="m-0">
+            Carriage number: <span class="variable">{{ seatService.seatCarriageNumber$$() }}</span>
+          </p>
+          <p class="m-0">
+            Price: <span class="variable">{{ seatService.seatPrice$$() | currency: 'USD' : 'symbol' : '1.0-0' }}</span>
+          </p>
+          <p class="m-0">
+            Seat: <span class="variable">{{ seatService.selectedSeat$$() }}</span>
+          </p>
+        </div>
+
+        <p-button
+          class="close"
+          icon="pi pi-times"
+          [rounded]="true"
+          severity="danger"
+          (onClick)="seatService.selectedSeat$$.set(null)"
+        ></p-button>
+        <p-button
+          [disabled]="!seatService.hasResponse$$()"
+          [label]="!seatService.hasResponse$$() ? 'Booking...' : 'Book a seat'"
+          class="book-button"
+          (click)="bookSeat()"
+        >
+          @if (!seatService.hasResponse$$()) {
+            <i class="pi pi-spin pi-spinner-dotted" style="font-size: 1rem"></i>
+          } @else {
+            <span class="material-icons p-button-icon">event_seat</span>
+          }
+        </p-button>
+      </p-fieldset>
+    }
+  </div>
+}
+
+<ng-template #tripModalContent>
+  <app-trip-details [trip]="tripItem"></app-trip-details>
+</ng-template>
+
+<ng-template #loginModalContent>
+  <app-login-form></app-login-form>
+</ng-template>

@@ -1,0 +1,38 @@
+<div class="filter-container">
+  @let tripPoints = filterService.tripPoints$$();
+  @if (tripPoints) {
+    <strong class="from-to-title"> From: {{ tripPoints.from }} - To: {{ tripPoints.to }} </strong>
+    <p-tabView [scrollable]="true" (onChange)="onTabChange($event)" [activeIndex]="filterService.activeTabIndex$$()">
+      @for (tab of takeTabsDates(); track $index) {
+        <p-tabPanel>
+          <ng-template pTemplate="header">
+            <div class="tab-container" #tabView>
+              <div class="tab-title-month">
+                {{ tab | date: 'MMMM d' }}
+              </div>
+              <div class="tab-title-day">
+                {{ tab | date: 'EEEE' }}
+              </div>
+
+              @let ridesNumber = countRidesNumbers(tab);
+              @if (!ridesNumber) {
+                <div class="ride-count">(no rides)</div>
+              } @else {
+                <div class="ride-count">({{ ridesNumber }} {{ ridesNumber === 1 ? 'ride' : 'rides' }})</div>
+              }
+            </div>
+          </ng-template>
+          <strong>{{ tab | date: 'MMMM d EEEE' }}</strong>
+          <app-result-list></app-result-list>
+        </p-tabPanel>
+      } @empty {
+        <div class="no-result">
+          <h1 class="description">
+            Sorry, we couldn't find anything for your search.<br />Please try another date or station.
+          </h1>
+          <img class="image" [src]="imageUrl" alt="No result" />
+        </div>
+      }
+    </p-tabView>
+  }
+</div>

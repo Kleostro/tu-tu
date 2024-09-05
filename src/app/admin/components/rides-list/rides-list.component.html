@@ -1,0 +1,24 @@
+<ng-container *ngTemplateOutlet="paginator"></ng-container>
+<p-accordion>
+  <p-accordionTab
+    [header]="'Ride' + ride.rideId"
+    *ngFor="let ride of schedule().slice(firstPage, firstPage + rowsCount); trackBy: identify"
+  >
+    <app-ride [ride]="ride" [path]="path()"></app-ride>
+  </p-accordionTab>
+</p-accordion>
+<div class="bottom-pagination">
+  <ng-container *ngTemplateOutlet="paginator"></ng-container>
+</div>
+
+<ng-template #paginator>
+  @if (schedule().length) {
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="firstPage"
+      [rows]="rowsCount"
+      [totalRecords]="schedule().length"
+      [rowsPerPageOptions]="[10, 20, 30, 40, 50, 100]"
+    />
+  }
+</ng-template>

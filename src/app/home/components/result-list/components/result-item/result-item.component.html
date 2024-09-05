@@ -1,0 +1,40 @@
+<div
+  class="item-wrapper"
+  [routerLink]="'/trip/' + resultItem.rideId"
+  [queryParams]="{ from: resultItem.tripStartStationId, to: resultItem.tripEndStationId }"
+>
+  <div class="item">
+    <app-trip-timeline
+      [departureDate]="resultItem.tripDepartureDate"
+      [arrivalDate]="resultItem.tripArrivalDate"
+      [startStation]="resultItem.tripStartStation"
+      [endStation]="resultItem.tripEndStation"
+    ></app-trip-timeline>
+
+    <div class="route-wrapper">
+      <div class="from-to-stations">
+        <i class="material-icons">train</i>{{ resultItem.routeStartStation }} - {{ resultItem.routeEndStation }}
+      </div>
+
+      <p-button #buttonElement class="route-button" label="Route" text (click)="openModal($event)">
+        <i class="material-icons">route</i>
+      </p-button>
+    </div>
+  </div>
+  <div class="carriages-info">
+    @let sortedCarriageInfo = getSortedCarriageInfo();
+    @for (carriage of sortedCarriageInfo; track carriage.type) {
+      <div class="carriage-info">
+        <div class="carriage-type">{{ carriage.name }}</div>
+        <div class="carriage-free-seats">{{ carriage.freeSeats }} free seats</div>
+        <div class="carriage-price">{{ carriage.price | currency: 'USD' : 'symbol' : '1.0-0' }}</div>
+      </div>
+    } @empty {
+      <div class="no-carriage-info">Sold out</div>
+    }
+  </div>
+</div>
+
+<ng-template #modalContent>
+  <app-trip-details [trip]="resultItem"></app-trip-details>
+</ng-template>

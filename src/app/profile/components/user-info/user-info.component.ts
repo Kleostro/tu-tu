@@ -32,15 +32,15 @@ import { FORM_TITLE, formField, FormFieldType } from './constants/constants';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserInfoComponent {
-  @ViewChild('passwordChangeTemplate') private passwordChangeTemplate!: TemplateRef<unknown>;
-
   private fb = inject(FormBuilder);
   private userMessageService = inject(UserMessageService);
   private personalInfoService = inject(PersonalInfoService);
   private modalService = inject(ModalService);
 
-  public isEditingName = signal(false);
+  @ViewChild('passwordChangeTemplate') private passwordChangeTemplate!: TemplateRef<unknown>;
+
   public isEditingEmail = signal(false);
+  public isEditingName = signal(false);
 
   public userForm = this.fb.nonNullable.group({
     name: this.fb.control(this.personalInfoService.currentUserName$$(), [Validators.required.bind(this)]),
@@ -51,8 +51,22 @@ export class UserInfoComponent {
     ]),
   });
 
-  public cancelEditingField(field: FormFieldType): void {
+  public cancelEditingField(field: FormFieldType, setInitial = true): void {
     this[field].set(false);
+
+    if (setInitial) {
+      this.setInitialValue(field);
+    }
+  }
+
+  public setInitialValue(field: FormFieldType): void {
+    if (field === formField.isEditingName) {
+      this.userForm.controls['name'].patchValue(this.personalInfoService.currentUserName$$());
+    }
+
+    if (field === formField.isEditingEmail) {
+      this.userForm.controls['email'].patchValue(this.personalInfoService.currentUserEmail$$());
+    }
   }
 
   private updateProfile(email: unknown, name: unknown): void {
@@ -67,7 +81,7 @@ export class UserInfoComponent {
 
   public updateName(): void {
     if (this.userForm.controls['name'].valid) {
-      this.cancelEditingField(formField.isEditingName);
+      this.cancelEditingField(formField.isEditingName, false);
     }
     if (this.userForm.controls['name'].valid && this.userForm.controls['name'].dirty) {
       const name = this.userForm.controls['name'].value;
@@ -80,7 +94,7 @@ export class UserInfoComponent {
 
   public updateEmail(): void {
     if (this.userForm.controls['email'].valid) {
-      this.cancelEditingField(formField.isEditingEmail);
+      this.cancelEditingField(formField.isEditingEmail, false);
     }
     if (this.userForm.controls['email'].valid && this.userForm.controls['email'].dirty) {
       const email = this.userForm.controls['email'].value;

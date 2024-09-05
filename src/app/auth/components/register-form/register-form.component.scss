@@ -1,0 +1,56 @@
+@import 'variables';
+
+:host {
+  display: contents;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: $offset-xxxl * 5;
+  height: auto;
+  margin: auto;
+  padding: $offset-ms;
+
+  background-color: $gray-100;
+  box-shadow: $shadow-100;
+
+  .register-title {
+    margin-bottom: $offset-xs;
+    font-weight: 700;
+  }
+
+  .register-form-item {
+    height: $offset-xl;
+    margin-bottom: $offset-xs;
+
+    .register-field {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .register-button-container {
+    display: flex;
+    gap: $offset-xs;
+    margin-top: $offset-s;
+  }
+
+  .p-error,
+  .register-input {
+    width: $offset-xl * 5;
+  }
+
+  .p-error {
+    min-height: $offset-s;
+    margin-top: $four;
+  }
+
+  .register-inputs-container {
+    height: $offset-xxxl * 3;
+  }
+}

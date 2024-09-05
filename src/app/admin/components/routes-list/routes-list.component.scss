@@ -1,0 +1,29 @@
+@import 'variables';
+@import 'mixins';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.deleteRouteWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2rem;
+  padding-bottom: 0;
+}
+
+.btn-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.empty {
+  @include empty;
+}

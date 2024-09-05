@@ -1,5 +1,5 @@
 import { Profile } from './profile';
-import { Segment } from './search';
+import { OrderSchedule } from './search';
 
 type OrderStatus = 'active' | 'completed' | 'rejected' | 'canceled';
 
@@ -12,11 +12,9 @@ export interface Order {
   status: OrderStatus;
   path: number[];
   carriages: string[];
-  schedule: {
-    segments: Segment[];
-  };
   stationStart: number;
   stationEnd: number;
+  schedule: OrderSchedule;
 }
 
 export interface User extends Profile {
@@ -31,5 +29,5 @@ export interface OrderRequest {
 }
 
 export interface OrderId {
-  id: string;
+  id: number;
 }

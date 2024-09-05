@@ -1,1 +1,9 @@
-<div class="seat" [class]="classes()">{{ numberSeat() }}</div>
+<div
+  class="seat free-seat"
+  [class]="classes()"
+  [class.selected-seat]="seatService.selectedSeat$$() === seatNumber()"
+  [class.booked-seat]="seatService.bookedSeatNumber$$() === seatNumber() || isOccupiedSeat()"
+  (click)="seatService.selectSeat(seatNumber(), carriageName(), carriageNumber())"
+>
+  {{ seatNumber() }}
+</div>

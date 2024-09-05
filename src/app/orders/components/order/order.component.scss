@@ -1,0 +1,91 @@
+@import 'variables';
+
+.item-wrapper {
+  position: relative;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  width: 100%;
+  margin-top: $offset-s;
+  padding: $offset-xs;
+
+  background: $gray-100;
+  border: $three solid $gray-400;
+  border-radius: $border-radius-s;
+}
+
+.item {
+  width: 50%;
+}
+
+.label {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  padding: $offset-xxs;
+
+  font-size: $font-size-s;
+  color: $white-100;
+
+  background-color: $main-color;
+  border-radius: 0.4rem;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.cancel-button-wrapper {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.modal-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $offset-s;
+  justify-content: center;
+
+  padding: $offset-s;
+  padding-bottom: 0;
+}
+
+.subtitle {
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  gap: $offset-xs;
+  align-self: center;
+  width: max-content;
+}
+
+.order-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $offset-xs;
+  align-self: center;
+  justify-content: center;
+}
+
+.order-status {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  padding: $offset-xxs;
+
+  font-size: $font-size-s;
+  color: $gray-100;
+
+  background-color: $main-color;
+  border-radius: 0.4rem;
+}
+
+.order-status-accent {
+  font-weight: bold;
+  color: $white-100;
+}

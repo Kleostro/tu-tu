@@ -1,15 +1,30 @@
 <div class="wrapper">
-  @if (allCarriages().length) {
-    @for (carriage of allCarriages(); track carriage.code) {
-      <app-carriage
-        [carriage]="carriage"
-        [isInteractive]="!routingService.isAdminCarriagesPage$$()"
-        [isEditable]="true"
-        (openEditModal)="handleOpenEditModal($event)"
-      ></app-carriage>
-    }
+  <ng-container *ngTemplateOutlet="paginator"></ng-container>
+  @for (carriage of allCarriages().slice(firstPage, firstPage + rowsCount); track carriage.code) {
+    <app-carriage
+      [carriage]="carriage"
+      [isInteractive]="!routingService.isAdminCarriagesPage$$()"
+      [isEditable]="true"
+      (openEditModal)="handleOpenEditModal($event)"
+    ></app-carriage>
+  } @empty {
+    <h1 class="empty">No carriages found</h1>
   }
 </div>
+
+<ng-container *ngTemplateOutlet="paginator"></ng-container>
+
+<ng-template #paginator>
+  @if (allCarriages().length) {
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="firstPage"
+      [rows]="rowsCount"
+      [totalRecords]="allCarriages().length"
+      [rowsPerPageOptions]="[10, 20, 30, 40, 50, 100]"
+    />
+  }
+</ng-template>
 
 <ng-template #editContent>
   <app-update-carriage-form [carriage]="editCarriage()"></app-update-carriage-form>

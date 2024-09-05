@@ -85,6 +85,13 @@ $gray-300-tr: #c7c7c724;
 $main-color: #4287f5;
 $dark-color: #0046b8;
 
+// Seat colors
+
+$free-seat-color: $main-color;
+$occupied-seat-color: $gray-200;
+$selected-seat-color: #f7e40b;
+$seat-border: #ddd;
+
 // SHADOWS
 
 $shadow-100: 0 0 10px 0 rgb(0 0 0 / 30%);

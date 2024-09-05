@@ -8,12 +8,18 @@ export interface Segment {
   occupiedSeats: number[];
 }
 
+export type SegmentOccupiedSeats = Omit<Segment, 'time' | 'price'>;
+
+export type SegmentPrice = Omit<Segment, 'time' | 'occupiedSeats'>;
+
 export interface Schedule {
   rideId: number;
   segments: Segment[];
-  time: string[];
-  occupiedSeats: number[];
+  time?: string[];
+  occupiedSeats?: number[];
 }
+
+export type OrderSchedule = Omit<Schedule, 'rideId'>;
 
 export interface Route {
   id: number;

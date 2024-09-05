@@ -1,0 +1,19 @@
+<div class="train-carriages-list">
+  @let currentType = carriageType();
+  @let trainCarriagesList = trainCarriagesListService.currentTrainCarriages$$();
+  @if (trainCarriagesList.length) {
+    @for (carriage of trainCarriagesList; track $index) {
+      @if (carriage.code === currentType) {
+        @let carriageInfo = currentRide().trainCarriages[$index + 1];
+        <h2>№{{ carriageInfo.carriageOrder }}</h2>
+        <app-carriage
+          [carriage]="carriage"
+          [firstSeat]="carriageInfo.firstSeat"
+          [freeSeats]="carriageInfo.freeSeats"
+          [occupiedSeats]="carriageInfo.occupiedSeats"
+          [carriageNumber]="carriageInfo.carriageOrder"
+        ></app-carriage>
+      }
+    }
+  }
+</div>

@@ -1,0 +1,84 @@
+<div class="item-wrapper">
+  <div class="item">
+    @if (user?.role === 'manager') {
+      <div class="label">ADMIN ORDER</div>
+    }
+    <app-trip-timeline
+      [departureDate]="order.tripDepartureDate"
+      [arrivalDate]="order.tripArrivalDate"
+      [startStation]="order.tripStartStation"
+      [endStation]="order.tripEndStation"
+      [dateFormat]="'MMMM dd HH:mm'"
+    ></app-trip-timeline>
+
+    <div class="route-wrapper">
+      <div>
+        Seat: <b>{{ order.seatNumber }}</b>
+      </div>
+      <div class="carriage-type">
+        Carriage type: <b>{{ order.carriage?.carriageName }}</b>
+      </div>
+      <div class="carriage-type">
+        Carriage №: <b>{{ order.carriage?.carriageOrder }}</b>
+      </div>
+      <div class="price">
+        Price: <b>{{ order.price | currency: 'USD' : 'symbol' : '1.0-0' }}</b>
+      </div>
+      <span>Order ID: {{ order.orderId }}</span>
+      @if (user) {
+        <div>User: {{ user.name ? user.name : 'User' + user.id }}</div>
+      }
+    </div>
+  </div>
+
+  @if (order.status === 'active') {
+    <div class="cancel-button-wrapper">
+      <button
+        pButton
+        pRipple
+        class="p-button-danger cancel-button"
+        (click)="setParamsInModal()"
+        (click)="modalService.openModal(createContent, 'Cancel order ' + order.orderId)"
+      >
+        Cancel
+      </button>
+    </div>
+  } @else {
+    <span class="order-status"
+      >Order status:
+      <span class="order-status-accent">{{ order.status === 'rejected' ? 'canceled' : order.status }}</span></span
+    >
+  }
+</div>
+
+<ng-template #createContent>
+  <div class="modal-wrapper">
+    <strong class="subtitle">{{ 'Are you sure you want to cancel this order?' }}</strong>
+    @if (user) {
+      <div class="order-info">
+        <p>User: {{ user.name ? user.name : 'User' + user.id }}</p>
+        <p>Order ID: {{ order.orderId }}</p>
+      </div>
+    }
+    <div class="buttons">
+      <button
+        pButton
+        pRipple
+        [rounded]="true"
+        [icon]="isCanceled() ? 'pi pi-check' : 'pi pi-spin pi-cog'"
+        (click)="cancelOrder()"
+        class="p-button-danger"
+        [disabled]="!isCanceled()"
+      ></button>
+      <button
+        pButton
+        pRipple
+        [rounded]="true"
+        [icon]="isCanceled() ? 'pi pi-times' : 'pi pi-spin pi-cog'"
+        class="p-button-primary"
+        (click)="modalService.closeModal()"
+        [disabled]="!isCanceled()"
+      ></button>
+    </div>
+  </div>
+</ng-template>
