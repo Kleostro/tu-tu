@@ -65,22 +65,15 @@
 .modal-wrapper {
   display: flex;
   flex-direction: column;
-  gap: $offset-s;
+  gap: 1rem;
+  align-items: center;
   justify-content: center;
 
-  padding: $offset-s;
+  padding: 2rem;
   padding-bottom: 0;
-}
-
-.subtitle {
-  font-weight: 500;
-  color: $gray-700;
-  text-align: center;
 }
 
 .buttons {
   display: flex;
-  gap: $offset-xs;
-  align-self: center;
-  width: max-content;
+  gap: 0.5rem;
 }

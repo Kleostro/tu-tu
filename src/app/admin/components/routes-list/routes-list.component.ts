@@ -58,7 +58,7 @@ export class RoutesListComponent implements OnDestroy {
     this.deletionRouteId.set(id);
     this.modalService.contentWidth$$.set('40%');
     this.modalService.position$$.set(POSITION_DIRECTION.CENTER_TOP);
-    this.modalService.openModal(this.deleteRouteConfirm, `Delete route ${id}?`);
+    this.modalService.openModal(this.deleteRouteConfirm, `Delete route ${id}`);
   }
 
   public deleteRoute(): void {
